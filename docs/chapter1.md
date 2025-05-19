@@ -810,6 +810,182 @@ $$
 
 This completes the derivation and usage of the Bellman equation in the context of evaluating a given policy $\pi$.
 
+## Bellman Equation - Details
+
+Back to the Bellman equation under a given policy $\pi$. The state value function is given by
+
+\[ 
+v_{\pi}(s) \;=\; \mathbb{E}\bigl[G_t \;\big\vert\; S_t = s\bigr] \;=\; \mathbb{E}\Bigl[\,\sum_{k=0}^{\infty}
+\gamma^k\,R_{t+k+1}
+\;\Big\vert\; S_t = s \Bigr].
+\]
+
+Using a one step look ahead, we have
+
+\[
+G_t
+\;=\;
+R_{t+1} 
+\;+\;
+\gamma\,G_{t+1}.
+\]
+
+where $R_{t+1}$ is the immediate reward and the $\gamma \, G_{t+1}$ is future discounted reward. Taking the expected value on both sides,
+
+\[
+\mathbb{E} \bigl[G_t \;\big\vert\; S_t = s \bigr] = \mathbb{E} \bigl[R_{t+1} \;\big\vert\; S_t = s \bigr] + \mathbb{E} \bigl[ \gamma G_{t+1} \;\big\vert\; S_t = s \bigr]
+\]
+
+Complete the derivation of the this equation leading to the Bellman equation for $v_{\pi}$.
+
+**Answer**
+
+Below is a step-by-step derivation, starting from the one-step lookahead identity and arriving at the Bellman equation for the state-value function under a given policy \(\pi\). All mathematical expressions are shown in LaTeX.
+
+---
+1) Recall the One-Step Decomposition
+---
+We have:
+
+\[
+G_t 
+\;=\; 
+R_{t+1} \;+\;\gamma\,G_{t+1}.
+\]
+
+Taking the expectation of both sides, conditioned on \(S_t = s\) and following policy \(\pi\), gives:
+
+\[
+\mathbb{E}[\,G_t \mid S_t = s,\,\pi]
+\;=\;
+\mathbb{E}[\,R_{t+1} \mid S_t = s,\,\pi]
+\;+\;
+\gamma\,\mathbb{E}[\,G_{t+1} \mid S_t = s,\,\pi].
+\]
+
+Because  
+\(\mathbb{E}[\,G_t \mid S_t = s,\,\pi] = v_{\pi}(s)\),  
+we can rewrite this as 
+
+\[
+v_{\pi}(s) 
+\;=\;
+\mathbb{E}[\,R_{t+1} \mid S_t = s,\,\pi]
+\;+\;
+\gamma\,\mathbb{E}[\,G_{t+1} \mid S_t = s,\,\pi].
+\]
+
+------
+2) Break Down the Expectations
+---
+a) The term \(\mathbb{E}[\,R_{t+1} \mid S_t = s,\,\pi]\)
+
+Under policy \(\pi\), the agent chooses action \(A_t = a\) in state \(s\) with probability \(\pi(a \mid s)\). Then, the environment transitions to a next state \(s' \in \mathcal{S}\) with probability \(P(s' \mid s,a)\), supplying a reward \(R(s,a,s')\). Therefore,
+
+\[
+\mathbb{E}[R_{t+1} \mid S_t = s,\,\pi]
+\;=\;
+\sum_{a \,\in\, \mathcal{A}}
+\pi(a \,\vert\, s)
+\sum_{s' \,\in\, \mathcal{S}}
+P(s' \mid s,a)\;R(s,a,s').
+\]
+
+b) The term \(\mathbb{E}[\,G_{t+1} \mid S_t = s,\,\pi]\)
+
+Once the agent has taken action \(a\) in state \(s\) and arrived in \(s'\), it continues following policy \(\pi\) from time \(t+1\). Hence, the expected future return from \(s'\) onward is just \(v_{\pi}(s')\). Again summing over all possible next states \(s'\) and actions \(a\):
+
+\[
+\mathbb{E}[\,G_{t+1} \mid S_t = s,\,\pi]
+\;=\;
+\sum_{a \,\in\, \mathcal{A}}
+\pi(a \,\vert\, s)
+\sum_{s' \,\in\, \mathcal{S}}
+P(s' \mid s,a)\;\underbrace{
+  \mathbb{E}\bigl[G_{t+1} \mid S_{t+1}=s',\,\pi\bigr]
+}_{v_{\pi}(s')}.
+\]
+
+Thus:
+
+\[
+\mathbb{E}[\,G_{t+1} \mid S_t = s,\,\pi]
+\;=\;
+\sum_{a}
+\pi(a \,\vert\, s)
+\sum_{s' }
+P(s' \mid s,a)\;v_{\pi}(s').
+\]
+
+---
+3) Combine the Two Components
+---
+
+Putting them all together:
+
+\[
+v_{\pi}(s)
+\;=\;
+\underbrace{
+  \sum_{a}
+  \pi(a \mid s)
+  \sum_{s'}
+  P(s' \mid s,a)\,R(s,a,s')
+}_{\mathbb{E}[R_{t+1}\,\vert\,S_t=s,\;\pi]}
+\;+\;
+\gamma
+\underbrace{
+  \sum_{a}
+  \pi(a \mid s)
+  \sum_{s'}
+  P(s' \mid s,a)\,v_{\pi}(s')
+}_{\mathbb{E}[G_{t+1}\,\vert\,S_t=s,\;\pi]}.
+\]
+
+Factor out the sums more compactly:
+
+\[
+v_{\pi}(s)
+\;=\;
+\sum_{a \,\in\, \mathcal{A}}
+\pi(a \,\vert\, s)
+\sum_{s' \,\in\, \mathcal{S}}
+P(s' \,\vert\, s,a)\,
+\Bigl[
+  R(s,a,s') 
+  \;+\;
+  \gamma\,v_{\pi}(s')
+\Bigr].
+\]
+
+This equation is referred to as the Bellman Expectation Equation (or simply the Bellman equation) for the state-value function \(v_{\pi}\).
+
+---
+4) Final Bellman Equation for \(v_{\pi}\)
+---
+
+Hence, the derivation shows that:
+
+\[
+\boxed{
+v_{\pi}(s)
+\;=\;
+\sum_{a \,\in\, \mathcal{A}}
+\pi(a \,\vert\, s)
+\sum_{s' \,\in\, \mathcal{S}}
+P(s' \,\vert\, s,a)\,
+\bigl[
+  R(s,a,s') \;+\; \gamma\,v_{\pi}(s')
+\bigr].
+}
+\]
+
+From the one-step lookahead identity 
+\(
+G_t = R_{t+1} + \gamma G_{t+1}
+\)
+and taking conditional expectations w.r.t. \((S_t = s,\pi)\), we arrive at this recursive relation for \(v_{\pi}\). This is precisely the Bellman equation under a given policy \(\pi\).
+
 ## Bellman Equation $\to$ System of Linear Equations
 
 It seems that for the finite state space $\mathcal{S}$, the Bellman equation results in a system of linear equations in terms of the "variables" $v_{\pi}(s_t)$. Is this correct?
@@ -936,9 +1112,9 @@ Suppose you have two policies $\pi_1$ and $\pi_2$. And also suppose that the Bel
 
 Below is a step-by-step explanation of how having the solved value functions $v_{\pi_1}$ and $v_{\pi_2}$ (from two different policies $\pi_1$ and $\pi_2$) enables one to compare and evaluate those policies:
 
-────────────────────────────────────────────────────────────────────────
-1) The Meaning of v₍π₎(s)
-────────────────────────────────────────────────────────────────────────
+---
+1) The Meaning of $v_{\pi}(s)$
+---
 
 • For a given policy $\pi$ in a Markov Decision Process (MDP), the value function  
   
@@ -953,9 +1129,9 @@ $$
   tells us the expected return (cumulative discounted reward) starting from state $s$ and following $\pi$ thereafter.  
 • Thus, $v_{\pi}(s)$ captures how “good” it is to be in state $s$ when one plans to follow $\pi$.
 
-────────────────────────────────────────────────────────────────────────
+---
 2) Comparing Two Policies State by State
-────────────────────────────────────────────────────────────────────────
+---
 
 • Once you have computed $v_{\pi_1}(s)$ and $v_{\pi_2}(s)$ for all $s \in \mathcal{S}$, you can compare the policies pointwise by looking at each state $s$:  
   – If $v_{\pi_1}(s) > v_{\pi_2}(s)$, then $\pi_1$ yields a higher expected return than $\pi_2$ specifically from state $s$.  
@@ -970,9 +1146,9 @@ $$
 
   then we can unambiguously say $\pi_1$ is at least as good as $\pi_2$ in every state.
 
-────────────────────────────────────────────────────────────────────────
+---
 3) Comparing Two Policies from an Initial State or Distribution
-────────────────────────────────────────────────────────────────────────
+---
 
 • In many RL problems, there is a designated initial state $s_0$ or an initial state distribution $\mu_0$. In that scenario, one often compares the policies by looking at  
   
@@ -998,17 +1174,17 @@ $$
 
 • The policy that yields a higher overall expected return from the start (or on average w.r.t. $\mu_0$) is deemed better.
 
-────────────────────────────────────────────────────────────────────────
+---
 4) Practical Significance
-────────────────────────────────────────────────────────────────────────
+---
 
 • If you have solved the Bellman equation for both policies (i.e., found $v_{\pi_1}$ and $v_{\pi_2}$), then you have a quantitative measure of performance for each state in $\mathcal{S}$.  
 • You can use this information to decide which policy performs better in specific states, or from the viewpoint of a particular start state.  
 • Often, this comparison step is part of Policy Iteration or other methods: one checks if an updated policy is better (in terms of the value function) than a previous one—if it is, one replaces the old policy.
 
-────────────────────────────────────────────────────────────────────────
+---
 5) Conclusion
-────────────────────────────────────────────────────────────────────────
+---
 
 Yes, once you solve the Bellman equations to get $v_{\pi_1}$ and $v_{\pi_2}$, you can evaluate and compare $\pi_1$ and $\pi_2$ by:  
 1. Checking their value functions state by state, if desired.  
@@ -1786,3 +1962,583 @@ $$
 
 Thus, the Bellman Optimality Equations naturally arise from the desire to choose the best action in each state—an outcome of maximizing over all possible policies in an MDP.
 
+## Existence of optimal policies
+
+***You claim that under standard conditions such as finite state space and bounded rewards, the optimal state value $v_*(s) \;=\; \max_{\pi}\;v_{\pi}(s)$ and the action value $q_*(s,a) \;=\;\max_{\pi}\;q_{\pi}(s,a)$ exist. Formalize the argument to support this claim.***
+
+Below is a step-by-step argument showing why, under standard conditions such as a finite Markov Decision Process (MDP) with discounted and bounded rewards, the following optimal value functions exist and are well-defined:
+
+• The optimal state-value function:  
+
+\[
+v_{*}(s) \;=\; \max_{\pi}\,v_{\pi}(s),
+\]  
+
+• The optimal action-value function:  
+
+\[
+q_{*}(s,a) \;=\; \max_{\pi}\,q_{\pi}(s,a).
+\]
+
+---
+1 Finite MDP and Bounded Reward Assumptions
+---
+
+Assume:
+
+1. A finite state space \(\mathcal{S} = \{\,s_{1},\dots, s_{|\mathcal{S}|}\}\).  
+2. A finite action space \(\mathcal{A} = \{\,a_{1}, \dots, a_{|\mathcal{A}|}\}\).  
+3. A discount factor \(0 \,\le\, \gamma < 1.\)  
+4. Bounded rewards: there exists \(R_{\max} \ge 0\) such that  
+
+\[
+\bigl|\,R(s,a,s')\bigr| \;\le\; R_{\max}
+\]
+
+for all feasible triples \((s,a,s')\).
+
+Under these conditions, each state-action-next-state combination appears in only finitely many possibilities, and any infinite sum of discounted, bounded rewards converges well.
+
+---
+2 Value Functions for a Fixed Policy \(\pi\)
+---
+
+Consider a fixed policy \(\pi\). Define the return from time \(t\) as
+
+\[
+G_{t} \;=\; \sum_{k=0}^{\infty} \gamma^{k}\,R_{t+k+1},
+\]
+
+where \(R_{t+k+1}\) is the reward at time \(t+k+1\). Because \(\gamma \in [0,1)\) and \(\bigl|R_{t+k+1}\bigr|\le R_{\max}\), the infinite series converges almost surely and satisfies
+
+\[
+\bigl|\!G_{t}\bigr|\;\le\;\sum_{k=0}^{\infty} \gamma^{k}\,R_{\max}
+\;=\;\frac{R_{\max}}{1-\gamma}.
+\]
+
+Hence the state-value function
+
+\[
+v_{\pi}(s) \;=\; \mathbb{E}\bigl[G_{t}\,\big\vert\,S_{t}=s,\;\pi\bigr]
+\]
+
+is well-defined and bounded. Likewise, the action-value function
+
+\[
+q_{\pi}(s,a) \;=\;\mathbb{E}\bigl[G_{t}\,\big\vert\,S_{t}=s,\,A_{t}=a,\,\pi\bigr]
+\]
+
+is also bounded by \(\pm\,R_{\max}/(1-\gamma)\).
+
+---
+3 Supremum Over All Policies
+---
+
+For each state \(s\), define
+
+\[
+v_{*}(s)\;=\;\sup_{\pi}\,v_{\pi}(s).
+\]
+
+Similarly, for each state-action pair \((s,a)\), define
+
+\[
+q_{*}(s,a)\;=\;\sup_{\pi}\,q_{\pi}(s,a).
+\]
+
+Since \(v_{\pi}(s)\) and \(q_{\pi}(s,a)\) are bounded above by \(R_{\max}/(1-\gamma)\) and below by \(-\,R_{\max}/(1-\gamma)\), the suprema \(v_{*}(s)\) and \(q_{*}(s,a)\) are finite.
+
+---
+4 Existence of an Optimal Policy
+---
+
+Because \(\mathcal{S}\) and \(\mathcal{A}\) are finite, there are only finitely many deterministic policies: specifically \(\lvert\mathcal{A}\rvert^{\lvert\mathcal{S}\rvert}\). Consider the set
+
+\[
+\Bigl\{\;v_{\pi}\,\bigm|\,\pi \text{ is deterministic}\Bigr\}.
+\]
+
+Each \(v_{\pi}\) is a vector in \(\mathbb{R}^{\lvert\mathcal{S}\rvert}\). Hence the supremum over a finite set is actually a maximum, implying there exists at least one deterministic policy \(\pi^{*}\) such that
+
+\[
+v_{\pi^{*}}(s)\;=\;v_{*}(s)\quad \text{for all }s.
+\]
+
+Thus the supremum is in fact attained by at least one policy \(\pi^{*}\). An analogous argument holds for \(q_{*}(s,a)\).
+
+---
+5 Conclusion
+---
+
+Under these standard conditions:
+
+1. For each policy \(\pi\), \(v_{\pi}\) and \(q_{\pi}\) exist and lie in \(\bigl[-\,R_{\max}/(1-\gamma),\;R_{\max}/(1-\gamma)\bigr]\).  
+2. Taking the supremum over all policies yields finite quantities \(v_{*}(s)\) and \(q_{*}(s,a)\).  
+3. Because only finitely many deterministic policies exist, the supremum is actually a maximum, and an optimal policy \(\pi^{*}\) attains those maximal values.  
+
+Hence the definitions
+
+\[
+v_{*}(s)\;=\;\max_{\pi} v_{\pi}(s)
+\quad\text{and}\quad
+q_{*}(s,a)\;=\;\max_{\pi} q_{\pi}(s,a)
+\]
+
+are well-defined in such finite, discounted MDPs.
+
+## Uniqueness of Optimal policies
+
+***What about uniqueness of these optimal policies? Can there be two different optimal policies?***
+
+Below is a step-by-step explanation of whether the optimal policy in a finite Markov Decision Process (MDP) with discounted rewards and bounded reward magnitudes must be unique. All mathematical expressions are written in standard LaTeX:
+
+1) Existence of an Optimal Policy
+
+In a finite discounted MDP with  \(\ 0 \le \gamma < 1 \)  
+and bounded rewards, there exists at least one policy \(\ \pi^*\) that achieves the highest possible value in every state \(s\). Formally,  
+
+\[
+v_{*}(s) \;=\; v_{\pi^*}(s)
+\]  
+
+for all \(s\). Here, the state-value function for any policy \(\ \pi\) is  
+
+\[
+v_{\pi}(s) \;=\; \mathbb{E}\!\Bigl[\;\sum_{k=0}^{\infty} \gamma^k \; R_{t+k+1}\;\Bigm|\; S_t = s,\; \pi\Bigr],
+\]  
+
+and the optimal state-value function is defined by  
+
+\[
+v_{*}(s) \;=\; \max_{\pi}\; v_{\pi}(s).
+\]
+
+2) Multiple Optimal Policies
+
+Even though an optimal policy \(\ \pi^*\) exists, it need not be unique. Multiple distinct policies can yield the same optimal value function \(v_{*}(s)\). Common reasons for this include:
+
+• Two or more actions in a given state \(s\) might produce the exact same expected immediate reward plus the same transitions leading to the same future discounted returns.  
+• In more complex scenarios, there may be different ways to behave optimally across one or more states, all yielding the same overall returns.
+
+3) Ties in the Optimal Action-Value Function
+
+Consider the optimal action-value function
+
+\[
+q_{*}(s,a) \;=\; \max_{\pi}\; q_{\pi}(s,a).
+\]  
+
+If, for some state \(s\) and two distinct actions \(a_1\neq a_2\), it holds that 
+
+\[
+q_{*}(s,a_1) \;=\; q_{*}(s,a_2),
+\] 
+
+then both actions \(a_1\) and \(a_2\) are equally good in state \(s\). Hence, any policy choosing either action in that state is still optimal. If multiple such ties occur across different states, this can lead to many distinct policies \(\ \pi^*\) that all achieve the same maximum returns.
+
+4) Summary
+
+• A finite discounted MDP with \(0 \le \gamma < 1\) and bounded rewards always has at least one optimal policy.  
+• There can be more than one optimal policy; uniqueness is not guaranteed.  
+• All optimal policies share the same optimal state-value function \(v_{*}(s)\) (and the same optimal action-value function \(q_{*}(s,a)\)).
+
+
+## Bellman Optimality Operator I
+
+The value function $v_{\pi}(s)$ is a function, $v_{\pi}(\cdot): \mathcal{S} \to \mathbb{R}$. In our MDP setting, this space is a space of bounded functions. Previously, we derived the Bellman Optimality Equation as:
+
+\[
+\boxed{
+v_*(s)
+\;=\;
+\max_{a \,\in\, \mathcal{A}}\;
+\sum_{s' \,\in\, \mathcal{S}}
+P(s' \mid s,a)\;
+\bigl[
+  R(s,a,s')
+  \;+\;\gamma\,v_*(s')
+\bigr].
+}
+\]
+
+Clarify how this results in the Bellman optimality operator $[\mathcal{T} v](\cdot)$. This operator acts on the space of bounded state value functions to what space? Explain this in a rigorous manner.
+
+***Answer***
+
+Below is a step-by-step explanation of how the Bellman Optimality Equation induces an operator (the Bellman Optimality Operator) on the space of bounded value functions. All mathematical symbols and expressions appear in standard LaTeX:
+
+1) **Finite MDP and Space of Bounded Value Functions**
+
+• Let the state space be finite: \(\mathcal{S} = \{\,s_{1},s_{2},\dots,s_{|\mathcal{S}|}\}\).  
+• Consider the space of bounded real-valued functions on \(\mathcal{S}\), denoted by \(\mathcal{B}(\mathcal{S})\).  
+Each element \(v \in \mathcal{B}(\mathcal{S})\) is a function 
+
+\[
+v: \;\mathcal{S}\;\to\;\mathbb{R} \quad  \text{with}  \quad
+  \|\,v\,\|_{\infty}   \;=\;
+  \sup_{s \in \mathcal{S}}\;\bigl|\,v(s)\bigr|
+  \;<\;\infty.
+\]  
+
+• Because \(\mathcal{S}\) is finite, any real-valued function on \(\mathcal{S}\) is automatically bounded if its values are finite.
+
+2) **Bellman Optimality Equation**
+
+The Bellman Optimality Equation for the optimal value function \(v_{*}\) is:
+
+\[
+v_{*}(s)
+\;=\;
+\max_{a \,\in\, \mathcal{A}}
+\sum_{s' \,\in\, \mathcal{S}}
+P\bigl(s' \,\vert\, s,a\bigr)\,
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v_{*}(s')
+\Bigr],
+\]
+
+where  
+• \(0 \le \gamma < 1\) is the discount factor,  
+• \(R(s,a,s')\) is the reward for transitioning \(s \to s'\) via action \(a\), and  
+• \(P(s' \mid s,a)\) is the transition probability.
+
+3) **Defining the Bellman Optimality Operator \(\mathcal{T}\)**
+
+We now define an operator \(\mathcal{T}\) that acts on any bounded value function \(v \in \mathcal{B}(\mathcal{S})\). For each state \(s\in \mathcal{S}\), set
+
+\[
+[\,\mathcal{T}v\,](s)
+\;=\;
+\max_{a \,\in\, \mathcal{A}}
+\sum_{s' \,\in\, \mathcal{S}}
+P\bigl(s' \,\vert\, s,a\bigr)\,
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v(s')
+\Bigr].
+\]
+
+Thus \(\mathcal{T}\) takes the function \(v\) and produces a new function \(\mathcal{T}v\). Concretely,
+
+\[
+\mathcal{T}:\;\mathcal{B}(\mathcal{S})\;\to\;\mathcal{B}(\mathcal{S}), 
+\quad
+v \;\mapsto\;\mathcal{T}v.
+\]
+
+4) **\(\mathcal{T}v\) Is Bounded**
+
+• Suppose \(v \in \mathcal{B}(\mathcal{S})\), meaning that \(\|\,v\,\|_{\infty} = \sup_{s\in\mathcal{S}}|v(s)| < \infty\).  
+• Assume rewards are bounded: \(\bigl|\,R(s,a,s')\bigr|\le R_{\max}\) for all \((s,a,s')\).  
+• For each \(s\in \mathcal{S}\), the quantity \([\mathcal{T}v](s)\) is a finite maximum (since \(\mathcal{A}\) is finite) of finite sums of probabilities times \(\bigl(R(s,a,s') + \gamma\,v(s')\bigr)\).  
+• Hence \([\mathcal{T}v](s)\) is finite, and collectively \(\|\mathcal{T}v\|_{\infty} < \infty\).  
+
+Therefore, \(\mathcal{T}v\) lies in the same space \(\mathcal{B}(\mathcal{S})\). 
+
+5) **How \(\mathcal{T}\) Relates to the Bellman Optimality Equation**
+
+The Bellman Optimality Equation says that the optimal value function \(v_{*}\) must satisfy
+
+\[
+v_{*}(s)
+\;=\;
+[\mathcal{T}v_{*}](s)
+\quad
+\text{for each }s.
+\]
+
+In other words, \(v_{*}\) is a fixed point of the operator \(\mathcal{T}\). Symbolically,
+
+\[
+\mathcal{T}v_{*} = v_{*}.
+\]
+
+Moreover, in a discounted, finite MDP with bounded rewards, one can show (via a contraction mapping argument in the supremum norm) that \(\mathcal{T}\) has a unique fixed point in \(\mathcal{B}(\mathcal{S})\), namely \(v_{*}\).
+
+6) **Conclusion**
+
+• The space of bounded value functions on a finite state space is \(\mathcal{B}(\mathcal{S})\).  
+• The Bellman Optimality Operator \(\mathcal{T}\) transforms any \(v\in\mathcal{B}(\mathcal{S})\) into another bounded function \(\mathcal{T}v\in\mathcal{B}(\mathcal{S})\) via
+
+\[
+[\mathcal{T}v](s) =
+\max_{a}
+\sum_{s'\in\mathcal{S}}
+P(s'\mid s,a)\,\Bigl[
+  R(s,a,s') + \gamma\,v(s')
+\Bigr].
+\]
+
+• The Bellman Optimality Equation asserts that the unique optimal value function \(v_{*}\) is a fixed point of \(\mathcal{T}\).  
+
+Hence, in rigorous terms, \(\mathcal{T}\) is well-defined as an operator (\(\mathcal{T}:\mathcal{B}(\mathcal{S})\to \mathcal{B}(\mathcal{S})\)) that captures “take the maximum over actions of expected reward plus discounted value,” exactly as described by the Bellman Optimality Equation.
+
+## Bellman Optimality Operator II
+
+This makes sense. I need clarification on one point in your answer. The Bellman Optimality operator is defined as
+
+\[
+[\,\mathcal{T}v\,](s)
+\;=\;
+\max_{a \,\in\, \mathcal{A}}
+\sum_{s' \,\in\, \mathcal{S}}
+P\bigl(s' \,\vert\, s,a\bigr)\,
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v(s')
+\Bigr].
+\]
+
+I need a more detailed explanation to see why the following is true.
+
+\[
+\mathcal{T}:\;\mathcal{B}(\mathcal{S})\;\to\;\mathcal{B}(\mathcal{S}), 
+\quad
+v \;\mapsto\;\mathcal{T}v.
+\]
+
+***Answer***
+
+Below is a step-by-step clarification of why the Bellman Optimality Operator, often denoted by \(\mathcal{T}\), is defined as:
+
+\[
+[\mathcal{T}v](s)
+\;=\;
+\max_{a \,\in\, \mathcal{A}}
+\;\sum_{s' \,\in\, \mathcal{S}}
+P\bigl(s' \,\vert\, s,a\bigr)\,
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v(s')
+\Bigr],
+\]
+
+and how it acts from the space of bounded value functions \(\mathcal{B}(\mathcal{S})\) to itself.
+
+1) **Context: Value Functions and Optimality**
+
+• In a Markov Decision Process (MDP), the state-value function for a policy \(\pi\), denoted \(v_{\pi}(s)\), embodies the expected return (sum of discounted rewards) starting from state \(s\).  
+• The “optimal” value function \(v_{*}\) solves the Bellman Optimality Equation:
+
+\[
+  v_{*}(s)  \;=\;   \max_{a \in \mathcal{A}}   \sum_{s' \in \mathcal{S}}
+  P(s' \mid s,a)\,\Bigl[R(s,a,s') + \gamma\,v_{*}(s')\Bigr].
+\]  
+
+• This essentially says: from state \(s\), pick the action \(a\) that maximizes the immediate expected reward plus the discounted future.  
+
+2) **One-Step Lookahead + Max**
+
+• Observe that the right-hand side of the above equation is a function of \(v_{*}\).  
+• If we do not yet know \(v_{*}\), but have some candidate bounded value function \(v\), we can \emph{approximate} what it means to “pick the best action based on \(v\),” by replacing \(v_{*}(s')\) with \(v(s')\).  
+• Consequently, to get a new function \(\bigl[\mathcal{T}v\bigr]\)(s), we do exactly
+
+\[
+\max_{a \in \mathcal{A}}
+\sum_{s' \in \mathcal{S}}
+P(s' \mid s,a)\,
+\Bigl[
+  R(s,a,s') + \gamma\,v(s')
+\Bigr].
+\]
+
+This procedure is “look one step ahead, then add discounted future as given by \(v\), and choose the action yielding the maximal value.”
+
+3) **Definition of \(\mathcal{T}\): Acting on Bounded Value Functions**
+
+Let \(\mathcal{B}(\mathcal{S})\) be the vector space of bounded real-valued functions over a finite state set \(\mathcal{S}\). Formally,
+
+\[
+v \in \mathcal{B}(\mathcal{S}) \quad\Longleftrightarrow\quad v: \mathcal{S} \to \mathbb{R},
+\;\text{with}\;
+\|v\|_{\infty} = \sup_{s \in \mathcal{S}}
+\bigl|v(s)\bigr|
+<
+\infty.
+\]
+
+We define the Bellman Optimality Operator \(\mathcal{T}:\mathcal{B}(\mathcal{S})\to \mathcal{B}(\mathcal{S})\) by specifying its action on each \(v\in\mathcal{B}(\mathcal{S})\) and each state \(s\in\mathcal{S}\):
+
+\[
+\bigl[\mathcal{T}v\bigr](s)
+\;=\;
+\max_{a \,\in\, \mathcal{A}}
+\sum_{s' \,\in\, \mathcal{S}}
+P\bigl(s'\mid s,a\bigr)\;
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v(s')
+\Bigr].
+\]
+
+4) **\(\mathcal{T}v\) Remains Bounded**
+
+• Because \(\|v\|_{\infty}\) is finite and the immediate rewards \(R(s,a,s')\) are assumed bounded, each summation over \(s'\) is finite.  
+• There are finitely many actions \(a\), so the \(\max_{a \in \mathcal{A}}\) expression is finite as well.  
+• Hence \(\|\,\mathcal{T}v\,\|_{\infty} < \infty\).  
+• In other words, \(\mathcal{T}v\) is itself in \(\mathcal{B}(\mathcal{S})\). Thus \(\mathcal{T}\) indeed maps bounded functions to bounded functions:
+
+\[
+\mathcal{T}:\;\mathcal{B}(\mathcal{S})
+\;\to\;
+\mathcal{B}(\mathcal{S}).
+\]
+
+5) **Connection to the Bellman Optimality Equation**
+
+• The Bellman Optimality Equation states that \(v_{*}\) is a fixed point of \(\mathcal{T}\), i.e.,
+
+\[
+v_{*}(s)
+\;=\;
+[\mathcal{T}v_{*}](s)
+\quad\text{for all }s.
+\]
+
+• In short, if you plug \(v_{*}\) into \(\mathcal{T}\), you get the same function \(v_{*}\) back.  
+• Under standard assumptions (finite \(\mathcal{S}, \mathcal{A}\), \(\gamma < 1\), bounded rewards), this fixed point is unique, and repeated application of \(\mathcal{T}\) (starting from \emph{any} bounded function \(v^{(0)}\)) converges to \(v_{*}\) in the supremum norm.
+
+6) **Summary**
+
+Given a bounded function \(v\), \(\bigl[\mathcal{T}v\bigr](s)\) is obtained by taking the one-step expected reward (averaging over next states \(s'\) with probabilities \(P(s'\mid s,a)\)), adding the discounted future value \(\gamma\,v(s')\), and finally choosing the action \(a\) that maximizes this sum. Mathematically,
+
+\[
+[\mathcal{T}v](s) = \max_{a} \sum_{s'}
+P(s'\mid s,a)
+\bigl[
+  R(s,a,s')
+  +
+  \gamma\,v(s')
+\bigr].
+\]
+
+Hence \(\mathcal{T}\) is exactly the $\textit{optimality operator}$ that, when iterated, drives a value function \(v\) closer and closer to the unique optimal value function \(v_{*}\).
+
+## Uniqueness revisited
+
+***Provide a more mathematically rigorous explanation for the uniqueness question. It appears that optimal policies are not unique but the state value functions are.***
+
+Below is a mathematically more rigorous explanation regarding the uniqueness or non‐uniqueness of optimal policies versus the uniqueness of the optimal value function in a finite, discounted Markov Decision Process (MDP) with bounded rewards.
+
+1) **Setting: Discounted Finite MDPs**
+
+Consider an MDP with:
+
+• A finite state space:    \(\mathcal{S} = \{\,s_1,\dots,s_{|\mathcal{S}|}\}\).  
+• A finite action space:    \(\mathcal{A} = \{\,a_1,\dots,a_{|\mathcal{A}|}\}\).  
+• A transition kernel:    \(P(s' \mid s,a)\).  
+• A bounded reward function:    \(\lvert R(s,a,s')\rvert \le R_{\max}\).  
+• A discount factor:    \(0 \le \gamma < 1\).
+
+Define the return from time \(t\) as
+
+\[
+G_t \;=\;\sum_{k=0}^{\infty}\,\gamma^k\,R_{t+k+1}.
+\]
+
+A policy \(\pi\) determines the probabilities of selecting actions in each state. Then
+
+\[
+v_{\pi}(s)
+\;=\;
+\mathbb{E}\Bigl[G_t \,\big\vert\, S_t=s,\;\pi\Bigr]
+\quad\text{and}\quad
+q_{\pi}(s,a)
+\;=\;
+\mathbb{E}\Bigl[G_t \,\big\vert\, S_t=s,\;A_t=a,\;\pi\Bigr].
+\]
+
+We define the optimal state- and action-value functions:
+
+\[
+v_{*}(s) 
+\;=\;
+\max_{\pi} \,v_{\pi}(s),
+\quad
+q_{*}(s,a)
+\;=\;
+\max_{\pi} \,q_{\pi}(s,a).
+\]
+
+2) **Uniqueness of the Optimal Value Function**
+
+1 Banach Fixed Point / Contraction Mapping Argument:
+
+   The Bellman optimality operator \(\mathcal{T}\), acting on a value function \(v\), is defined by
+
+\[
+\mathcal{T}v(s)    \;=\;   \max_{a\in\mathcal{A}}   \sum_{s'\in\mathcal{S}}
+P(s'\mid s,a)\,\Bigl[R(s,a,s') + \gamma \,v(s')\Bigr].
+\]
+
+   One can show \(\mathcal{T}\) is a \(\gamma\)-contraction in the supremum norm \(\|\cdot\|_{\infty}\) over the space of bounded functions from \(\mathcal{S}\) to \(\mathbb{R}\). By the Banach Fixed Point Theorem, there exists a unique fixed point \(v_{*}\) of \(\mathcal{T}\) such that
+
+\[
+   \mathcal{T}v_{*} = v_{*}.
+\]
+
+   Moreover, for any initial bounded value function \(v^{(0)}\), iterating
+
+\[
+   v^{(k+1)} = \mathcal{T}v^{(k)}
+\]
+
+   converges to \(v_{*}\) in \(\|\cdot\|_{\infty}\).  
+
+2 Equivalence to \(v_{*}(s)\):
+
+   Because
+
+\[
+   v_{*}(s)
+   \;=\;
+   \max_{\pi}\,v_{\pi}(s),
+\]
+
+   and each \(v_{\pi}\) is a fixed point of the policy-evaluation operator with respect to \(\pi\), it follows that \(v_{*}\) is exactly the unique fixed point of \(\mathcal{T}\). Conclusively, the \textit{function} \(v_{*}\) is unique among all bounded functions.
+
+3) **Why Multiple Optimal Policies Can Exist**
+
+  1 Ties in the Maximization:
+
+   Even though the operator \(\mathcal{T}v\)(s) uses a “\(\max_{a}\)” over actions, it is possible for multiple actions \(a\) to \textit{achieve} that maximum in a given state \(s\). Concretely, if
+
+\[
+   \sum_{s'}P(s'\mid s,a_{1})
+   \bigl[R(s,a_{1},s') + \gamma\,v_{*}(s')\bigr]
+   \;=\;
+   \sum_{s'}P(s'\mid s,a_{2})
+   \bigl[R(s,a_{2},s') + \gamma\,v_{*}(s')\bigr],
+\]
+
+   then both \(a_{1}\) and \(a_{2}\) give the same (optimal) value in state \(s\). This means, at state \(s\), you may choose either \(a_{1}\) or \(a_{2}\) (or any distribution over them) and still achieve the same optimal outcome.
+
+2 Constructing Distinct Optimal Policies:
+
+   If there is at least one state \(s\) where two or more actions tie for the maximum in the Bellman optimality equation, then we can define multiple deterministic policies by picking different “best” actions in that state—and possibly more states have such ties. Each of these policies achieves
+
+\[
+   v_{\pi^{*}}(s) \;=\; v_{*}(s)
+   \quad
+   \forall\,s.
+\]
+
+   Consequently, the $\textit{policy}$ is not unique.
+
+4) **Same \(v_{*}\), Different \(\pi^{*}\):**
+
+   Because all such policies pick (in each state \(s\)) $\textit{some}$ action that maximizes the quantity \(\sum_{s'}P(s'\mid s,a)[\,R + \gamma\,v_{*}\,]\), the resulting value function cannot exceed \(v_{*}(s)\). On the other hand, it cannot be less either, since that is the maximum. Hence each of these “tie-breaking” policies yields the same \(v_{*}\). This is exactly how multiple optimal policies arise, while the optimal value function remains unique.
+
+5) **Conclusion**
+
+   • In a finite discounted MDP, the Bellman optimality operator is a strict contraction (given \(0 \le \gamma < 1\)), ensuring the \textbf{optimal value function} \(v_{*}\) is \textbf{unique}.
+
+   • However, $\textit{optimal policies}$—those that achieve \(v_{*}(s)\) for all \(s\)—can be $\textbf{non‐unique}$, precisely when multiple actions tie in the state-wise maximization. All such policies still yield the same unique \(v_{*}\).
+
+Hence, the uniqueness conferred by the contraction mapping theorem refers to the $\textbf{value function}$, not necessarily the $\textbf{policy}$, explaining why there can be multiple distinct optimal policies yet only a single optimal value function.
