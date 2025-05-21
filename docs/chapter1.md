@@ -842,9 +842,8 @@ Complete the derivation of the this equation leading to the Bellman equation for
 
 Below is a step-by-step derivation, starting from the one-step lookahead identity and arriving at the Bellman equation for the state-value function under a given policy \(\pi\). All mathematical expressions are shown in LaTeX.
 
----
-1) Recall the One-Step Decomposition
----
+1 **Recall the One-Step Decomposition**
+
 We have:
 
 \[
@@ -875,9 +874,8 @@ v_{\pi}(s)
 \gamma\,\mathbb{E}[\,G_{t+1} \mid S_t = s,\,\pi].
 \]
 
-------
-2) Break Down the Expectations
----
+2 **Break Down the Expectations**
+
 a) The term \(\mathbb{E}[\,R_{t+1} \mid S_t = s,\,\pi]\)
 
 Under policy \(\pi\), the agent chooses action \(A_t = a\) in state \(s\) with probability \(\pi(a \mid s)\). Then, the environment transitions to a next state \(s' \in \mathcal{S}\) with probability \(P(s' \mid s,a)\), supplying a reward \(R(s,a,s')\). Therefore,
@@ -917,9 +915,7 @@ Thus:
 P(s' \mid s,a)\;v_{\pi}(s').
 \]
 
----
-3) Combine the Two Components
----
+3 **Combine the Two Components**
 
 Putting them all together:
 
@@ -960,9 +956,7 @@ P(s' \,\vert\, s,a)\,
 
 This equation is referred to as the Bellman Expectation Equation (or simply the Bellman equation) for the state-value function \(v_{\pi}\).
 
----
-4) Final Bellman Equation for \(v_{\pi}\)
----
+4 **Final Bellman Equation for \(v_{\pi}\)**
 
 Hence, the derivation shows that:
 
@@ -1112,9 +1106,7 @@ Suppose you have two policies $\pi_1$ and $\pi_2$. And also suppose that the Bel
 
 Below is a step-by-step explanation of how having the solved value functions $v_{\pi_1}$ and $v_{\pi_2}$ (from two different policies $\pi_1$ and $\pi_2$) enables one to compare and evaluate those policies:
 
----
-1) The Meaning of $v_{\pi}(s)$
----
+1 **The Meaning of $v_{\pi}(s)$**
 
 • For a given policy $\pi$ in a Markov Decision Process (MDP), the value function  
   
@@ -1129,9 +1121,7 @@ $$
   tells us the expected return (cumulative discounted reward) starting from state $s$ and following $\pi$ thereafter.  
 • Thus, $v_{\pi}(s)$ captures how “good” it is to be in state $s$ when one plans to follow $\pi$.
 
----
-2) Comparing Two Policies State by State
----
+2 **Comparing Two Policies State by State**
 
 • Once you have computed $v_{\pi_1}(s)$ and $v_{\pi_2}(s)$ for all $s \in \mathcal{S}$, you can compare the policies pointwise by looking at each state $s$:  
   – If $v_{\pi_1}(s) > v_{\pi_2}(s)$, then $\pi_1$ yields a higher expected return than $\pi_2$ specifically from state $s$.  
@@ -1146,9 +1136,7 @@ $$
 
   then we can unambiguously say $\pi_1$ is at least as good as $\pi_2$ in every state.
 
----
-3) Comparing Two Policies from an Initial State or Distribution
----
+3 **Comparing Two Policies from an Initial State or Distribution**
 
 • In many RL problems, there is a designated initial state $s_0$ or an initial state distribution $\mu_0$. In that scenario, one often compares the policies by looking at  
   
@@ -1174,17 +1162,13 @@ $$
 
 • The policy that yields a higher overall expected return from the start (or on average w.r.t. $\mu_0$) is deemed better.
 
----
-4) Practical Significance
----
+4 **Practical Significance**
 
 • If you have solved the Bellman equation for both policies (i.e., found $v_{\pi_1}$ and $v_{\pi_2}$), then you have a quantitative measure of performance for each state in $\mathcal{S}$.  
 • You can use this information to decide which policy performs better in specific states, or from the viewpoint of a particular start state.  
 • Often, this comparison step is part of Policy Iteration or other methods: one checks if an updated policy is better (in terms of the value function) than a previous one—if it is, one replaces the old policy.
 
----
-5) Conclusion
----
+5 **Conclusion**
 
 Yes, once you solve the Bellman equations to get $v_{\pi_1}$ and $v_{\pi_2}$, you can evaluate and compare $\pi_1$ and $\pi_2$ by:  
 1. Checking their value functions state by state, if desired.  
@@ -1980,9 +1964,7 @@ v_{*}(s) \;=\; \max_{\pi}\,v_{\pi}(s),
 q_{*}(s,a) \;=\; \max_{\pi}\,q_{\pi}(s,a).
 \]
 
----
-1 Finite MDP and Bounded Reward Assumptions
----
+1 **Finite MDP and Bounded Reward Assumptions**
 
 Assume:
 
@@ -1999,9 +1981,7 @@ for all feasible triples \((s,a,s')\).
 
 Under these conditions, each state-action-next-state combination appears in only finitely many possibilities, and any infinite sum of discounted, bounded rewards converges well.
 
----
-2 Value Functions for a Fixed Policy \(\pi\)
----
+2 **Value Functions for a Fixed Policy \(\pi\)**
 
 Consider a fixed policy \(\pi\). Define the return from time \(t\) as
 
@@ -2030,9 +2010,7 @@ q_{\pi}(s,a) \;=\;\mathbb{E}\bigl[G_{t}\,\big\vert\,S_{t}=s,\,A_{t}=a,\,\pi\bigr
 
 is also bounded by \(\pm\,R_{\max}/(1-\gamma)\).
 
----
-3 Supremum Over All Policies
----
+3 **Supremum Over All Policies**
 
 For each state \(s\), define
 
@@ -2048,9 +2026,7 @@ q_{*}(s,a)\;=\;\sup_{\pi}\,q_{\pi}(s,a).
 
 Since \(v_{\pi}(s)\) and \(q_{\pi}(s,a)\) are bounded above by \(R_{\max}/(1-\gamma)\) and below by \(-\,R_{\max}/(1-\gamma)\), the suprema \(v_{*}(s)\) and \(q_{*}(s,a)\) are finite.
 
----
-4 Existence of an Optimal Policy
----
+4 **Existence of an Optimal Policy**
 
 Because \(\mathcal{S}\) and \(\mathcal{A}\) are finite, there are only finitely many deterministic policies: specifically \(\lvert\mathcal{A}\rvert^{\lvert\mathcal{S}\rvert}\). Consider the set
 
@@ -2066,9 +2042,7 @@ v_{\pi^{*}}(s)\;=\;v_{*}(s)\quad \text{for all }s.
 
 Thus the supremum is in fact attained by at least one policy \(\pi^{*}\). An analogous argument holds for \(q_{*}(s,a)\).
 
----
-5 Conclusion
----
+5 **Conclusion**
 
 Under these standard conditions:
 
@@ -2542,3 +2516,258 @@ P(s'\mid s,a)\,\Bigl[R(s,a,s') + \gamma \,v(s')\Bigr].
    • However, $\textit{optimal policies}$—those that achieve \(v_{*}(s)\) for all \(s\)—can be $\textbf{non‐unique}$, precisely when multiple actions tie in the state-wise maximization. All such policies still yield the same unique \(v_{*}\).
 
 Hence, the uniqueness conferred by the contraction mapping theorem refers to the $\textbf{value function}$, not necessarily the $\textbf{policy}$, explaining why there can be multiple distinct optimal policies yet only a single optimal value function.
+
+## $\mathcal{T}$ is a contraction mapping
+
+***Prove in a mathematically rigorous manner that $\mathcal{T}$ is a $\gamma$-contraction in the supremum norm $\|\cdot\|_{\infty}$.***
+
+Below is a step-by-step proof that the Bellman Optimality Operator,  
+
+\[
+[\mathcal{T}v](s)
+\;=\;
+\max_{a\,\in\,\mathcal{A}}
+\sum_{s'\,\in\,\mathcal{S}}
+P(s'\mid s,a)\,
+\Bigl[
+  R(s,a,s')
+  \;+\;\gamma\,v(s')
+\Bigr],
+\]  
+
+is a \(\gamma\)-contraction mapping in the supremum (∞-)norm. That is, we prove:
+
+\[
+\|\mathcal{T}v \;-\;\mathcal{T}w\|_{\infty}
+\;\le\;
+\gamma\;\|v \;-\; w\|_{\infty}
+\quad\text{for all}\;\;v,w\in\mathcal{B}(\mathcal{S}).
+\]
+
+Here, \(\|\,f\,\|_{\infty} = \sup_{s\in\mathcal{S}} |f(s)|\), and \(\mathcal{B}(\mathcal{S})\) is the space of all bounded functions on the finite state space \(\mathcal{S}\).
+
+
+1 **The Operator \(\mathcal{T}\) in Detail**
+
+
+Given any bounded function \(v:\mathcal{S}\to\mathbb{R}\), we define
+
+\[
+[\mathcal{T}v](s)
+\;=\;
+\max_{a\,\in\,\mathcal{A}}
+\sum_{s'\,\in\,\mathcal{S}}
+P(s'\,\mid\,s,a)
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v(s')
+\Bigr].
+\]
+
+Such an operator \(\mathcal{T}\) is called the Bellman Optimality Operator for a discounted MDP with discount factor \(0 \le \gamma < 1\). Our goal is to show
+
+\[
+\|\mathcal{T}v - \mathcal{T}w\|_{\infty}
+\;\le\;
+\gamma\;\|\,v-w\,\|_{\infty}
+\quad
+\forall\,
+v,w \in \mathcal{B}(\mathcal{S}).
+\]
+
+
+2 **Examine \([\mathcal{T}v](s)\) Minus \([\mathcal{T}w](s)\)**
+
+
+Fix any state \(s\in\mathcal{S}\). We have:
+
+\[
+[\mathcal{T}v](s)
+\;=\;
+\max_{a\in\mathcal{A}}
+\sum_{s'\in\mathcal{S}}
+P(s'\mid s,a)\;
+\Bigl[
+  R(s,a,s') + \gamma\,v(s')
+\Bigr],
+\]
+
+\[
+[\mathcal{T}w](s)
+\;=\;
+\max_{a\in\mathcal{A}}
+\sum_{s'\in\mathcal{S}}
+P(s'\mid s,a)\;
+\Bigl[
+  R(s,a,s') + \gamma\,w(s')
+\Bigr].
+\]
+
+Denote
+
+\[
+F_{v}(s,a)
+\;=\;
+\sum_{s'\in\mathcal{S}}
+P(s'\mid s,a)\,[\,R(s,a,s') + \gamma\,v(s')\,],
+\]
+
+so that \([\mathcal{T}v](s) = \max_{a\in\mathcal{A}} F_{v}(s,a)\). Similarly, \([\mathcal{T}w](s) = \max_{a\in\mathcal{A}} F_{w}(s,a)\). Then
+
+\[
+[\mathcal{T}v](s) - [\mathcal{T}w](s)
+\;=\;
+\max_{a\in\mathcal{A}}\,F_{v}(s,a)
+\;-\;
+\max_{a\in\mathcal{A}}\,F_{w}(s,a).
+\]
+
+3 **Bounding the Difference Using “max - max ≤ max of differences”**
+
+Recall a known inequality for real numbers: \(\max_{x} f(x) \;-\;\max_{x} g(x) \;\le\;\max_{x}\,[f(x) - g(x)]\).  
+
+Hence,
+
+\[
+\max_{a}\,F_{v}(s,a)
+\;-\;
+\max_{a}\,F_{w}(s,a)
+\;\le\;
+\max_{a}\,\bigl[F_{v}(s,a) - F_{w}(s,a)\bigr].
+\]
+
+Therefore,
+
+\[
+[\mathcal{T}v](s) - [\mathcal{T}w](s)
+\;\le\;
+\max_{a\in\mathcal{A}}
+\Bigl\{
+  \sum_{s'\in\mathcal{S}}
+  P(s'\mid s,a)\,
+  \bigl[\,\gamma\,v(s') - \gamma\,w(s')\,\bigr]
+\Bigr\},
+\]
+
+since the reward part \(R(s,a,s')\) cancels out (it appears in both \(F_{v}\) and \(F_{w}\)):
+
+\[
+F_{v}(s,a) - F_{w}(s,a) =
+\sum_{s'}P(s'\mid s,a)\,
+\Bigl[
+  \gamma\,v(s') - \gamma\,w(s')
+\Bigr].
+\]
+
+4 **Factor Out \(\gamma\) and Sum of Probabilities**
+
+Thus
+
+\[
+[\mathcal{T}v](s) - [\mathcal{T}w](s)
+\;\le\;
+\max_{a}\Bigl\{
+  \gamma
+  \sum_{s'}
+  P(s'\mid s,a)\,\bigl[v(s') - w(s')\bigr]
+\Bigr\}.
+\]
+
+Observing that \(\sum_{s'} P(s'\mid s,a) = 1\), we get
+
+\[
+[\mathcal{T}v](s) - [\mathcal{T}w](s)
+\;\le\;
+\gamma
+\max_{a}
+\sum_{s'\in\mathcal{S}}
+P(s'\mid s,a)\,\bigl[v(s') - w(s')\bigr].
+\]
+
+Now, for each s′, the difference \(v(s') - w(s')\) satisfies:
+
+\[
+v(s') - w(s')
+\;\le\;
+\|v-w\|_{\infty}.
+\]
+
+Hence,
+
+\[
+\sum_{s'}
+P(s'\mid s,a)\,\bigl[v(s') - w(s')\bigr]
+\;\le\;
+\sum_{s'} P(s'\mid s,a)\,\|v-w\|_{\infty}
+\;=\;
+\|\,v-w\,\|_{\infty}
+\]
+
+(because \(\sum_{s'}P(s'\mid s,a) = 1\)). Therefore,
+
+\[
+\max_{a}
+\sum_{s'}
+P(s'\mid s,a)\,\bigl[v(s') - w(s')\bigr]
+\;\le\;
+\|v-w\|_{\infty}.
+\]
+
+Hence
+
+\[
+[\mathcal{T}v](s) - [\mathcal{T}w](s)
+\;\le\;
+\gamma\;\|v-w\|_{\infty}.
+\]
+
+5 **Symmetry: The Same Bound with (v,w) Swapped**
+
+We also need a “lower bound” so we can handle absolute values. By a symmetric argument, swapping the roles of v and w,
+
+\[
+[\mathcal{T}w](s) - [\mathcal{T}v](s)
+\;\le\;
+\gamma\;\|v-w\|_{\infty}.
+\]
+
+6 **Conclude the Contraction Property**
+
+Combining both, we see that
+
+\[
+|[\mathcal{T}v](s) \;-\; [\mathcal{T}w](s)|
+\;\le\;
+\gamma\;\|v-w\|_{\infty}
+\quad
+\text{for each state }s.
+\]
+
+Hence taking the supremum over $s \in \mathcal{S}$ yields:
+
+\[
+\|\mathcal{T}v \;-\; \mathcal{T}w\|_{\infty} =
+\sup_{s\in\mathcal{S}}
+\,\bigl|
+  [\mathcal{T}v](s)
+  \;-\;
+  [\mathcal{T}w](s)
+\bigr|
+\;\le\;
+\gamma\;\|v-w\|_{\infty}.
+\]
+
+This is precisely the definition of a \(\gamma\)-contraction in the ∞-norm.
+
+7 **Summary**
+
+Thus, the Bellman Optimality Operator \(\mathcal{T}\) satisfies
+
+\[
+\|\mathcal{T}v \;-\; \mathcal{T}w\|_{\infty}
+\;\le\;
+\gamma\;\|v-w\|_{\infty},
+\]
+
+showing it is a \(\gamma\)-contraction mapping in the supremum norm. This property underpins why \(\mathcal{T}\) has a unique fixed point (the optimal value function \(v_{*}\)) in the Banach space \(\bigl(\mathcal{B}(\mathcal{S}),\|\cdot\|_{\infty}\bigr)\) and why repeated iteration of \(\mathcal{T}\) converges to \(v_{*}\).
