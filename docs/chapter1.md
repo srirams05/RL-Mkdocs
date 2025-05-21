@@ -1098,6 +1098,186 @@ $$
 
 Indeed, your observation is correct: in a finite state space, the Bellman equation is precisely a system of linear equations in the variables $\{\,v_{\pi}(s): s\in \mathcal{S}\}$.
 
+## Bellman Equation matrix-vector form
+
+For each state $s \in \mathcal{S}$, and concretely labeling the states as $s_1, s_2, \ldots, s_{|\mathcal{s}|}$, we can write a Bellman equation,
+
+\[
+v_{\pi}(s_i)
+   \;-\;
+   \gamma
+   \sum_{a,\,s_j}
+   \Bigl[
+   \text{(coefficient)} \times v_{\pi}(s_j)
+   \Bigr]
+   \;=\;
+   \sum_{a,\,s_j}
+   \Bigl[
+   \text{(coefficient)} \times R(s_i,a,s_j)
+   \Bigr]
+\]
+
+which can be written in the form:
+
+\[
+v_{\pi}(s_i)
+   \;-\;
+   \gamma
+   \sum_{a,\,s_j}
+   \Bigl[
+   \text{(coefficient)} \times v_{\pi}(s_j)
+   \Bigr]
+   \;=\;
+   \sum_{a,\,s_j}
+   \Bigl[
+   \text{(coefficient)} \times R(s_i,a,s_j)
+   \Bigr].
+\]
+
+which then leads to the matrix-vector form:
+
+\[
+\mathbf{v}_{\pi}
+   \;=\;
+   \mathbf{r}_{\pi} 
+   \;+\;
+   \gamma \,\mathbf{P}_{\pi}\,\mathbf{v}_{\pi}
+\]
+
+Write out the term $\text{(coefficient)}$ that appears above, fully. The entries of the matrix $\mathbf{P}_{\pi}$ must be related to $\text{(coefficient)}$. Clarify this.
+
+***Answer***
+
+Below is a step-by-step explanation of the coefficient that appears in the Bellman equation for a policy \(\pi\), written in full LaTeX, and how it relates to the entries of the matrix \(\mathbf{P}_{\pi}\) in the matrix-vector equation:
+
+1 **Single-State Bellman Equation**
+
+For a fixed state \(s_{i}\) in a finite state space \(\mathcal{S} = \{s_{1},\ldots,s_{|\mathcal{S}|}\}\), the Bellman equation under a policy \(\pi\) can be written as:
+
+\[
+v_{\pi}(s_{i})
+\;=\;
+\sum_{a \,\in\, \mathcal{A}}
+\pi\bigl(a \,\vert\, s_{i}\bigr)
+\sum_{s_{j} \,\in\, \mathcal{S}}
+P\bigl(s_{j} \,\vert\, s_{i},\,a\bigr)
+\Bigl[
+  R\bigl(s_{i},\,a,\,s_{j}\bigr)
+  \;+\;
+  \gamma \, v_{\pi}(s_{j})
+\Bigr].
+\]
+
+Rearranging terms to isolate \(v_{\pi}(s_{i})\) on the left and the discounted values on the right gives a form like:
+
+\[
+v_{\pi}(s_{i})
+\;-\;
+\gamma
+\sum_{a\,\in\,\mathcal{A}}
+\sum_{s_{j}\,\in\,\mathcal{S}}
+\Bigl[\text{(coefficient)}\times v_{\pi}(s_{j})\Bigr]
+\;=\;
+\sum_{a\,\in\,\mathcal{A}}
+\sum_{s_{j}\,\in\,\mathcal{S}}
+\Bigl[\text{(coefficient)}\times R\bigl(s_{i},\,a,\,s_{j}\bigr)\Bigr].
+\]
+
+2 **Identifying the Coefficient**
+
+Inside the double sum over \(a \in \mathcal{A}\) and \(s_{j} \in \mathcal{S}\), the coefficient that multiplies \(v_{\pi}(s_{j})\) (before factoring out \(\gamma\)) is
+
+\[
+\pi\bigl(a \,\vert\, s_{i}\bigr)
+\;\times\;
+P\bigl(s_{j} \,\vert\, s_{i},\,a\bigr).
+\]
+
+Thus, if we look at the term on the left that is multiplied by \(\gamma\), the \(\text{(coefficient)}\) is explicitly:
+
+\[
+\gamma
+\;\times\;
+\pi\bigl(a \,\vert\, s_{i}\bigr)
+\;\times\;
+P\bigl(s_{j} \,\vert\, s_{i},\,a\bigr).
+\]
+
+Similarly, the coefficient that appears with the reward \(R(s_{i},\,a,\,s_{j})\) (on the right-hand side) is
+
+\[
+\pi\bigl(a \,\vert\, s_{i}\bigr)
+\;\times\;
+P\bigl(s_{j} \,\vert\, s_{i},\,a\bigr).
+\]
+
+3 **Matrix-Vector Equation**
+
+Collecting all \(|\mathcal{S}|\) such Bellman equations for \(s_{1}, \dots, s_{|\mathcal{S}|}\) yields the matrix-vector form:
+
+\[
+\mathbf{v}_{\pi}
+\;=\;
+\mathbf{r}_{\pi}
+\;+\;
+\gamma\,\mathbf{P}_{\pi}\,\mathbf{v}_{\pi}.
+\]
+
+Here:
+
+1. \(\mathbf{v}_{\pi}\) is the \(|\mathcal{S}|\times 1\) column vector of values \(\bigl[v_{\pi}(s_{1}),\,\dots,\,v_{\pi}(s_{|\mathcal{S}|})\bigr]^{\!\top}\).  
+2. \(\mathbf{r}_{\pi}\) is the \(|\mathcal{S}|\times 1\) column vector of expected immediate rewards under policy \(\pi\) for each state.  
+3. \(\mathbf{P}_{\pi}\) is an \(|\mathcal{S}|\times |\mathcal{S}|\) matrix whose entries \(\bigl[\mathbf{P}_{\pi}\bigr]_{i,j}\) capture the probability of transitioning from \(s_{i}\) to \(s_{j}\) when actions are chosen according to \(\pi\).
+
+4 **Relation of the Coefficient to \(\mathbf{P}_{\pi}\)**
+
+By definition,
+
+\[
+\bigl[\mathbf{P}_{\pi}\bigr]_{i,j}
+\;=\;
+\sum_{a \,\in\,\mathcal{A}}
+\pi\bigl(a \,\vert\, s_{i}\bigr)
+P\bigl(s_{j} \,\vert\, s_{i},\,a\bigr).
+\]
+
+In other words, each matrix entry \([\mathbf{P}_{\pi}]_{i,j}\) is the total transition probability from state \(s_{i}\) to \(s_{j}\) under policy \(\pi\), which is the sum over all actions \(a\) of the product \(\pi(a \mid s_{i})\,P(s_{j} \mid s_{i},a)\).
+
+Hence the coefficient \(\pi(a \mid s_{i})\,P(s_{j}\mid s_{i},a)\) that appears in the single-state Bellman equation is precisely the partial contribution to \([\mathbf{P}_{\pi}]_{i,j}\) from action \(a\). Summing that coefficient over all \(a\) in a given row \((i)\) gives the full matrix entry \([\mathbf{P}_{\pi}]_{i,j}\).
+
+5 **Summary**
+
+• The “\(\text{(coefficient)}\)” that multiplies \(v_{\pi}(s_{j})\) in the single-state Bellman equation is
+
+\[
+\pi\bigl(a \,\vert\, s_{i}\bigr)
+\;\times\;
+P\bigl(s_{j} \,\vert\, s_{i},\,a\bigr).
+\]
+
+• When writing the full system in matrix form, these coefficients for each \((i,j)\) and each action \(a\) combine into the entries of the matrix \(\mathbf{P}_{\pi}\). Specifically:
+
+\[
+[\mathbf{P}_{\pi}]_{i,j}
+\;=\;
+\sum_{a \,\in\, \mathcal{A}}
+\pi(a \,\vert\, s_{i})\;
+P\bigl(s_{j} \,\vert\, s_{i},\,a\bigr).
+\]
+
+• Consequently, the compact Bellman equation
+
+\[
+\mathbf{v}_{\pi}
+\;=\;
+\mathbf{r}_{\pi}
+\;+\;
+\gamma
+\,\mathbf{P}_{\pi}\,\mathbf{v}_{\pi}
+\]
+
+follows naturally from collecting each row’s (i.e., state’s) single-state Bellman equation in vector/matrix form.
+
 ## Comapring Policies
 
 Suppose you have two policies $\pi_1$ and $\pi_2$. And also suppose that the Bellman equation is solved so that we get $v_{\pi_1}$ and $v_{\pi_2}$.  How is this used to evaluate and compare the two policies?
