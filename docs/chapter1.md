@@ -2951,3 +2951,199 @@ Thus, the Bellman Optimality Operator \(\mathcal{T}\) satisfies
 \]
 
 showing it is a \(\gamma\)-contraction mapping in the supremum norm. This property underpins why \(\mathcal{T}\) has a unique fixed point (the optimal value function \(v_{*}\)) in the Banach space \(\bigl(\mathcal{B}(\mathcal{S}),\|\cdot\|_{\infty}\bigr)\) and why repeated iteration of \(\mathcal{T}\) converges to \(v_{*}\).
+
+
+## Bellman Optimality Operator - matrix vector form
+
+***Just as a Bellman equation for a policy $\pi$ can be written in matrix-vector form, similarly, the Bellman optimality equation can also be written in matrix-vector form. Starting with the scalar form for the Bellman optimality equation for each state $s_i \in \mathcal{S}$, write down the matrix-vector form while clarifying the entries of the associated vectors and matrix. Show the connection of the Bellman Optimality operator $\mathcal{T}$ to the matrix-vector form.  Write down all mathematical symbols and expressions in full Latex.***
+
+Below is a step‐by‐step derivation showing how the Bellman Optimality Equation, which is initially given in a scalar “per‐state” form, can also be written in a matrix‐vector form. All mathematical symbols and expressions are in LaTeX.
+
+1 **Scalar (Per‐State) Form of the Bellman Optimality Equation**
+
+Consider a finite Markov Decision Process (MDP) with:
+
+• A finite state space \(\mathcal{S} = \{s_{1},\,s_{2},\dots,s_{|\mathcal{S}|}\}\).  
+• A finite action space \(\mathcal{A} = \{a_{1},\,a_{2},\dots,a_{|\mathcal{A}|}\}\).  
+• Transition probabilities \(P(s_{j}\mid s_{i},a)\).  
+• A discount factor \(0 \le \gamma < 1\).  
+• A bounded reward function \(R(s_{i},\,a,\,s_{j})\).
+
+The Bellman Optimality Equation states that the optimal value function \(v_{*}\) satisfies, for each state \(s_{i}\in \mathcal{S}\),
+
+\[
+v_{*}(s_{i})
+\;=\;
+\max_{a\,\in\,\mathcal{A}}
+\sum_{s_{j}\,\in\, \mathcal{S}}
+P\bigl(s_{j}\,\vert\,s_{i},\,a\bigr)
+\Bigl[
+  R\bigl(s_{i},\,a,\,s_{j}\bigr)
+  \;+\;
+  \gamma\,v_{*}(s_{j})
+\Bigr].
+\]
+
+2 **Defining Matrices and Vectors for Each Action**
+
+To move toward a matrix‐vector representation, we introduce:
+
+1. A transition matrix \(\mathbf{P}_{a} \in \mathbb{R}^{|\mathcal{S}|\times |\mathcal{S}|}\) associated with each action \(a\). Its entries are
+
+\[
+   [\mathbf{P}_{a}]_{i,j}  \;=\;
+   P\bigl(s_{j}\,\vert\,s_{i},\,a\bigr).
+\]
+
+2. A reward vector \(\mathbf{r}_{a} \in \mathbb{R}^{|\mathcal{S}|}\) associated with each action \(a\). Its \(i\)-th entry captures the expected immediate reward upon taking action \(a\) in state \(s_{i}\):
+
+\[
+   [\mathbf{r}_{a}]_{\,i}    \;=\;
+   \sum_{s_{j}\,\in\,\mathcal{S}}
+   P\bigl(s_{j}\,\vert\,s_{i},\,a\bigr)\;
+   R\bigl(s_{i},\,a,\,s_{j}\bigr).
+\]
+
+   Equivalently, one can keep the form \(\sum_{s_{j}}P(s_{j}\mid s_{i},a)\,R(\dots)\), or define a suitable immediate‐reward function that depends on \(\bigl(s_{i},a,s_{j}\bigr)\). Either way the end result is a vector of length \(|\mathcal{S}|\).
+
+Hence for each \(a \in \mathcal{A}\), we have:
+
+• \(\mathbf{P}_{a}\,v\) is a vector where the \(i\)-th component is \(\sum_{s_{j}} P(s_{j}\mid s_{i},a)\,v(s_{j})\).  
+• \(\mathbf{r}_{a}\) is a vector whose \(i\)-th entry accounts for \(\sum_{s_{j}} P(s_{j}\mid s_{i},a)\,R(s_{i},a,s_{j})\).
+
+3 **The Bellman Optimality Operator \(\mathcal{T}\) in Matrix‐Vector Notation**
+
+Define an operator \(\mathcal{T}\) that takes any vector \(v \in \mathbb{R}^{|\mathcal{S}|}\) (viewed as a function \(v:\mathcal{S}\to \mathbb{R}\)) and returns another vector \(\mathcal{T}v\in \mathbb{R}^{|\mathcal{S}|}\). The \(i\)-th component of \(\mathcal{T}v\) is:
+
+\[
+[\mathcal{T}v](s_{i})
+\;=\;
+\max_{a\,\in\,\mathcal{A}}
+\Bigl(
+  [\mathbf{r}_{a}]_{\,i}
+  \;+\;
+  \gamma\,[\mathbf{P}_{a}\,v]_{\,i}
+\Bigr).
+\]
+
+Concretely, each action \(a\) suggests the vector
+
+\[
+\mathbf{r}_{a}
+\;+\;
+\gamma\,\mathbf{P}_{a}\,v
+\quad\in\quad
+\mathbb{R}^{|\mathcal{S}|}.
+\]
+
+We then take a coordinate‐wise maximum over \(a\). That is, for each \(i\),
+
+\[
+[\mathcal{T}v]_{i}
+\;=\;
+\max_{a\in\mathcal{A}}
+\Bigl(
+  [\mathbf{r}_{a}]_{\,i}
+  \;+\;
+  \gamma\,[\mathbf{P}_{a}\,v]_{\,i}
+\Bigr).
+\]
+
+4 **Writing \(v_{*}\) = \(\mathcal{T}v_{*}\) in a Matrix‐Vector Way**
+
+The Bellman Optimality Equation for the optimal value function \(v_{*}\) is equivalently the statement that
+
+\[
+v_{*}
+\;=\;
+\mathcal{T}\,v_{*}.
+\]
+
+Component‐wise:
+
+\[
+[v_{*}](s_{i})
+\;=\;
+[\mathcal{T}v_{*}](s_{i})
+\;=\;
+\max_{a\in\mathcal{A}}
+\Bigl(
+  [\mathbf{r}_{a}]_{i}
+  \;+\;
+  \gamma\,[\mathbf{P}_{a}\,v_{*}]_{i}
+\Bigr).
+\]
+
+This matches exactly the scalar form
+
+\[
+v_{*}(s_{i})
+\;=\;
+\max_{a\,\in\,\mathcal{A}}
+\sum_{s_{j}}
+P(s_{j}\,\vert\,s_{i},a)
+\,\Bigl(R(s_{i},a,s_{j}) + \gamma\,v_{*}(s_{j})\Bigr).
+\]
+
+5 **Observations**
+
+1. Unlike the policy‐evaluation case (a single \(\mathbf{P}_{\pi}\) and \(\mathbf{r}_{\pi}\)), here we have one transition matrix \(\mathbf{P}_{a}\) and one reward vector \(\mathbf{r}_{a}\) for each action \(a\).  
+2. The operator \(\mathcal{T}\) is nonlinear because of the coordinate‐wise maximum over actions. Consequently, one cannot write a single “matrix equation” like \(\mathbf{v} = \mathbf{r} + \gamma\,\mathbf{P}\,\mathbf{v}\) for the optimal scenario. Instead, the “matrix‐vector” expression is:
+
+\[
+\mathcal{T}\,v \;=\;
+\max_{a \,\in\, \mathcal{A}}
+\bigl(
+  \mathbf{r}_{a}
+  \;+\;
+  \gamma\,\mathbf{P}_{a}\,v
+\bigr)
+\]
+
+(where “\(\max\)” is applied coordinate‐wise).
+
+3. The Bellman Optimality Equation then says \(v_{*}\) is the unique (under standard conditions) fixed point of \(\mathcal{T}\), i.e.,
+
+\[
+v_{*} =
+\mathcal{T}\,v_{*}.
+\]
+
+6 **Summary**
+
+• The scalar equation
+
+\[
+v_{*}(s_{i}) =
+\max_{a\,\in\,\mathcal{A}}
+\sum_{s_{j}\,\in\,\mathcal{S}}
+P(s_{j}\,\vert\,s_{i},a)\,\Bigl[
+  R(s_{i},\,a,\,s_{j})
+  +
+  \gamma\,v_{*}(s_{j})
+\Bigr]
+\]
+
+can be interpreted in matrix‐vector notation by defining one transition matrix \(\mathbf{P}_{a}\) and one expected‐reward vector \(\mathbf{r}_{a}\) per action \(a\).  
+
+• The Bellman Optimality Operator \(\mathcal{T}\) then “picks” for each state the best action’s vector
+
+\[
+\mathbf{r}_{a}
++
+\gamma\,\mathbf{P}_{a}\,v,
+\]
+
+yielding
+
+\[
+[\mathcal{T}v](s_{i}) =
+\max_{a\in \mathcal{A}}
+\Bigl(
+  [\mathbf{r}_{a}]_{\,i}
+  \;+\;
+  \gamma\,[\mathbf{P}_{a}\,v]_{\,i}
+\Bigr).
+\]
+
+• The Bellman optimality equation succinctly becomes \(v_{*} = \mathcal{T}\,v_{*}\), capturing the same idea as the scalar form but in a higher‐level matrix‐vector operator sense.
