@@ -480,6 +480,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#bellman-equation-matrix-vector-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bellman Equation matrix-vector form
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#comapring-policies" class="md-nav__link">
     <span class="md-ellipsis">
       Comapring Policies
@@ -1438,6 +1447,148 @@ v_{\pi}(s_i)
 <p>5) Conclusion<br />
    Therefore, for each state in a finite MDP, the Bellman equation contributes one linear equation in the unknown <span class="arithmatex">\(v_{\pi}(s)\)</span>. Putting them all together yields a system of <span class="arithmatex">\(|\mathcal{S}|\)</span> linear equations. Solving this system (when <span class="arithmatex">\(\gamma&lt;1\)</span> and <span class="arithmatex">\(\mathbf{I} - \gamma\,\mathbf{P}_{\pi}\)</span> is invertible) yields the value function <span class="arithmatex">\(v_{\pi}(s)\)</span> for all states simultaneously.  </p>
 <p>Indeed, your observation is correct: in a finite state space, the Bellman equation is precisely a system of linear equations in the variables <span class="arithmatex">\(\{\,v_{\pi}(s): s\in \mathcal{S}\}\)</span>.</p>
+<h2 id="bellman-equation-matrix-vector-form">Bellman Equation matrix-vector form<a class="headerlink" href="#bellman-equation-matrix-vector-form" title="Permanent link">&para;</a></h2>
+<p>For each state <span class="arithmatex">\(s \in \mathcal{S}\)</span>, and concretely labeling the states as <span class="arithmatex">\(s_1, s_2, \ldots, s_{|\mathcal{s}|}\)</span>, we can write a Bellman equation,</p>
+<div class="arithmatex">\[
+v_{\pi}(s_i)
+   \;-\;
+   \gamma
+   \sum_{a,\,s_j}
+   \Bigl[
+   \text{(coefficient)} \times v_{\pi}(s_j)
+   \Bigr]
+   \;=\;
+   \sum_{a,\,s_j}
+   \Bigl[
+   \text{(coefficient)} \times R(s_i,a,s_j)
+   \Bigr]
+\]</div>
+<p>which can be written in the form:</p>
+<div class="arithmatex">\[
+v_{\pi}(s_i)
+   \;-\;
+   \gamma
+   \sum_{a,\,s_j}
+   \Bigl[
+   \text{(coefficient)} \times v_{\pi}(s_j)
+   \Bigr]
+   \;=\;
+   \sum_{a,\,s_j}
+   \Bigl[
+   \text{(coefficient)} \times R(s_i,a,s_j)
+   \Bigr].
+\]</div>
+<p>which then leads to the matrix-vector form:</p>
+<div class="arithmatex">\[
+\mathbf{v}_{\pi}
+   \;=\;
+   \mathbf{r}_{\pi} 
+   \;+\;
+   \gamma \,\mathbf{P}_{\pi}\,\mathbf{v}_{\pi}
+\]</div>
+<p>Write out the term <span class="arithmatex">\(\text{(coefficient)}\)</span> that appears above, fully. The entries of the matrix <span class="arithmatex">\(\mathbf{P}_{\pi}\)</span> must be related to <span class="arithmatex">\(\text{(coefficient)}\)</span>. Clarify this.</p>
+<p><strong><em>Answer</em></strong></p>
+<p>Below is a step-by-step explanation of the coefficient that appears in the Bellman equation for a policy <span class="arithmatex">\(\pi\)</span>, written in full LaTeX, and how it relates to the entries of the matrix <span class="arithmatex">\(\mathbf{P}_{\pi}\)</span> in the matrix-vector equation:</p>
+<p>1 <strong>Single-State Bellman Equation</strong></p>
+<p>For a fixed state <span class="arithmatex">\(s_{i}\)</span> in a finite state space <span class="arithmatex">\(\mathcal{S} = \{s_{1},\ldots,s_{|\mathcal{S}|}\}\)</span>, the Bellman equation under a policy <span class="arithmatex">\(\pi\)</span> can be written as:</p>
+<div class="arithmatex">\[
+v_{\pi}(s_{i})
+\;=\;
+\sum_{a \,\in\, \mathcal{A}}
+\pi\bigl(a \,\vert\, s_{i}\bigr)
+\sum_{s_{j} \,\in\, \mathcal{S}}
+P\bigl(s_{j} \,\vert\, s_{i},\,a\bigr)
+\Bigl[
+  R\bigl(s_{i},\,a,\,s_{j}\bigr)
+  \;+\;
+  \gamma \, v_{\pi}(s_{j})
+\Bigr].
+\]</div>
+<p>Rearranging terms to isolate <span class="arithmatex">\(v_{\pi}(s_{i})\)</span> on the left and the discounted values on the right gives a form like:</p>
+<div class="arithmatex">\[
+v_{\pi}(s_{i})
+\;-\;
+\gamma
+\sum_{a\,\in\,\mathcal{A}}
+\sum_{s_{j}\,\in\,\mathcal{S}}
+\Bigl[\text{(coefficient)}\times v_{\pi}(s_{j})\Bigr]
+\;=\;
+\sum_{a\,\in\,\mathcal{A}}
+\sum_{s_{j}\,\in\,\mathcal{S}}
+\Bigl[\text{(coefficient)}\times R\bigl(s_{i},\,a,\,s_{j}\bigr)\Bigr].
+\]</div>
+<p>2 <strong>Identifying the Coefficient</strong></p>
+<p>Inside the double sum over <span class="arithmatex">\(a \in \mathcal{A}\)</span> and <span class="arithmatex">\(s_{j} \in \mathcal{S}\)</span>, the coefficient that multiplies <span class="arithmatex">\(v_{\pi}(s_{j})\)</span> (before factoring out <span class="arithmatex">\(\gamma\)</span>) is</p>
+<div class="arithmatex">\[
+\pi\bigl(a \,\vert\, s_{i}\bigr)
+\;\times\;
+P\bigl(s_{j} \,\vert\, s_{i},\,a\bigr).
+\]</div>
+<p>Thus, if we look at the term on the left that is multiplied by <span class="arithmatex">\(\gamma\)</span>, the <span class="arithmatex">\(\text{(coefficient)}\)</span> is explicitly:</p>
+<div class="arithmatex">\[
+\gamma
+\;\times\;
+\pi\bigl(a \,\vert\, s_{i}\bigr)
+\;\times\;
+P\bigl(s_{j} \,\vert\, s_{i},\,a\bigr).
+\]</div>
+<p>Similarly, the coefficient that appears with the reward <span class="arithmatex">\(R(s_{i},\,a,\,s_{j})\)</span> (on the right-hand side) is</p>
+<div class="arithmatex">\[
+\pi\bigl(a \,\vert\, s_{i}\bigr)
+\;\times\;
+P\bigl(s_{j} \,\vert\, s_{i},\,a\bigr).
+\]</div>
+<p>3 <strong>Matrix-Vector Equation</strong></p>
+<p>Collecting all <span class="arithmatex">\(|\mathcal{S}|\)</span> such Bellman equations for <span class="arithmatex">\(s_{1}, \dots, s_{|\mathcal{S}|}\)</span> yields the matrix-vector form:</p>
+<div class="arithmatex">\[
+\mathbf{v}_{\pi}
+\;=\;
+\mathbf{r}_{\pi}
+\;+\;
+\gamma\,\mathbf{P}_{\pi}\,\mathbf{v}_{\pi}.
+\]</div>
+<p>Here:</p>
+<ol>
+<li><span class="arithmatex">\(\mathbf{v}_{\pi}\)</span> is the <span class="arithmatex">\(|\mathcal{S}|\times 1\)</span> column vector of values <span class="arithmatex">\(\bigl[v_{\pi}(s_{1}),\,\dots,\,v_{\pi}(s_{|\mathcal{S}|})\bigr]^{\!\top}\)</span>.  </li>
+<li><span class="arithmatex">\(\mathbf{r}_{\pi}\)</span> is the <span class="arithmatex">\(|\mathcal{S}|\times 1\)</span> column vector of expected immediate rewards under policy <span class="arithmatex">\(\pi\)</span> for each state.  </li>
+<li><span class="arithmatex">\(\mathbf{P}_{\pi}\)</span> is an <span class="arithmatex">\(|\mathcal{S}|\times |\mathcal{S}|\)</span> matrix whose entries <span class="arithmatex">\(\bigl[\mathbf{P}_{\pi}\bigr]_{i,j}\)</span> capture the probability of transitioning from <span class="arithmatex">\(s_{i}\)</span> to <span class="arithmatex">\(s_{j}\)</span> when actions are chosen according to <span class="arithmatex">\(\pi\)</span>.</li>
+</ol>
+<p>4 <strong>Relation of the Coefficient to <span class="arithmatex">\(\mathbf{P}_{\pi}\)</span></strong></p>
+<p>By definition,</p>
+<div class="arithmatex">\[
+\bigl[\mathbf{P}_{\pi}\bigr]_{i,j}
+\;=\;
+\sum_{a \,\in\,\mathcal{A}}
+\pi\bigl(a \,\vert\, s_{i}\bigr)
+P\bigl(s_{j} \,\vert\, s_{i},\,a\bigr).
+\]</div>
+<p>In other words, each matrix entry <span class="arithmatex">\([\mathbf{P}_{\pi}]_{i,j}\)</span> is the total transition probability from state <span class="arithmatex">\(s_{i}\)</span> to <span class="arithmatex">\(s_{j}\)</span> under policy <span class="arithmatex">\(\pi\)</span>, which is the sum over all actions <span class="arithmatex">\(a\)</span> of the product <span class="arithmatex">\(\pi(a \mid s_{i})\,P(s_{j} \mid s_{i},a)\)</span>.</p>
+<p>Hence the coefficient <span class="arithmatex">\(\pi(a \mid s_{i})\,P(s_{j}\mid s_{i},a)\)</span> that appears in the single-state Bellman equation is precisely the partial contribution to <span class="arithmatex">\([\mathbf{P}_{\pi}]_{i,j}\)</span> from action <span class="arithmatex">\(a\)</span>. Summing that coefficient over all <span class="arithmatex">\(a\)</span> in a given row <span class="arithmatex">\((i)\)</span> gives the full matrix entry <span class="arithmatex">\([\mathbf{P}_{\pi}]_{i,j}\)</span>.</p>
+<p>5 <strong>Summary</strong></p>
+<p>• The “<span class="arithmatex">\(\text{(coefficient)}\)</span>” that multiplies <span class="arithmatex">\(v_{\pi}(s_{j})\)</span> in the single-state Bellman equation is</p>
+<div class="arithmatex">\[
+\pi\bigl(a \,\vert\, s_{i}\bigr)
+\;\times\;
+P\bigl(s_{j} \,\vert\, s_{i},\,a\bigr).
+\]</div>
+<p>• When writing the full system in matrix form, these coefficients for each <span class="arithmatex">\((i,j)\)</span> and each action <span class="arithmatex">\(a\)</span> combine into the entries of the matrix <span class="arithmatex">\(\mathbf{P}_{\pi}\)</span>. Specifically:</p>
+<div class="arithmatex">\[
+[\mathbf{P}_{\pi}]_{i,j}
+\;=\;
+\sum_{a \,\in\, \mathcal{A}}
+\pi(a \,\vert\, s_{i})\;
+P\bigl(s_{j} \,\vert\, s_{i},\,a\bigr).
+\]</div>
+<p>• Consequently, the compact Bellman equation</p>
+<div class="arithmatex">\[
+\mathbf{v}_{\pi}
+\;=\;
+\mathbf{r}_{\pi}
+\;+\;
+\gamma
+\,\mathbf{P}_{\pi}\,\mathbf{v}_{\pi}
+\]</div>
+<p>follows naturally from collecting each row’s (i.e., state’s) single-state Bellman equation in vector/matrix form.</p>
 <h2 id="comapring-policies">Comapring Policies<a class="headerlink" href="#comapring-policies" title="Permanent link">&para;</a></h2>
 <p>Suppose you have two policies <span class="arithmatex">\(\pi_1\)</span> and <span class="arithmatex">\(\pi_2\)</span>. And also suppose that the Bellman equation is solved so that we get <span class="arithmatex">\(v_{\pi_1}\)</span> and <span class="arithmatex">\(v_{\pi_2}\)</span>.  How is this used to evaluate and compare the two policies?</p>
 <p><strong>Answer</strong></p>
