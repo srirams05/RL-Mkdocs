@@ -471,42 +471,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-recall-the-one-step-decomposition" class="md-nav__link">
-    <span class="md-ellipsis">
-      1) Recall the One-Step Decomposition
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-break-down-the-expectations" class="md-nav__link">
-    <span class="md-ellipsis">
-      2) Break Down the Expectations
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-combine-the-two-components" class="md-nav__link">
-    <span class="md-ellipsis">
-      3) Combine the Two Components
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-final-bellman-equation-for-v_pi" class="md-nav__link">
-    <span class="md-ellipsis">
-      4) Final Bellman Equation for \(v_{\pi}\)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#bellman-equation-to-system-of-linear-equations" class="md-nav__link">
     <span class="md-ellipsis">
       Bellman Equation \(\to\) System of Linear Equations
@@ -519,51 +483,6 @@
   <a href="#comapring-policies" class="md-nav__link">
     <span class="md-ellipsis">
       Comapring Policies
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#1-the-meaning-of-v_pis" class="md-nav__link">
-    <span class="md-ellipsis">
-      1) The Meaning of \(v_{\pi}(s)\)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-comparing-two-policies-state-by-state" class="md-nav__link">
-    <span class="md-ellipsis">
-      2) Comparing Two Policies State by State
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-comparing-two-policies-from-an-initial-state-or-distribution" class="md-nav__link">
-    <span class="md-ellipsis">
-      3) Comparing Two Policies from an Initial State or Distribution
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-practical-significance" class="md-nav__link">
-    <span class="md-ellipsis">
-      4) Practical Significance
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-conclusion" class="md-nav__link">
-    <span class="md-ellipsis">
-      5) Conclusion
     </span>
   </a>
   
@@ -615,51 +534,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-finite-mdp-and-bounded-reward-assumptions" class="md-nav__link">
-    <span class="md-ellipsis">
-      1 Finite MDP and Bounded Reward Assumptions
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-value-functions-for-a-fixed-policy-pi" class="md-nav__link">
-    <span class="md-ellipsis">
-      2 Value Functions for a Fixed Policy \(\pi\)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-supremum-over-all-policies" class="md-nav__link">
-    <span class="md-ellipsis">
-      3 Supremum Over All Policies
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-existence-of-an-optimal-policy" class="md-nav__link">
-    <span class="md-ellipsis">
-      4 Existence of an Optimal Policy
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-conclusion_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      5 Conclusion
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#uniqueness-of-optimal-policies" class="md-nav__link">
     <span class="md-ellipsis">
       Uniqueness of Optimal policies
@@ -690,6 +564,15 @@
   <a href="#uniqueness-revisited" class="md-nav__link">
     <span class="md-ellipsis">
       Uniqueness revisited
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mathcalt-is-a-contraction-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      \(\mathcal{T}\) is a contraction mapping
     </span>
   </a>
   
@@ -1358,8 +1241,7 @@ R_{t+1}
 <p>Complete the derivation of the this equation leading to the Bellman equation for <span class="arithmatex">\(v_{\pi}\)</span>.</p>
 <p><strong>Answer</strong></p>
 <p>Below is a step-by-step derivation, starting from the one-step lookahead identity and arriving at the Bellman equation for the state-value function under a given policy <span class="arithmatex">\(\pi\)</span>. All mathematical expressions are shown in LaTeX.</p>
-<hr />
-<h2 id="1-recall-the-one-step-decomposition">1) Recall the One-Step Decomposition<a class="headerlink" href="#1-recall-the-one-step-decomposition" title="Permanent link">&para;</a></h2>
+<p>1 <strong>Recall the One-Step Decomposition</strong></p>
 <p>We have:</p>
 <div class="arithmatex">\[
 G_t 
@@ -1384,8 +1266,7 @@ v_{\pi}(s)
 \;+\;
 \gamma\,\mathbb{E}[\,G_{t+1} \mid S_t = s,\,\pi].
 \]</div>
-<hr />
-<h2 id="2-break-down-the-expectations">2) Break Down the Expectations<a class="headerlink" href="#2-break-down-the-expectations" title="Permanent link">&para;</a></h2>
+<p>2 <strong>Break Down the Expectations</strong></p>
 <p>a) The term <span class="arithmatex">\(\mathbb{E}[\,R_{t+1} \mid S_t = s,\,\pi]\)</span></p>
 <p>Under policy <span class="arithmatex">\(\pi\)</span>, the agent chooses action <span class="arithmatex">\(A_t = a\)</span> in state <span class="arithmatex">\(s\)</span> with probability <span class="arithmatex">\(\pi(a \mid s)\)</span>. Then, the environment transitions to a next state <span class="arithmatex">\(s' \in \mathcal{S}\)</span> with probability <span class="arithmatex">\(P(s' \mid s,a)\)</span>, supplying a reward <span class="arithmatex">\(R(s,a,s')\)</span>. Therefore,</p>
 <div class="arithmatex">\[
@@ -1417,8 +1298,7 @@ P(s' \mid s,a)\;\underbrace{
 \sum_{s' }
 P(s' \mid s,a)\;v_{\pi}(s').
 \]</div>
-<hr />
-<h2 id="3-combine-the-two-components">3) Combine the Two Components<a class="headerlink" href="#3-combine-the-two-components" title="Permanent link">&para;</a></h2>
+<p>3 <strong>Combine the Two Components</strong></p>
 <p>Putting them all together:</p>
 <div class="arithmatex">\[
 v_{\pi}(s)
@@ -1453,8 +1333,7 @@ P(s' \,\vert\, s,a)\,
 \Bigr].
 \]</div>
 <p>This equation is referred to as the Bellman Expectation Equation (or simply the Bellman equation) for the state-value function <span class="arithmatex">\(v_{\pi}\)</span>.</p>
-<hr />
-<h2 id="4-final-bellman-equation-for-v_pi">4) Final Bellman Equation for <span class="arithmatex">\(v_{\pi}\)</span><a class="headerlink" href="#4-final-bellman-equation-for-v_pi" title="Permanent link">&para;</a></h2>
+<p>4 <strong>Final Bellman Equation for <span class="arithmatex">\(v_{\pi}\)</span></strong></p>
 <p>Hence, the derivation shows that:</p>
 <div class="arithmatex">\[
 \boxed{
@@ -1563,8 +1442,7 @@ v_{\pi}(s_i)
 <p>Suppose you have two policies <span class="arithmatex">\(\pi_1\)</span> and <span class="arithmatex">\(\pi_2\)</span>. And also suppose that the Bellman equation is solved so that we get <span class="arithmatex">\(v_{\pi_1}\)</span> and <span class="arithmatex">\(v_{\pi_2}\)</span>.  How is this used to evaluate and compare the two policies?</p>
 <p><strong>Answer</strong></p>
 <p>Below is a step-by-step explanation of how having the solved value functions <span class="arithmatex">\(v_{\pi_1}\)</span> and <span class="arithmatex">\(v_{\pi_2}\)</span> (from two different policies <span class="arithmatex">\(\pi_1\)</span> and <span class="arithmatex">\(\pi_2\)</span>) enables one to compare and evaluate those policies:</p>
-<hr />
-<h2 id="1-the-meaning-of-v_pis">1) The Meaning of <span class="arithmatex">\(v_{\pi}(s)\)</span><a class="headerlink" href="#1-the-meaning-of-v_pis" title="Permanent link">&para;</a></h2>
+<p>1 <strong>The Meaning of <span class="arithmatex">\(v_{\pi}(s)\)</span></strong></p>
 <p>• For a given policy <span class="arithmatex">\(\pi\)</span> in a Markov Decision Process (MDP), the value function  </p>
 <div class="arithmatex">\[
 v_{\pi}(s)
@@ -1573,8 +1451,7 @@ v_{\pi}(s)
 \]</div>
 <p>tells us the expected return (cumulative discounted reward) starting from state <span class="arithmatex">\(s\)</span> and following <span class="arithmatex">\(\pi\)</span> thereafter.<br />
 • Thus, <span class="arithmatex">\(v_{\pi}(s)\)</span> captures how “good” it is to be in state <span class="arithmatex">\(s\)</span> when one plans to follow <span class="arithmatex">\(\pi\)</span>.</p>
-<hr />
-<h2 id="2-comparing-two-policies-state-by-state">2) Comparing Two Policies State by State<a class="headerlink" href="#2-comparing-two-policies-state-by-state" title="Permanent link">&para;</a></h2>
+<p>2 <strong>Comparing Two Policies State by State</strong></p>
 <p>• Once you have computed <span class="arithmatex">\(v_{\pi_1}(s)\)</span> and <span class="arithmatex">\(v_{\pi_2}(s)\)</span> for all <span class="arithmatex">\(s \in \mathcal{S}\)</span>, you can compare the policies pointwise by looking at each state <span class="arithmatex">\(s\)</span>:<br />
   – If <span class="arithmatex">\(v_{\pi_1}(s) &gt; v_{\pi_2}(s)\)</span>, then <span class="arithmatex">\(\pi_1\)</span> yields a higher expected return than <span class="arithmatex">\(\pi_2\)</span> specifically from state <span class="arithmatex">\(s\)</span>.<br />
   – If <span class="arithmatex">\(v_{\pi_2}(s)\)</span> exceeds <span class="arithmatex">\(v_{\pi_1}(s)\)</span>, then <span class="arithmatex">\(\pi_2\)</span> is better from that state.<br />
@@ -1584,8 +1461,7 @@ v_{\pi_1}(s)\;\ge\;v_{\pi_2}(s)
   \quad\text{for all }s,
 \]</div>
 <p>then we can unambiguously say <span class="arithmatex">\(\pi_1\)</span> is at least as good as <span class="arithmatex">\(\pi_2\)</span> in every state.</p>
-<hr />
-<h2 id="3-comparing-two-policies-from-an-initial-state-or-distribution">3) Comparing Two Policies from an Initial State or Distribution<a class="headerlink" href="#3-comparing-two-policies-from-an-initial-state-or-distribution" title="Permanent link">&para;</a></h2>
+<p>3 <strong>Comparing Two Policies from an Initial State or Distribution</strong></p>
 <p>• In many RL problems, there is a designated initial state <span class="arithmatex">\(s_0\)</span> or an initial state distribution <span class="arithmatex">\(\mu_0\)</span>. In that scenario, one often compares the policies by looking at  </p>
 <div class="arithmatex">\[
 v_{\pi_1}(s_0)
@@ -1603,13 +1479,11 @@ v_{\pi_1}(s_0)
   v_{\pi_2}(s).
 \]</div>
 <p>• The policy that yields a higher overall expected return from the start (or on average w.r.t. <span class="arithmatex">\(\mu_0\)</span>) is deemed better.</p>
-<hr />
-<h2 id="4-practical-significance">4) Practical Significance<a class="headerlink" href="#4-practical-significance" title="Permanent link">&para;</a></h2>
+<p>4 <strong>Practical Significance</strong></p>
 <p>• If you have solved the Bellman equation for both policies (i.e., found <span class="arithmatex">\(v_{\pi_1}\)</span> and <span class="arithmatex">\(v_{\pi_2}\)</span>), then you have a quantitative measure of performance for each state in <span class="arithmatex">\(\mathcal{S}\)</span>.<br />
 • You can use this information to decide which policy performs better in specific states, or from the viewpoint of a particular start state.<br />
 • Often, this comparison step is part of Policy Iteration or other methods: one checks if an updated policy is better (in terms of the value function) than a previous one—if it is, one replaces the old policy.</p>
-<hr />
-<h2 id="5-conclusion">5) Conclusion<a class="headerlink" href="#5-conclusion" title="Permanent link">&para;</a></h2>
+<p>5 <strong>Conclusion</strong></p>
 <p>Yes, once you solve the Bellman equations to get <span class="arithmatex">\(v_{\pi_1}\)</span> and <span class="arithmatex">\(v_{\pi_2}\)</span>, you can evaluate and compare <span class="arithmatex">\(\pi_1\)</span> and <span class="arithmatex">\(\pi_2\)</span> by:<br />
 1. Checking their value functions state by state, if desired.<br />
 2. Checking the expected return from a specific start state or an initial state distribution.  </p>
@@ -2171,8 +2045,7 @@ v_{*}(s) \;=\; \max_{\pi}\,v_{\pi}(s),
 <div class="arithmatex">\[
 q_{*}(s,a) \;=\; \max_{\pi}\,q_{\pi}(s,a).
 \]</div>
-<hr />
-<h2 id="1-finite-mdp-and-bounded-reward-assumptions">1 Finite MDP and Bounded Reward Assumptions<a class="headerlink" href="#1-finite-mdp-and-bounded-reward-assumptions" title="Permanent link">&para;</a></h2>
+<p>1 <strong>Finite MDP and Bounded Reward Assumptions</strong></p>
 <p>Assume:</p>
 <ol>
 <li>A finite state space <span class="arithmatex">\(\mathcal{S} = \{\,s_{1},\dots, s_{|\mathcal{S}|}\}\)</span>.  </li>
@@ -2185,8 +2058,7 @@ q_{*}(s,a) \;=\; \max_{\pi}\,q_{\pi}(s,a).
 \]</div>
 <p>for all feasible triples <span class="arithmatex">\((s,a,s')\)</span>.</p>
 <p>Under these conditions, each state-action-next-state combination appears in only finitely many possibilities, and any infinite sum of discounted, bounded rewards converges well.</p>
-<hr />
-<h2 id="2-value-functions-for-a-fixed-policy-pi">2 Value Functions for a Fixed Policy <span class="arithmatex">\(\pi\)</span><a class="headerlink" href="#2-value-functions-for-a-fixed-policy-pi" title="Permanent link">&para;</a></h2>
+<p>2 <strong>Value Functions for a Fixed Policy <span class="arithmatex">\(\pi\)</span></strong></p>
 <p>Consider a fixed policy <span class="arithmatex">\(\pi\)</span>. Define the return from time <span class="arithmatex">\(t\)</span> as</p>
 <div class="arithmatex">\[
 G_{t} \;=\; \sum_{k=0}^{\infty} \gamma^{k}\,R_{t+k+1},
@@ -2205,8 +2077,7 @@ v_{\pi}(s) \;=\; \mathbb{E}\bigl[G_{t}\,\big\vert\,S_{t}=s,\;\pi\bigr]
 q_{\pi}(s,a) \;=\;\mathbb{E}\bigl[G_{t}\,\big\vert\,S_{t}=s,\,A_{t}=a,\,\pi\bigr]
 \]</div>
 <p>is also bounded by <span class="arithmatex">\(\pm\,R_{\max}/(1-\gamma)\)</span>.</p>
-<hr />
-<h2 id="3-supremum-over-all-policies">3 Supremum Over All Policies<a class="headerlink" href="#3-supremum-over-all-policies" title="Permanent link">&para;</a></h2>
+<p>3 <strong>Supremum Over All Policies</strong></p>
 <p>For each state <span class="arithmatex">\(s\)</span>, define</p>
 <div class="arithmatex">\[
 v_{*}(s)\;=\;\sup_{\pi}\,v_{\pi}(s).
@@ -2216,8 +2087,7 @@ v_{*}(s)\;=\;\sup_{\pi}\,v_{\pi}(s).
 q_{*}(s,a)\;=\;\sup_{\pi}\,q_{\pi}(s,a).
 \]</div>
 <p>Since <span class="arithmatex">\(v_{\pi}(s)\)</span> and <span class="arithmatex">\(q_{\pi}(s,a)\)</span> are bounded above by <span class="arithmatex">\(R_{\max}/(1-\gamma)\)</span> and below by <span class="arithmatex">\(-\,R_{\max}/(1-\gamma)\)</span>, the suprema <span class="arithmatex">\(v_{*}(s)\)</span> and <span class="arithmatex">\(q_{*}(s,a)\)</span> are finite.</p>
-<hr />
-<h2 id="4-existence-of-an-optimal-policy">4 Existence of an Optimal Policy<a class="headerlink" href="#4-existence-of-an-optimal-policy" title="Permanent link">&para;</a></h2>
+<p>4 <strong>Existence of an Optimal Policy</strong></p>
 <p>Because <span class="arithmatex">\(\mathcal{S}\)</span> and <span class="arithmatex">\(\mathcal{A}\)</span> are finite, there are only finitely many deterministic policies: specifically <span class="arithmatex">\(\lvert\mathcal{A}\rvert^{\lvert\mathcal{S}\rvert}\)</span>. Consider the set</p>
 <div class="arithmatex">\[
 \Bigl\{\;v_{\pi}\,\bigm|\,\pi \text{ is deterministic}\Bigr\}.
@@ -2227,8 +2097,7 @@ q_{*}(s,a)\;=\;\sup_{\pi}\,q_{\pi}(s,a).
 v_{\pi^{*}}(s)\;=\;v_{*}(s)\quad \text{for all }s.
 \]</div>
 <p>Thus the supremum is in fact attained by at least one policy <span class="arithmatex">\(\pi^{*}\)</span>. An analogous argument holds for <span class="arithmatex">\(q_{*}(s,a)\)</span>.</p>
-<hr />
-<h2 id="5-conclusion_1">5 Conclusion<a class="headerlink" href="#5-conclusion_1" title="Permanent link">&para;</a></h2>
+<p>5 <strong>Conclusion</strong></p>
 <p>Under these standard conditions:</p>
 <ol>
 <li>For each policy <span class="arithmatex">\(\pi\)</span>, <span class="arithmatex">\(v_{\pi}\)</span> and <span class="arithmatex">\(q_{\pi}\)</span> exist and lie in <span class="arithmatex">\(\bigl[-\,R_{\max}/(1-\gamma),\;R_{\max}/(1-\gamma)\bigr]\)</span>.  </li>
@@ -2571,6 +2440,203 @@ P(s'\mid s,a)\,\Bigl[R(s,a,s') + \gamma \,v(s')\Bigr].
 <p>• In a finite discounted MDP, the Bellman optimality operator is a strict contraction (given <span class="arithmatex">\(0 \le \gamma &lt; 1\)</span>), ensuring the \textbf{optimal value function} <span class="arithmatex">\(v_{*}\)</span> is \textbf{unique}.</p>
 <p>• However, <span class="arithmatex">\(\textit{optimal policies}\)</span>—those that achieve <span class="arithmatex">\(v_{*}(s)\)</span> for all <span class="arithmatex">\(s\)</span>—can be <span class="arithmatex">\(\textbf{non‐unique}\)</span>, precisely when multiple actions tie in the state-wise maximization. All such policies still yield the same unique <span class="arithmatex">\(v_{*}\)</span>.</p>
 <p>Hence, the uniqueness conferred by the contraction mapping theorem refers to the <span class="arithmatex">\(\textbf{value function}\)</span>, not necessarily the <span class="arithmatex">\(\textbf{policy}\)</span>, explaining why there can be multiple distinct optimal policies yet only a single optimal value function.</p>
+<h2 id="mathcalt-is-a-contraction-mapping"><span class="arithmatex">\(\mathcal{T}\)</span> is a contraction mapping<a class="headerlink" href="#mathcalt-is-a-contraction-mapping" title="Permanent link">&para;</a></h2>
+<p><strong><em>Prove in a mathematically rigorous manner that <span class="arithmatex">\(\mathcal{T}\)</span> is a <span class="arithmatex">\(\gamma\)</span>-contraction in the supremum norm <span class="arithmatex">\(\|\cdot\|_{\infty}\)</span>.</em></strong></p>
+<p>Below is a step-by-step proof that the Bellman Optimality Operator,  </p>
+<div class="arithmatex">\[
+[\mathcal{T}v](s)
+\;=\;
+\max_{a\,\in\,\mathcal{A}}
+\sum_{s'\,\in\,\mathcal{S}}
+P(s'\mid s,a)\,
+\Bigl[
+  R(s,a,s')
+  \;+\;\gamma\,v(s')
+\Bigr],
+\]</div>
+<p>is a <span class="arithmatex">\(\gamma\)</span>-contraction mapping in the supremum (∞-)norm. That is, we prove:</p>
+<div class="arithmatex">\[
+\|\mathcal{T}v \;-\;\mathcal{T}w\|_{\infty}
+\;\le\;
+\gamma\;\|v \;-\; w\|_{\infty}
+\quad\text{for all}\;\;v,w\in\mathcal{B}(\mathcal{S}).
+\]</div>
+<p>Here, <span class="arithmatex">\(\|\,f\,\|_{\infty} = \sup_{s\in\mathcal{S}} |f(s)|\)</span>, and <span class="arithmatex">\(\mathcal{B}(\mathcal{S})\)</span> is the space of all bounded functions on the finite state space <span class="arithmatex">\(\mathcal{S}\)</span>.</p>
+<p>1 <strong>The Operator <span class="arithmatex">\(\mathcal{T}\)</span> in Detail</strong></p>
+<p>Given any bounded function <span class="arithmatex">\(v:\mathcal{S}\to\mathbb{R}\)</span>, we define</p>
+<div class="arithmatex">\[
+[\mathcal{T}v](s)
+\;=\;
+\max_{a\,\in\,\mathcal{A}}
+\sum_{s'\,\in\,\mathcal{S}}
+P(s'\,\mid\,s,a)
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v(s')
+\Bigr].
+\]</div>
+<p>Such an operator <span class="arithmatex">\(\mathcal{T}\)</span> is called the Bellman Optimality Operator for a discounted MDP with discount factor <span class="arithmatex">\(0 \le \gamma &lt; 1\)</span>. Our goal is to show</p>
+<div class="arithmatex">\[
+\|\mathcal{T}v - \mathcal{T}w\|_{\infty}
+\;\le\;
+\gamma\;\|\,v-w\,\|_{\infty}
+\quad
+\forall\,
+v,w \in \mathcal{B}(\mathcal{S}).
+\]</div>
+<p>2 <strong>Examine <span class="arithmatex">\([\mathcal{T}v](s)\)</span> Minus <span class="arithmatex">\([\mathcal{T}w](s)\)</span></strong></p>
+<p>Fix any state <span class="arithmatex">\(s\in\mathcal{S}\)</span>. We have:</p>
+<div class="arithmatex">\[
+[\mathcal{T}v](s)
+\;=\;
+\max_{a\in\mathcal{A}}
+\sum_{s'\in\mathcal{S}}
+P(s'\mid s,a)\;
+\Bigl[
+  R(s,a,s') + \gamma\,v(s')
+\Bigr],
+\]</div>
+<div class="arithmatex">\[
+[\mathcal{T}w](s)
+\;=\;
+\max_{a\in\mathcal{A}}
+\sum_{s'\in\mathcal{S}}
+P(s'\mid s,a)\;
+\Bigl[
+  R(s,a,s') + \gamma\,w(s')
+\Bigr].
+\]</div>
+<p>Denote</p>
+<div class="arithmatex">\[
+F_{v}(s,a)
+\;=\;
+\sum_{s'\in\mathcal{S}}
+P(s'\mid s,a)\,[\,R(s,a,s') + \gamma\,v(s')\,],
+\]</div>
+<p>so that <span class="arithmatex">\([\mathcal{T}v](s) = \max_{a\in\mathcal{A}} F_{v}(s,a)\)</span>. Similarly, <span class="arithmatex">\([\mathcal{T}w](s) = \max_{a\in\mathcal{A}} F_{w}(s,a)\)</span>. Then</p>
+<div class="arithmatex">\[
+[\mathcal{T}v](s) - [\mathcal{T}w](s)
+\;=\;
+\max_{a\in\mathcal{A}}\,F_{v}(s,a)
+\;-\;
+\max_{a\in\mathcal{A}}\,F_{w}(s,a).
+\]</div>
+<p>3 <strong>Bounding the Difference Using “max - max ≤ max of differences”</strong></p>
+<p>Recall a known inequality for real numbers: <span class="arithmatex">\(\max_{x} f(x) \;-\;\max_{x} g(x) \;\le\;\max_{x}\,[f(x) - g(x)]\)</span>.  </p>
+<p>Hence,</p>
+<div class="arithmatex">\[
+\max_{a}\,F_{v}(s,a)
+\;-\;
+\max_{a}\,F_{w}(s,a)
+\;\le\;
+\max_{a}\,\bigl[F_{v}(s,a) - F_{w}(s,a)\bigr].
+\]</div>
+<p>Therefore,</p>
+<div class="arithmatex">\[
+[\mathcal{T}v](s) - [\mathcal{T}w](s)
+\;\le\;
+\max_{a\in\mathcal{A}}
+\Bigl\{
+  \sum_{s'\in\mathcal{S}}
+  P(s'\mid s,a)\,
+  \bigl[\,\gamma\,v(s') - \gamma\,w(s')\,\bigr]
+\Bigr\},
+\]</div>
+<p>since the reward part <span class="arithmatex">\(R(s,a,s')\)</span> cancels out (it appears in both <span class="arithmatex">\(F_{v}\)</span> and <span class="arithmatex">\(F_{w}\)</span>):</p>
+<div class="arithmatex">\[
+F_{v}(s,a) - F_{w}(s,a) =
+\sum_{s'}P(s'\mid s,a)\,
+\Bigl[
+  \gamma\,v(s') - \gamma\,w(s')
+\Bigr].
+\]</div>
+<p>4 <strong>Factor Out <span class="arithmatex">\(\gamma\)</span> and Sum of Probabilities</strong></p>
+<p>Thus</p>
+<div class="arithmatex">\[
+[\mathcal{T}v](s) - [\mathcal{T}w](s)
+\;\le\;
+\max_{a}\Bigl\{
+  \gamma
+  \sum_{s'}
+  P(s'\mid s,a)\,\bigl[v(s') - w(s')\bigr]
+\Bigr\}.
+\]</div>
+<p>Observing that <span class="arithmatex">\(\sum_{s'} P(s'\mid s,a) = 1\)</span>, we get</p>
+<div class="arithmatex">\[
+[\mathcal{T}v](s) - [\mathcal{T}w](s)
+\;\le\;
+\gamma
+\max_{a}
+\sum_{s'\in\mathcal{S}}
+P(s'\mid s,a)\,\bigl[v(s') - w(s')\bigr].
+\]</div>
+<p>Now, for each s′, the difference <span class="arithmatex">\(v(s') - w(s')\)</span> satisfies:</p>
+<div class="arithmatex">\[
+v(s') - w(s')
+\;\le\;
+\|v-w\|_{\infty}.
+\]</div>
+<p>Hence,</p>
+<div class="arithmatex">\[
+\sum_{s'}
+P(s'\mid s,a)\,\bigl[v(s') - w(s')\bigr]
+\;\le\;
+\sum_{s'} P(s'\mid s,a)\,\|v-w\|_{\infty}
+\;=\;
+\|\,v-w\,\|_{\infty}
+\]</div>
+<p>(because <span class="arithmatex">\(\sum_{s'}P(s'\mid s,a) = 1\)</span>). Therefore,</p>
+<div class="arithmatex">\[
+\max_{a}
+\sum_{s'}
+P(s'\mid s,a)\,\bigl[v(s') - w(s')\bigr]
+\;\le\;
+\|v-w\|_{\infty}.
+\]</div>
+<p>Hence</p>
+<div class="arithmatex">\[
+[\mathcal{T}v](s) - [\mathcal{T}w](s)
+\;\le\;
+\gamma\;\|v-w\|_{\infty}.
+\]</div>
+<p>5 <strong>Symmetry: The Same Bound with (v,w) Swapped</strong></p>
+<p>We also need a “lower bound” so we can handle absolute values. By a symmetric argument, swapping the roles of v and w,</p>
+<div class="arithmatex">\[
+[\mathcal{T}w](s) - [\mathcal{T}v](s)
+\;\le\;
+\gamma\;\|v-w\|_{\infty}.
+\]</div>
+<p>6 <strong>Conclude the Contraction Property</strong></p>
+<p>Combining both, we see that</p>
+<div class="arithmatex">\[
+|[\mathcal{T}v](s) \;-\; [\mathcal{T}w](s)|
+\;\le\;
+\gamma\;\|v-w\|_{\infty}
+\quad
+\text{for each state }s.
+\]</div>
+<p>Hence taking the supremum over <span class="arithmatex">\(s \in \mathcal{S}\)</span> yields:</p>
+<div class="arithmatex">\[
+\|\mathcal{T}v \;-\; \mathcal{T}w\|_{\infty} =
+\sup_{s\in\mathcal{S}}
+\,\bigl|
+  [\mathcal{T}v](s)
+  \;-\;
+  [\mathcal{T}w](s)
+\bigr|
+\;\le\;
+\gamma\;\|v-w\|_{\infty}.
+\]</div>
+<p>This is precisely the definition of a <span class="arithmatex">\(\gamma\)</span>-contraction in the ∞-norm.</p>
+<p>7 <strong>Summary</strong></p>
+<p>Thus, the Bellman Optimality Operator <span class="arithmatex">\(\mathcal{T}\)</span> satisfies</p>
+<div class="arithmatex">\[
+\|\mathcal{T}v \;-\; \mathcal{T}w\|_{\infty}
+\;\le\;
+\gamma\;\|v-w\|_{\infty},
+\]</div>
+<p>showing it is a <span class="arithmatex">\(\gamma\)</span>-contraction mapping in the supremum norm. This property underpins why <span class="arithmatex">\(\mathcal{T}\)</span> has a unique fixed point (the optimal value function <span class="arithmatex">\(v_{*}\)</span>) in the Banach space <span class="arithmatex">\(\bigl(\mathcal{B}(\mathcal{S}),\|\cdot\|_{\infty}\bigr)\)</span> and why repeated iteration of <span class="arithmatex">\(\mathcal{T}\)</span> converges to <span class="arithmatex">\(v_{*}\)</span>.</p>
 
 
 
