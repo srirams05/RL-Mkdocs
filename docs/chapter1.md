@@ -1855,6 +1855,136 @@ $$
 4. Solving these equations in principle yields $v_*$ (or $q_*$) and hence identifies which actions are optimal in each state, leading to an optimal policy.
 
 
+## Lemma needed for Bellman Optimality Equation
+
+Explain why this is true?
+
+\[
+\max_{\pi}\,
+\sum_{a}
+\pi(a \mid s)\,f(a)
+\;=\;
+\max_{a}\,f(a)
+\]
+
+**Answer**
+
+Below is a step-by-step explanation of why the following equality holds:
+
+\[
+\max_{\pi}
+\sum_{a}
+\pi(a \mid s)\,f(a)
+\;=\;
+\max_{a}\,f(a).
+\]
+
+Here, \(\pi(a \mid s)\) is a probability distribution over actions \(a\) (i.e., \(\pi(a \mid s)\ge0\) and \(\sum_{a} \pi(a \mid s)=1\)), and \(f(a)\) is any real-valued function on the finite action set \(\mathcal{A}\).
+
+1 **Statement of the Claim**
+
+We want to show that for any function \(f:\mathcal{A}\to\mathbb{R}\),
+
+\[
+\max_{\pi}\,\Bigl(\sum_{a}\,\pi(a \,\vert\, s)\,f(a)\Bigr)
+=
+\max_{a}\;f(a),
+\]
+
+where the maximum on the left is taken over all probability distributions \(\{\pi(a \mid s)\}_{a\in\mathcal{A}}\), that is, all ways of assigning nonnegative weights summing to 1, and the maximum on the right is simply the largest value of \(f(a)\) over actions \(a\).
+
+2 **Interpretation: Probability-Weighted Averages vs. Maximum**
+
+1. On the left, \(\sum_{a}\,\pi(a \mid s)\,f(a)\) is a weighted average of the values \(f(a)\), where the weights \(\{\pi(a \mid s)\}\) sum to 1.  
+2. On the right, \(\max_{a}\,f(a)\) is the single highest value of \(f(a)\).  
+
+Because a probability distribution \(\pi(\cdot \mid s)\) must be spread among all actions \(a\), the resulting sum is a convex combination (i.e., a weighted average) of the values \(f(a)\). A fundamental fact about taking a convex combination of numbers is that this weighted average cannot exceed the maximum of those numbers. This provides the basic intuition.
+
+3 **Formal Argument**
+
+Let \(M = \max_{a} f(a)\). By definition of the max, for each action \(a\),
+
+\[
+f(a) \;\le\; M.
+\]
+
+Hence, for any probability distribution \(\{\pi(a \mid s)\}\), we have
+
+\[
+\sum_{a} \pi(a \mid s)\,f(a)
+\;\le\;
+\sum_{a} \pi(a \mid s)\,M
+\;=\;
+M\,\sum_{a} \pi(a \mid s)
+\;=\;
+M.
+\]
+
+Therefore,
+
+\[
+\sum_{a}\,\pi(a \mid s)\,f(a)
+\;\le\;
+M
+\quad\quad
+\text{for all probability distributions }\pi.
+\]
+
+Taking the maximum over all \(\pi\) of the left-hand side, we get
+
+\[
+\max_{\pi}\,\Bigl(\sum_{a}\pi(a \mid s)\,f(a)\Bigr) \;\le\;
+M.
+\]
+
+That is,
+
+\[
+\max_{\pi}\,\Bigl(\sum_{a}\,\pi(a \mid s)\,f(a)\Bigr)  \;\le\;
+\max_{a}\,f(a).
+\]
+
+For the opposite direction (showing \(\ge\)), simply pick the distribution \(\pi^{*}\) that places all its mass on the action \(a^{*} = \operatorname*{argmax}_{a} f(a)\). In other words, let
+
+\[
+\pi^{*}(a \mid s) =
+\begin{cases}
+1, & \text{if } a=a^{*},\\
+0, & \text{otherwise}.
+\end{cases}
+\]
+
+Then
+
+\[
+\sum_{a}\,\pi^{*}(a \mid s)\,f(a) \;=\;
+1 \cdot f(a^{*})  \;=\;
+\max_{a}\,f(a).
+\]
+
+Hence,
+
+\[
+\max_{\pi}\,\Bigl(\sum_{a}\,\pi(a \mid s)\,f(a)\Bigr) \;\ge\;
+\max_{a}\,f(a).
+\]
+
+Combining both inequalities yields
+
+\[
+\max_{\pi}\,\Bigl(\sum_{a}\,\pi(a \mid s)\,f(a)\Bigr) =
+\max_{a}\,f(a),
+\]
+
+as desired.
+
+4 **Conclusion**
+
+This equality holds because:
+
+• Weighted averages of a finite set of real values (i.e., convex combinations) can never exceed the largest of those values.  
+• One can always choose a degenerate distribution that puts all probability on the single best action.
+
 ## Bellman Optimality Equation
 
 ***The selection of an optimal policy implies choosing the maximum or supremum over all policies. However, in step 4 describing the Bellman Optimality Equation, there does not seem to be an explicit selection across the set of policies. Perhaps, this is an outcome. If so, derive in detail, how the Bellman Optimality Equation follows from the notion of optimal value functions.***
