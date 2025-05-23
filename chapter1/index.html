@@ -605,6 +605,33 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#policy-evaluation-operator-mathcalt_pi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Policy Evaluation Operator \(\mathcal{T}_{\pi}\)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#value-interation-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Value Interation Algorithm
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-optimal-value-to-optimal-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      From optimal value to optimal policy
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2030,8 +2057,7 @@ P(s' \mid s,a)
 <p>1 <strong>Statement of the Claim</strong></p>
 <p>We want to show that for any function <span class="arithmatex">\(f:\mathcal{A}\to\mathbb{R}\)</span>,</p>
 <div class="arithmatex">\[
-\max_{\pi}\,\Bigl(\sum_{a}\,\pi(a \,\vert\, s)\,f(a)\Bigr)
-=
+\max_{\pi}\,\Bigl(\sum_{a}\,\pi(a \,\vert\, s)\,f(a)\Bigr) =
 \max_{a}\;f(a),
 \]</div>
 <p>where the maximum on the left is taken over all probability distributions <span class="arithmatex">\(\{\pi(a \mid s)\}_{a\in\mathcal{A}}\)</span>, that is, all ways of assigning nonnegative weights summing to 1, and the maximum on the right is simply the largest value of <span class="arithmatex">\(f(a)\)</span> over actions <span class="arithmatex">\(a\)</span>.</p>
@@ -3058,6 +3084,300 @@ P(s_{j}\,\vert\,s_{i},a)\,\Bigl[
 \Bigr).
 \]</div>
 <p>• The Bellman optimality equation succinctly becomes <span class="arithmatex">\(v_{*} = \mathcal{T}\,v_{*}\)</span>, capturing the same idea as the scalar form but in a higher‐level matrix‐vector operator sense.</p>
+<h2 id="policy-evaluation-operator-mathcalt_pi">Policy Evaluation Operator <span class="arithmatex">\(\mathcal{T}_{\pi}\)</span><a class="headerlink" href="#policy-evaluation-operator-mathcalt_pi" title="Permanent link">&para;</a></h2>
+<p>The Bellman Optimality operator is:</p>
+<div class="arithmatex">\[
+[\mathcal{T}v](s)
+\;=\;
+\max_{a\,\in\,\mathcal{A}}
+\sum_{s'\,\in\,\mathcal{S}}
+P(s'\mid s,a)\,
+\Bigl[
+  R(s,a,s')
+  \;+\;\gamma\,v(s')
+\Bigr]
+\]</div>
+<p>For a given policy <span class="arithmatex">\(\pi\)</span> we have the Bellman equation:</p>
+<div class="arithmatex">\[
+v_{\pi}(s)
+\;=\;
+\sum_{a \,\in\, \mathcal{A}}
+\pi(a \,\vert\, s)
+\sum_{s' \,\in\, \mathcal{S}}
+P(s' \,\vert\, s,a)\,
+\Bigl[
+  R(s,a,s') 
+  \;+\;
+  \gamma\,v_{\pi}(s')
+\Bigr]
+\]</div>
+<p>Noting the similarities, is there a concept of a “policy evaluation operator” for a given policy <span class="arithmatex">\(\pi\)</span>?</p>
+<p><strong>Answer</strong></p>
+<p>Below is a step-by-step explanation showing that, in parallel to the Bellman Optimality operator, one can define a “policy evaluation operator” for a given policy <span class="arithmatex">\(\pi\)</span>:</p>
+<p>1) <strong>Bellman Optimality Operator</strong></p>
+<p>The Bellman Optimality operator, often denoted by <span class="arithmatex">\(\mathcal{T}\)</span>, acts on any candidate value function <span class="arithmatex">\(v\)</span> to produce another value function <span class="arithmatex">\(\mathcal{T}v\)</span>. For each state <span class="arithmatex">\(s\)</span>:</p>
+<div class="arithmatex">\[
+[\mathcal{T}v](s)
+\;=\;
+\max_{a \,\in\,\mathcal{A}}
+\sum_{s' \,\in\,\mathcal{S}}
+P\bigl(s' \mid s,\,a\bigr)
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v(s')
+\Bigr].
+\]</div>
+<p>This operator considers all actions <span class="arithmatex">\(a\)</span>, chooses the best one (via <span class="arithmatex">\(\max_{a}\)</span>), and hence is used for finding or expressing the value function of an optimal policy.</p>
+<p>2) <strong>Bellman Equation Under a Fixed Policy <span class="arithmatex">\(\pi\)</span></strong></p>
+<p>If we fix a policy <span class="arithmatex">\(\pi\)</span>, meaning that actions <span class="arithmatex">\(a\)</span> are chosen with probability <span class="arithmatex">\(\pi(a \mid s)\)</span> in each state <span class="arithmatex">\(s\)</span>, then the Bellman equation for the value function <span class="arithmatex">\(v_{\pi}\)</span> is:</p>
+<div class="arithmatex">\[
+v_{\pi}(s)
+\;=\;
+\sum_{a \,\in\,\mathcal{A}}
+\pi\bigl(a \mid s\bigr)
+\sum_{s' \,\in\,\mathcal{S}}
+P\bigl(s' \mid s,a\bigr)
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v_{\pi}(s')
+\Bigr].
+\]</div>
+<p>This is sometimes referred to as the Bellman Expectation Equation or the policy evaluation equation.</p>
+<p>3) <strong>Defining a Policy Evaluation Operator <span class="arithmatex">\(\mathcal{T}_{\pi}\)</span></strong></p>
+<p>Analogous to how the Bellman Optimality operator <span class="arithmatex">\(\mathcal{T}\)</span> uses a <span class="arithmatex">\(\max\)</span> over actions, we can define an operator that uses the distribution <span class="arithmatex">\(\pi(a \mid s)\)</span> instead of taking a maximum. Concretely, for any bounded value function <span class="arithmatex">\(v\)</span>, define</p>
+<div class="arithmatex">\[
+\bigl[\mathcal{T}_{\pi}v\bigr](s)
+\;=\;
+\sum_{a \,\in\,\mathcal{A}}
+\pi\bigl(a \mid s\bigr)
+\sum_{s' \,\in\,\mathcal{S}}
+P\bigl(s' \mid s,a\bigr)
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v(s')
+\Bigr].
+\]</div>
+<p>Hence, <span class="arithmatex">\(\mathcal{T}_{\pi}\)</span> replaces the “<span class="arithmatex">\(\max\)</span>” with an expectation under <span class="arithmatex">\(\pi(a \mid s)\)</span>. This operator <span class="arithmatex">\(\mathcal{T}_{\pi}\)</span> is often called the Bellman Expectation operator (or simply the policy evaluation operator) for the policy <span class="arithmatex">\(\pi\)</span>.</p>
+<p>4) <strong>Fixed Point: <span class="arithmatex">\(\;v_{\pi} = \mathcal{T}_{\pi} v_{\pi}\)</span></strong></p>
+<p>The Bellman equation for <span class="arithmatex">\(v_{\pi}\)</span> can be rewritten as</p>
+<div class="arithmatex">\[
+v_{\pi}(s)
+\;=\;
+\bigl[\mathcal{T}_{\pi}v_{\pi}\bigr](s),
+\qquad
+\forall\,s \in \mathcal{S}.
+\]</div>
+<p>That is, <span class="arithmatex">\(v_{\pi}\)</span> is a fixed point of the operator <span class="arithmatex">\(\mathcal{T}_{\pi}\)</span>. Under standard assumptions (finite state space, <span class="arithmatex">\(0 \le \gamma &lt; 1\)</span>, bounded rewards), one can show:</p>
+<div class="arithmatex">\[
+\|\mathcal{T}_{\pi}v - \mathcal{T}_{\pi}w\|_{\infty}
+\;\le\;
+\gamma\;\|v-w\|_{\infty},
+\]</div>
+<p>making <span class="arithmatex">\(\mathcal{T}_{\pi}\)</span> a <span class="arithmatex">\(\gamma\)</span>-contraction in the supremum norm. It follows from the Banach Fixed Point Theorem that repeated application of <span class="arithmatex">\(\mathcal{T}_{\pi}\)</span> on any initial <span class="arithmatex">\(v\)</span> converges to <span class="arithmatex">\(v_{\pi}\)</span>, the unique fixed point.</p>
+<p>5) <strong>Summary</strong></p>
+<p>Yes, there is indeed a “policy evaluation operator” for a given policy <span class="arithmatex">\(\pi\)</span>. One defines</p>
+<div class="arithmatex">\[
+\bigl[\mathcal{T}_{\pi}v\bigr](s)
+\;=\;
+\sum_{a \,\in\,\mathcal{A}}
+\pi(a \mid s)
+\sum_{s' \,\in\,\mathcal{S}}
+P(s' \mid s,a)
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v(s')
+\Bigr],
+\]</div>
+<p>and notes that <span class="arithmatex">\(\mathcal{T}_{\pi}\)</span> maps bounded value functions to bounded value functions. The policy’s value function <span class="arithmatex">\(v_{\pi}\)</span> is precisely the fixed point of <span class="arithmatex">\(\mathcal{T}_{\pi}\)</span>. This operator is a fundamental tool in Reinforcement Learning, where it is used for computing (or approximating) <span class="arithmatex">\(v_{\pi}\)</span> for any given policy <span class="arithmatex">\(\pi\)</span>.</p>
+<h2 id="value-interation-algorithm">Value Interation Algorithm<a class="headerlink" href="#value-interation-algorithm" title="Permanent link">&para;</a></h2>
+<p>For the setting of a finite MDP, the Bellman optimality operator <span class="arithmatex">\(\mathcal{T}\)</span> has been shown to be a <span class="arithmatex">\(\gamma\)</span>-contraction in the supremum norm. This suggests that we can use this fact to find the optimal state value <span class="arithmatex">\(v_*(\cdot)\)</span> by iteration. Let <span class="arithmatex">\(k\)</span> be the "time step" index. Let<span class="arithmatex">\(v_0\)</span> be the initial condition and suppose the data for the MDP - <span class="arithmatex">\(\mathcal{S}, \mathcal{A}, P, \pi, \gamma\)</span> are all provided. Write a step by step algorithm to find <span class="arithmatex">\(v_*\)</span>.</p>
+<p><strong>Answer</strong></p>
+<p>Below is a step‐by‐step algorithm, commonly known as “Value Iteration,” that uses the fact that the Bellman Optimality operator <span class="arithmatex">\(\mathcal{T}\)</span> is a <span class="arithmatex">\(\gamma\)</span>-contraction  in the supremum norm to find the optimal state‐value function <span class="arithmatex">\(v_*\)</span>.</p>
+<p>All mathematical symbols and expressions are presented in standard LaTeX, and we assume a finite MDP with:<br />
+• A finite state space <span class="arithmatex">\(\mathcal{S} = \{s_{1},\dots,s_{|\mathcal{S}|}\}\)</span>.<br />
+• A finite action space <span class="arithmatex">\(\mathcal{A} = \{a_{1},\dots,a_{|\mathcal{A}|}\}\)</span>.<br />
+• Transition kernel <span class="arithmatex">\(P(s' \mid s,a)\)</span> for each <span class="arithmatex">\((s,a)\)</span>.<br />
+• Reward function <span class="arithmatex">\(R(s,a,s')\)</span>.<br />
+• Discount factor <span class="arithmatex">\(0 \le \gamma &lt; 1\)</span>.  </p>
+<p>1) <strong>Notation: The Bellman Optimality Operator</strong></p>
+<p>Recall that the Bellman Optimality operator <span class="arithmatex">\(\mathcal{T}\)</span> acts on a value function <span class="arithmatex">\(v:\mathcal{S}\to \mathbb{R}\)</span> as follows:</p>
+<div class="arithmatex">\[
+[\mathcal{T}v](s)
+\;=\;
+\max_{a \in \mathcal{A}}
+\;\sum_{s' \in \mathcal{S}}
+P\bigl(s' \mid s,a\bigr)\,
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v(s')
+\Bigr].
+\]</div>
+<p>Since <span class="arithmatex">\(\mathcal{T}\)</span> is a <span class="arithmatex">\(\gamma\)</span>‐contraction in the <span class="arithmatex">\(\|\cdot\|_{\infty}\)</span> norm (the supremum norm), repeated application of <span class="arithmatex">\(\mathcal{T}\)</span> to any initial function <span class="arithmatex">\(v_{0}\)</span> will converge to the unique fixed point <span class="arithmatex">\(v_{*}\)</span>. This fixed point is the optimal value function for the MDP.</p>
+<p>2) <strong>Value Iteration Algorithm</strong></p>
+<p>◾ <strong><em>Input:</em></strong>
+(1) The set of states <span class="arithmatex">\(\mathcal{S}\)</span> (finite).<br />
+(2) The set of actions <span class="arithmatex">\(\mathcal{A}\)</span> (finite).<br />
+(3) Transition probabilities <span class="arithmatex">\(P(s' \mid s,a)\)</span>.<br />
+(4) Reward function <span class="arithmatex">\(R(s,a,s')\)</span>.<br />
+(5) Discount factor <span class="arithmatex">\(\gamma \in [0,1]\)</span>.<br />
+(6) An initial value function <span class="arithmatex">\(v_{0}:\mathcal{S}\to\mathbb{R}\)</span>. Frequently <span class="arithmatex">\(v_{0}\)</span> is just the zero function or arbitrary values.</p>
+<p>◾ <strong><em>Procedure:</em></strong></p>
+<p>(1) Initialize <span class="arithmatex">\(k=0\)</span>.<br />
+(2) For each state <span class="arithmatex">\(s \in \mathcal{S}\)</span>, set <span class="arithmatex">\(v_{k}(s)\)</span> to some initial value (e.g., 0).<br />
+(3) Repeat (Value Iteration Step):<br />
+   (a) For each state <span class="arithmatex">\(s\in \mathcal{S}\)</span>, compute</p>
+<div class="arithmatex">\[
+   v_{k+1}(s)    \;=\;
+   [\mathcal{T}v_{k}](s)    \;=\;    \max_{a\in \mathcal{A}}
+   \sum_{s'\in \mathcal{S}}
+   P(s'\mid s,a)    \Bigl[  R(s,a,s') + \gamma\,v_{k}(s')    \Bigr].
+\]</div>
+<p>(b) Check for convergence in the supremum norm or any other criterion. For instance, one common stopping rule is:</p>
+<div class="arithmatex">\[
+   \|\,v_{k+1} - v_{k}\,\|_{\infty} \;=\;    \sup_{s\in \mathcal{S}}
+   \bigl|\,v_{k+1}(s) - v_{k}(s)\bigr|
+   \;\le\;\varepsilon(1 - \gamma)/\gamma,
+\]</div>
+<p>or use an iteration limit, or other threshold to decide when to stop.</p>
+<p>(4) If not converged, increment <span class="arithmatex">\(k \leftarrow k+1\)</span> and go back to step (3).<br />
+(5) Once convergence is detected (or after sufficient iterations), the current <span class="arithmatex">\(v_{k}\)</span> is (approximately) the optimal value function <span class="arithmatex">\(v_{*}\)</span>.  </p>
+<p>3) <strong>Output and Convergence</strong></p>
+<p>• Output: <span class="arithmatex">\(v_{*}\approx v_{k}\)</span>, the converged state‐value function.<br />
+• By the <span class="arithmatex">\(\gamma\)</span>‐contraction property of <span class="arithmatex">\(\mathcal{T}\)</span>, we are guaranteed that <span class="arithmatex">\(v_{k}\)</span> converges to the unique fixed point <span class="arithmatex">\(v_{*}\)</span>, satisfying</p>
+<div class="arithmatex">\[
+v_{*}(s) =
+[\mathcal{T}v_{*}](s) =
+\max_{a}
+\sum_{s'}
+P(s'\mid s,a)\,\bigl[R(s,a,s') + \gamma\,v_{*}(s')\bigr].
+\]</div>
+<p>This <span class="arithmatex">\(v_{*}\)</span> is the optimal state‐value function for the MDP.</p>
+<p>4) <strong>Final Algorithm Summary</strong></p>
+<p>Algorithm: Value Iteration</p>
+<p>1) Initialize <span class="arithmatex">\(v_{0}\)</span> (e.g., to zeros).<br />
+2) For <span class="arithmatex">\(k=0,1,2,\dots\)</span>:<br />
+   • For each <span class="arithmatex">\(s\in\mathcal{S}\)</span>:</p>
+<div class="arithmatex">\[
+   v_{k+1}(s)
+   = \max_{a \in\mathcal{A}}
+     \sum_{s'\in \mathcal{S}}
+     P(s'\mid s,a)\,\Bigl[
+       R(s,a,s')
+       + \gamma\,v_{k}(s')
+     \Bigr].
+\]</div>
+<p>3) If <span class="arithmatex">\(\|v_{k+1} - v_{k}\|_{\infty}\le\delta\)</span> or <span class="arithmatex">\(k\)</span> is sufficiently large, terminate.<br />
+4) Return <span class="arithmatex">\(v_{k+1}\)</span> as the approximate (or exact) optimal value function <span class="arithmatex">\(v_{*}\)</span>.</p>
+<p>This completes the step‐by‐step algorithm for finding <span class="arithmatex">\(v_{*}\)</span> by iterating the Bellman Optimality operator.</p>
+<h2 id="from-optimal-value-to-optimal-policy">From optimal value to optimal policy<a class="headerlink" href="#from-optimal-value-to-optimal-policy" title="Permanent link">&para;</a></h2>
+<p>Once the optimal <span class="arithmatex">\(v_*\)</span> is known, how to recover the optimal policy or policies recognizing the non-uniqueness of the optimal policy?</p>
+<p><strong>Answer</strong></p>
+<p>Below is a step-by-step explanation of how to recover at least one optimal policy (or multiple) after having computed the optimal value function <span class="arithmatex">\(v_*(\cdot)\)</span>. All mathematical symbols and expressions are written in LaTeX.</p>
+<p>1) <strong>Setting: Known Optimal Value Function <span class="arithmatex">\(v_*(\cdot)\)</span></strong></p>
+<p>Assume we have a finite MDP with:
+• Finite state space <span class="arithmatex">\(\mathcal{S} = \{s_1, \dots, s_{|\mathcal{S}|}\}\)</span>.<br />
+• Finite action space <span class="arithmatex">\(\mathcal{A}\)</span>.<br />
+• Transition probabilities <span class="arithmatex">\(P(s' \mid s, a)\)</span>.<br />
+• Reward function <span class="arithmatex">\(R(s, a, s')\)</span>.<br />
+• Discount factor <span class="arithmatex">\(0 \le \gamma &lt; 1\)</span>.  </p>
+<p>We assume the optimal state-value function <span class="arithmatex">\(v_{*}(s)\)</span> is known (e.g., from Value Iteration, Policy Iteration, or another method). Recall that <span class="arithmatex">\(v_{*}\)</span> satisfies:</p>
+<div class="arithmatex">\[
+v_{*}(s)
+\;=\;
+\max_{a \,\in\, \mathcal{A}}
+\sum_{s' \,\in\, \mathcal{S}}
+P(s' \,\vert\, s,a)
+\Bigl[
+  R(s,a,s') + \gamma\,v_{*}(s')
+\Bigr].
+\]</div>
+<p>2) <strong>Recovering an Optimal Policy: Basic Idea</strong></p>
+<p>The Bellman Optimality equation indicates that for each state <span class="arithmatex">\(s\)</span>, an optimal action <span class="arithmatex">\(a^{*}\)</span> achieves that maximum:</p>
+<div class="arithmatex">\[
+a^{*}
+\;\in\;
+\arg\max_{a \in \mathcal{A}}
+\sum_{s'}
+P(s' \mid s,a)\,\Bigl[R(s,a,s') + \gamma\,v_{*}(s')\Bigr].
+\]</div>
+<p>Hence, once <span class="arithmatex">\(v_{*}\)</span> is known, the “optimal” action(s) at each state <span class="arithmatex">\(s\)</span> can be found by evaluating the right-hand side for every action <span class="arithmatex">\(a\in\mathcal{A}\)</span> and picking an action that achieves the maximum.  </p>
+<p>3) <strong>Non-Uniqueness: Potential Ties</strong></p>
+<p>If there is more than one action <span class="arithmatex">\(a\)</span> that attains the same maximal value in state <span class="arithmatex">\(s\)</span>, then all such actions are equally good. That is,</p>
+<div class="arithmatex">\[
+\sum_{s'}
+P(s' \,\vert\, s,a_{1})
+\Bigl[
+  R(s,a_{1},s') + \gamma\,v_{*}(s')
+\Bigr]
+\;=\;
+\sum_{s'}
+P(s' \,\vert\, s,a_{2})
+\Bigl[
+  R(s,a_{2},s') + \gamma\,v_{*}(s')
+\Bigr],
+\]</div>
+<p>and both equal <span class="arithmatex">\(\max_{a}\sum_{s'}[\dots]\)</span>. Consequently, there may be multiple different actions that are all optimal in state <span class="arithmatex">\(s\)</span>.  </p>
+<p>4) <strong>Constructing a Deterministic Policy</strong></p>
+<p>A standard procedure:</p>
+<p>• For each state <span class="arithmatex">\(s \in \mathcal{S}\)</span>, compute</p>
+<div class="arithmatex">\[
+Q_{*}(s,a) =
+\sum_{s'}
+P(s' \mid s,a)\,
+\Bigl[
+  R(s,a,s') + \gamma\,v_{*}(s')
+\Bigr]
+\]</div>
+<p>(This is the state-action “optimal” Q-value if we view <span class="arithmatex">\(v_{*}\)</span> as the correct continuation. Technically <span class="arithmatex">\(Q_*(s,a)  = R(s,a,s') + \gamma v_*(s')\)</span>, but once <span class="arithmatex">\(v_*\)</span> is known, we can plug it in to get <span class="arithmatex">\(Q_*(\cdot)\)</span>.)</p>
+<p>• Pick any action <span class="arithmatex">\(a^{*}(s)\)</span> that satisfies</p>
+<div class="arithmatex">\[
+a^{*}(s) \in \arg\max_{a\in\mathcal{A}}\;Q_{*}(s,a).
+\]</div>
+<p>• Define the deterministic policy <span class="arithmatex">\(\pi_{*}\)</span> by</p>
+<div class="arithmatex">\[
+\pi_{*}(s) = a^{*}(s).
+\]</div>
+<p>5) <strong>Constructing a Stochastic (Mixed) Policy</strong></p>
+<p>In states where multiple actions tie for the maximum, one could choose a stochastic policy that randomizes among all such tying actions. Formally:</p>
+<p>• Let <span class="arithmatex">\(\mathcal{A}_{\text{opt}}(s)\)</span> = { all a ∈ 𝓐 that achieve the maximum at s }.<br />
+• Define</p>
+<div class="arithmatex">\[
+\pi_{*}(a \mid s) =
+\begin{cases}
+\frac{1}{|\mathcal{A}_{\text{opt}}(s)|}, &amp; a \in \mathcal{A}_{\text{opt}}(s),\\
+0, &amp; \text{otherwise}.
+\end{cases}
+\]</div>
+<p>All such policies are also optimal because each action in <span class="arithmatex">\(\mathcal{A}_{\text{opt}}(s)\)</span> yields the same value.  </p>
+<p>6) <strong>Summary: Recovering an Optimal Policy (or Policies)</strong></p>
+<ol>
+<li>Once <span class="arithmatex">\(v_{*}\)</span> is known, compute for each state-action pair <span class="arithmatex">\((s,a)\)</span> the quantity</li>
+</ol>
+<div class="arithmatex">\[
+Q_{*}(s,a) =
+\sum_{s'}
+P(s' \mid s,a)\,
+\bigl[
+  R(s,a,s') + \gamma\,v_{*}(s')
+\bigr].
+\]</div>
+<ol>
+<li>
+<p>For each state <span class="arithmatex">\(s\)</span>, find the set of actions that maximize <span class="arithmatex">\(Q_{*}(s,a)\)</span>. This set may contain one action or multiple.  </p>
+</li>
+<li>
+<p>To get a deterministic policy, pick any single maximizing action in each state. If multiple actions are ties, choose an arbitrary one among them.  </p>
+</li>
+<li>
+<p>To get a stochastic policy, assign positive probabilities among all of the tying actions in <span class="arithmatex">\(\mathcal{A}_{\text{opt}}(s)\)</span>.  </p>
+</li>
+</ol>
+<p>All such resulting policies are optimal and yield the optimal value <span class="arithmatex">\(v_*(\cdot)\)</span> for the MDP — reflecting the potential non‐uniqueness of optimal policies in a finite MDP.</p>
 
 
 
