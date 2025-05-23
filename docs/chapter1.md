@@ -3581,8 +3581,7 @@ If there is more than one action \(a\) that attains the same maximal value in st
 P(s' \,\vert\, s,a_{1})
 \Bigl[
   R(s,a_{1},s') + \gamma\,v_{*}(s')
-\Bigr]
-\;=\;
+\Bigr] \;=\;
 \sum_{s'}
 P(s' \,\vert\, s,a_{2})
 \Bigl[
@@ -3658,3 +3657,329 @@ P(s' \mid s,a)\,
 4. To get a stochastic policy, assign positive probabilities among all of the tying actions in \(\mathcal{A}_{\text{opt}}(s)\).  
 
 All such resulting policies are optimal and yield the optimal value $v_*(\cdot)$ for the MDP — reflecting the potential non‐uniqueness of optimal policies in a finite MDP.
+
+
+## Policy iteration algorithm
+
+We have discussed the optimal value iteration algorithm. There is a similar idea of the "policy iteration" algorithm. This appears to have two nested steps: the outer loop starts with a given policy $\pi$ and uses the policy evaluation operator $\mathcal{T}$ find the $v_{\pi}$. The inner loop here seems to involve maximizing the kernel over the actions to find the optimal action and associated policy. The process is not clear to me. Explain carefully.
+
+**Answer**
+
+Below is a careful, step-by-step explanation of Policy Iteration, a classical algorithm in Reinforcement Learning for solving a finite Markov Decision Process (MDP). All mathematical symbols and expressions are presented in standard LaTeX.
+
+1) **The Overall Concept**
+
+Policy Iteration (PI) seeks an optimal policy \(\pi^*\) by repeatedly doing two main steps:
+
+1. Policy Evaluation: Given a current policy \(\pi\), compute its value function \(v_{\pi}\).  
+2. Policy Improvement: Use \(v_{\pi}\) to construct a (possibly) better policy \(\pi'\).  
+
+Then we replace \(\pi\) with \(\pi'\) and repeat until convergence. Under standard conditions (finite MDP, \(0 \le \gamma < 1\)), policy iteration converges in a finite number of iterations to an optimal policy \(\pi^*\).
+
+2) **Finite MDP Setting**
+
+We have:
+
+• A finite state space \(\mathcal{S} = \{\,s_1, s_2, \dots, s_{|\mathcal{S}|}\}\).  
+• A finite action space \(\mathcal{A} = \{\,a_1, a_2, \dots, a_{|\mathcal{A}|}\}\).  
+• Transition probabilities \(P(s' \mid s,a)\).  
+• Reward function \(R(s,a,s')\).  
+• A discount factor \(\gamma\in [0,1)\).
+
+A policy \(\pi\) specifies for each state \(s\) the probabilities \(\pi(a \mid s)\) with which actions \(a\) are chosen.
+
+3) **Policy Evaluation (Inner Procedure)**
+
+Given a policy \(\pi\), we define the policy evaluation operator \(\mathcal{T}_{\pi}\). For any** value function \(v\),
+
+\[
+[\mathcal{T}_{\pi}v](s)
+\;=\;
+\sum_{a\,\in\,\mathcal{A}}
+\pi(a \mid s)\,
+\sum_{s'\,\in\,\mathcal{S}}
+P(s' \mid s,a)\,
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v(s')
+\Bigr].
+\]
+
+• The value function \(v_{\pi}\) is the unique fixed point of \(\mathcal{T}_{\pi}\), i.e.,
+
+\[
+v_{\pi}(s)
+\;=\;
+[\mathcal{T}_{\pi}v_{\pi}](s),
+\quad
+\forall\,s.
+\]
+
+• To find \(v_{\pi}\) in practice, one can solve the linear system
+
+\[
+v_{\pi}(s)
+\;-\;
+\gamma
+\sum_{a}\,\pi(a\mid s)\,\sum_{s'}\,P(s'\mid s,a)\,v_{\pi}(s')
+\;=\;
+\sum_{a}\,\pi(a\mid s)\,\sum_{s'}\,P(s'\mid s,a)\,R(s,a,s'),
+\]
+
+or iteratively apply \(\mathcal{T}_{\pi}\) (updating \(v \leftarrow \mathcal{T}_{\pi}v\) repeatedly) until convergence.
+
+4) **Policy Improvement (Outer Procedure)**
+
+Once we have \(v_{\pi}\), we “improve” \(\pi\) by constructing a new policy \(\pi'\). The Bellman Optimality principle says that for each state \(s\),
+
+\[
+\max_{a\in \mathcal{A}}
+\sum_{s'}
+P(s' \mid s,a)\,\Bigl[R(s,a,s')+\gamma\,v_{\pi}(s')\Bigr]
+\]
+
+is at least as large as the value of actually following \(\pi\). So, we define:
+
+\[
+\pi'(s)
+\;\in\;
+\arg\max_{a \,\in\, \mathcal{A}}
+\sum_{s'\,\in\,\mathcal{S}}
+P(s' \mid s,a)\,
+\bigl[
+  R(s,a,s') + \gamma\,v_{\pi}(s')
+\bigr].
+\]
+
+This improvement step ensures that \(\pi'\) is at least as good a policy as \(\pi\), and typically strictly better unless \(\pi\) was already optimal.
+
+5) **The Two-Step Iteration**
+
+Putting it all together:
+
+Algorithm: Policy Iteration
+
+1) Initialization:  
+   • Start with some initial policy \(\pi^{(0)}\).  
+   • Set iteration counter \(k = 0\).
+
+2) Policy Evaluation:  
+   • Given the current policy \(\pi^{(k)}\), compute \(v_{\pi^{(k)}}\) by either solving the linear system or iterating \(\mathcal{T}_{\pi^{(k)}}\) until convergence.
+
+3) Policy Improvement:  
+   • For each state \(s\in \mathcal{S}\), define
+
+\[
+   \pi^{(k+1)}(s)
+   \;\in\;
+   \arg\max_{a \,\in\,\mathcal{A}}
+   \Bigl[
+     \sum_{s'}
+     P(s' \mid s,a)\,\bigl(
+       R(s,a,s') + \gamma\,v_{\pi^{(k)}}(s')
+     \bigr)
+   \Bigr].
+\]
+
+4) Convergence Check:  
+   • If \(\pi^{(k+1)} = \pi^{(k)}\) (i.e., no change in every state), then \(\pi^{(k)}\) is optimal; stop. Otherwise, increment \(k\leftarrow k+1\) and return to Step 2.
+
+6) **Why It Works**
+
+• Monotonic Policy Improvement: Each new policy \(\pi^{(k+1)}\) is guaranteed to be better than or as good as \(\pi^{(k)}\).  
+• Finiteness of Policies: Because there are only finitely many policies in a finite MDP (|\(\mathcal{A}\)|ᵃ|\(\mathcal{S}\)| deterministic policies, plus additional stochastic possibilities), this process terminates in a finite number of iterations. Under standard conditions, policy iteration converges to an optimal policy \(\pi^{*}\).
+
+7) **Relation to Value Iteration**
+
+• Value Iteration: Directly iterates the Bellman Optimality operator \(\mathcal{T}\) on a value function, i.e., \(v ← \mathcal{T}v\).  
+• Policy Iteration: Alternates between (exact) policy evaluation and a “greedy” improvement step.  
+
+In practice, Policy Iteration can converge in fewer iterations than naive Value Iteration, but each iteration can be more expensive because exact policy evaluation (solving a system or iterating \(\mathcal{T}_{\pi}\) to convergence) might require significant computation.
+
+8) **Summary**
+
+• Policy Iteration consists of two nested procedures:  
+  1) Policy Evaluation: Compute \(v_{\pi}\) for the current policy \(\pi\).  
+  2) Policy Improvement: Create a new policy \(\pi'\) by acting greedily w.r.t. \(v_{\pi}\).  
+
+• Repeat these steps until the policy stops changing (i.e., becomes optimal).  
+
+Hence, although at first it looks like there might be two “loops,” conceptually the outer loop is over the sequence of improved policies \(\{\pi^{(0)}, \pi^{(1)}, \dots\}\), and each iteration includes a policy evaluation step and a policy improvement step. This process systematically converges to an optimal policy \(\pi^{*}\).
+
+
+## Policy improvement step explained
+
+On the policy improvement step, 
+
+\[
+\pi^{(k+1)}(s)
+   \;\in\;
+   \arg\max_{a \,\in\,\mathcal{A}}
+   \Bigl[
+     \sum_{s'}
+     P(s' \mid s,a)\,\bigl(
+       R(s,a,s') + \gamma\,v_{\pi^{(k)}}(s')
+     \bigr)
+   \Bigr].
+\]
+
+In words: maximize $   \Bigl[
+     \sum_{s'}
+     P(s' \mid s,a)\,\bigl(
+       R(s,a,s') + \gamma\,v_{\pi^{(k)}}(s')
+     \bigr)
+   \Bigr]$ across all actions. This results in a set $\mathcal{A}_{\text{opt}}$. Pick any action in $\mathcal{A}_{\text{opt}}$. The policy corresponding to this is the updated policy. Is this correct?
+
+**Answer**
+
+Below is a step-by-step clarification confirming that this is indeed the correct process in the policy improvement step of Policy Iteration, making sure to present all mathematical symbols in LaTeX:
+
+1) Policy Improvement Step  
+   Given the current policy \(\pi^{(k)}\) and its corresponding value function \(v_{\pi^{(k)}}\), the Bellman Optimality principle says that in each state \(s\), an action \(a\) is optimal if it attains the maximum value of:  
+
+\[
+   \sum_{s' \in \mathcal{S}} P(s' \mid s,a)\,\Bigl[R(s,a,s') \;+\; \gamma\,v_{\pi^{(k)}}(s')\Bigr].
+\]  
+
+2) Collecting Optimal Actions  
+   Denote by \(\mathcal{A}_{\text{opt}}(s)\) the set of all actions in \(\mathcal{A}\) that achieve this maximum in state \(s\). Formally,  
+
+\[
+   \mathcal{A}_{\text{opt}}(s)
+   \;=\;
+   \arg\max_{a \,\in\, \mathcal{A}}
+   \sum_{s' \,\in\,\mathcal{S}}
+   P(s' \mid s,a)\,
+   \Bigl[
+     R(s,a,s') + \gamma\,v_{\pi^{(k)}}(s')
+   \Bigr].
+\]  
+
+3) Constructing the New Policy \(\pi^{(k+1)}\)  
+   The policy improvement step says we can define  
+
+\[
+   \pi^{(k+1)}(s)
+   \;\in\;
+   \mathcal{A}_{\text{opt}}(s).
+\]  
+
+   In words, one can pick any action from \(\mathcal{A}_{\text{opt}}(s)\). If there are multiple equally good actions in state \(s\), you can choose any of them. This set of choices for every state \(s\) defines the new policy \(\pi^{(k+1)}\).  
+
+4) Conclusion  
+   • Indeed, the process is exactly as described: you compute the quantity  
+     \(\sum_{s'} P(s' \mid s,a)\,\bigl(R(s,a,s') + \gamma\,v_{\pi^{(k)}}(s')\bigr)\)  
+     for each action \(a\in \mathcal{A}\), identify the (possibly multiple) maximal actions, and pick any one among them to define \(\pi^{(k+1)}(s)\).  
+   • The result is that \(\pi^{(k+1)}\) is guaranteed to be at least as good as \(\pi^{(k)}\) (a phenomenon sometimes called “policy improvement”).  
+   • If there are ties, each tied action is equally good, so the new policy can choose any of them, and might itself be deterministic or stochastic (by randomizing among the tied actions); in either case, the policy is improved or equally good but never worse.  
+
+Hence, yes: the description of the policy improvement procedure—selecting from the set \(\mathcal{A}_{\text{opt}}(s)\)—is precisely the correct way to obtain the updated policy in Policy Iteration.
+
+## Convergence of Policy iteration algorithm
+
+The policy iteration algorithm results in a finite sequence $(\pi^{(k)}, v_{\pi^{(k)}}), (\pi^{(k+1)}, v_{\pi^{(k+1)}}), \cdots, $ until convergence. Formally show this to be true. If the MDP were countably finite, what happens?
+
+**Answer**
+
+Below is a step-by-step explanation showing why Policy Iteration (PI) in a finite Markov Decision Process (MDP) produces a finite sequence of policy-value pairs  \((\pi^{(k)},\,v_{\pi^{(k)}})\),  and clarifying what happens if the MDP is countably infinite. 
+
+1) **Policy Iteration in a Finite MDP**
+
+Policy Iteration consists of repeating the following two main steps:
+
+1. Policy Evaluation: Given a current policy \(\pi^{(k)}\), compute its value function \(v_{\pi^{(k)}}\).  
+2. Policy Improvement: Construct a new policy \(\pi^{(k+1)}\) that acts greedily with respect to \(v_{\pi^{(k)}}\).
+
+In more detail, the algorithm proceeds as follows:
+
+• Initialization:  
+  – Start with any initial policy \(\pi^{(0)}\).  
+  – Set iteration index \(k = 0\).
+
+• Policy Evaluation:  
+  – Compute \(v_{\pi^{(k)}}\) by solving the Bellman “policy evaluation” equation 
+
+\[
+    v_{\pi^{(k)}}(s)     \;=\; 
+    \sum_{a \,\in\,\mathcal{A}}
+    \pi^{(k)}(a \,\vert\, s)
+    \sum_{s' \,\in\,\mathcal{S}}
+    P\bigl(s' \,\vert\, s,\,a\bigr)
+    \Bigl[
+      R\bigl(s,a,s'\bigr)
+      + \gamma\,v_{\pi^{(k)}}(s')
+    \Bigr].
+\]
+
+• Policy Improvement:  
+  – For each state \(s\), define  
+
+\[
+    \pi^{(k+1)}(s) 
+    \;\in\;
+    \arg\max_{a \,\in\,\mathcal{A}}
+    \sum_{s' \,\in\,\mathcal{S}}
+    P\bigl(s' \,\vert\, s,a\bigr)\,
+    \Bigl[
+      R\bigl(s,a,s'\bigr)
+      + \gamma\,v_{\pi^{(k)}}(s')
+    \Bigr].
+\]
+
+• Convergence Check:  
+  – If \(\pi^{(k+1)} = \pi^{(k)}\) (i.e., it did not change in any state), then \(\pi^{(k)}\) is optimal and we stop. Otherwise, increment \(k \leftarrow k+1\) and repeat the evaluation and improvement steps.
+
+From this, we obtain a sequence of policy-value pairs:
+
+\[
+\bigl(\pi^{(0)},\,v_{\pi^{(0)}}\bigr),\,
+\bigl(\pi^{(1)},\,v_{\pi^{(1)}}\bigr),\,
+\dots
+\]
+
+2) **Monotonic Improvement and Finiteness**
+
+• Monotonic Policy Improvement:  
+  One can show (using the Policy Improvement Theorem) that each new policy \(\pi^{(k+1)}\) is at least as good as \(\pi^{(k)}\). In particular, for all states \(s\),  
+
+\[
+  v_{\pi^{(k+1)}}(s)
+  \;\ge\;
+  v_{\pi^{(k)}}(s).
+\]
+
+• Finite Number of Policies:  
+  In a finite MDP with \(\lvert\mathcal{S}\rvert = S\) and \(\lvert\mathcal{A}\rvert = A\), the number of deterministic policies is at most \(A^{S}\) (since each of the \(S\) states can be mapped to one of \(A\) actions). Hence, the sequence of policies \(\bigl(\pi^{(k)}\bigr)\) cannot produce infinitely many distinct policies with strictly increasing performance—sooner or later, it must stabilize.
+
+Therefore, in a finite MDP, the sequence  
+
+\[
+\Bigl(
+  \pi^{(0)},\,v_{\pi^{(0)}}
+\Bigr),\,
+\Bigl(
+  \pi^{(1)},\,v_{\pi^{(1)}}
+\Bigr),\,
+\dots
+\]
+
+remains finite because policy iteration cannot continue producing new and strictly better policies forever.
+
+3) **Behavior of the Algorithm**
+
+• If at iteration \(k\) we find \(\pi^{(k+1)} = \pi^{(k)}\), then \(\pi^{(k)}\) is optimal; the algorithm terminates.  
+• If \(\pi^{(k+1)} \neq \pi^{(k)}\), we proceed to iteration \(k+1\). Because there is a finite upper bound on how many different deterministic policies exist, the sequence must eventually terminate (or possibly earlier if the same policy recurs).
+
+Hence the Policy Iteration algorithm produces a \emph{finite} sequence of policy-value pairs and terminates with an optimal policy \(\pi^{*}\).
+
+4) **Countably Infinite State Space**
+
+• If the MDP has a $\textit{countably infinite}$ state space, the same basic monotonic improvement argument holds (each new policy is at least as good as the old one). However, the set of all deterministic policies may be uncountably large (since a countably infinite set of states each can choose from a finite action set). Hence the simple “there are only finitely many policies” argument no longer applies.  
+• In practice, one can still run Policy Iteration. Under certain boundedness and contraction assumptions, one can show that the policy sequence converges to an optimal or near-optimal policy. But it need not do so in a strictly finite number of steps. Rather, it might require infinitely many improvements to converge fully (or converge “in the limit”).
+
+5) **Conclusion**
+
+1. In a finite MDP, Policy Iteration yields a finite (strictly or lexicographically improving) sequence of policy-value pairs \(\bigl(\pi^{(k)}, v_{\pi^{(k)}}\bigr)\). Eventually, a policy repeats, indicating we have reached an optimal policy. Thus the process terminates in \emph{finite time}.  
+
+2. In a countably infinite MDP, the same monotonic improvement applies, but we cannot rely on “finitely many policies” to guarantee finite termination. The sequence may converge only in the limit, though under certain conditions we can still show convergence of the algorithm.
