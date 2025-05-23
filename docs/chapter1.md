@@ -1886,8 +1886,7 @@ Here, \(\pi(a \mid s)\) is a probability distribution over actions \(a\) (i.e., 
 We want to show that for any function \(f:\mathcal{A}\to\mathbb{R}\),
 
 \[
-\max_{\pi}\,\Bigl(\sum_{a}\,\pi(a \,\vert\, s)\,f(a)\Bigr)
-=
+\max_{\pi}\,\Bigl(\sum_{a}\,\pi(a \,\vert\, s)\,f(a)\Bigr) =
 \max_{a}\;f(a),
 \]
 
@@ -3277,3 +3276,385 @@ yielding
 \]
 
 • The Bellman optimality equation succinctly becomes \(v_{*} = \mathcal{T}\,v_{*}\), capturing the same idea as the scalar form but in a higher‐level matrix‐vector operator sense.
+
+
+## Policy Evaluation Operator $\mathcal{T}_{\pi}$
+
+The Bellman Optimality operator is:
+
+\[
+[\mathcal{T}v](s)
+\;=\;
+\max_{a\,\in\,\mathcal{A}}
+\sum_{s'\,\in\,\mathcal{S}}
+P(s'\mid s,a)\,
+\Bigl[
+  R(s,a,s')
+  \;+\;\gamma\,v(s')
+\Bigr]
+\]
+
+For a given policy $\pi$ we have the Bellman equation:
+
+\[
+v_{\pi}(s)
+\;=\;
+\sum_{a \,\in\, \mathcal{A}}
+\pi(a \,\vert\, s)
+\sum_{s' \,\in\, \mathcal{S}}
+P(s' \,\vert\, s,a)\,
+\Bigl[
+  R(s,a,s') 
+  \;+\;
+  \gamma\,v_{\pi}(s')
+\Bigr]
+\]
+
+Noting the similarities, is there a concept of a “policy evaluation operator” for a given policy $\pi$?
+
+**Answer**
+
+Below is a step-by-step explanation showing that, in parallel to the Bellman Optimality operator, one can define a “policy evaluation operator” for a given policy \(\pi\):
+
+1) **Bellman Optimality Operator**
+
+The Bellman Optimality operator, often denoted by \(\mathcal{T}\), acts on any candidate value function \(v\) to produce another value function \(\mathcal{T}v\). For each state \(s\):
+
+\[
+[\mathcal{T}v](s)
+\;=\;
+\max_{a \,\in\,\mathcal{A}}
+\sum_{s' \,\in\,\mathcal{S}}
+P\bigl(s' \mid s,\,a\bigr)
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v(s')
+\Bigr].
+\]
+
+This operator considers all actions \(a\), chooses the best one (via \(\max_{a}\)), and hence is used for finding or expressing the value function of an optimal policy.
+
+2) **Bellman Equation Under a Fixed Policy \(\pi\)**
+
+If we fix a policy \(\pi\), meaning that actions \(a\) are chosen with probability \(\pi(a \mid s)\) in each state \(s\), then the Bellman equation for the value function \(v_{\pi}\) is:
+
+\[
+v_{\pi}(s)
+\;=\;
+\sum_{a \,\in\,\mathcal{A}}
+\pi\bigl(a \mid s\bigr)
+\sum_{s' \,\in\,\mathcal{S}}
+P\bigl(s' \mid s,a\bigr)
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v_{\pi}(s')
+\Bigr].
+\]
+
+This is sometimes referred to as the Bellman Expectation Equation or the policy evaluation equation.
+
+3) **Defining a Policy Evaluation Operator \(\mathcal{T}_{\pi}\)**
+
+Analogous to how the Bellman Optimality operator \(\mathcal{T}\) uses a \(\max\) over actions, we can define an operator that uses the distribution \(\pi(a \mid s)\) instead of taking a maximum. Concretely, for any bounded value function \(v\), define
+
+\[
+\bigl[\mathcal{T}_{\pi}v\bigr](s)
+\;=\;
+\sum_{a \,\in\,\mathcal{A}}
+\pi\bigl(a \mid s\bigr)
+\sum_{s' \,\in\,\mathcal{S}}
+P\bigl(s' \mid s,a\bigr)
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v(s')
+\Bigr].
+\]
+
+Hence, \(\mathcal{T}_{\pi}\) replaces the “\(\max\)” with an expectation under \(\pi(a \mid s)\). This operator \(\mathcal{T}_{\pi}\) is often called the Bellman Expectation operator (or simply the policy evaluation operator) for the policy \(\pi\).
+
+4) **Fixed Point: \(\;v_{\pi} = \mathcal{T}_{\pi} v_{\pi}\)**
+
+The Bellman equation for \(v_{\pi}\) can be rewritten as
+
+\[
+v_{\pi}(s)
+\;=\;
+\bigl[\mathcal{T}_{\pi}v_{\pi}\bigr](s),
+\qquad
+\forall\,s \in \mathcal{S}.
+\]
+
+That is, \(v_{\pi}\) is a fixed point of the operator \(\mathcal{T}_{\pi}\). Under standard assumptions (finite state space, \(0 \le \gamma < 1\), bounded rewards), one can show:
+
+\[
+\|\mathcal{T}_{\pi}v - \mathcal{T}_{\pi}w\|_{\infty}
+\;\le\;
+\gamma\;\|v-w\|_{\infty},
+\]
+
+making \(\mathcal{T}_{\pi}\) a \(\gamma\)-contraction in the supremum norm. It follows from the Banach Fixed Point Theorem that repeated application of \(\mathcal{T}_{\pi}\) on any initial \(v\) converges to \(v_{\pi}\), the unique fixed point.
+
+5) **Summary**
+
+Yes, there is indeed a “policy evaluation operator” for a given policy \(\pi\). One defines
+
+\[
+\bigl[\mathcal{T}_{\pi}v\bigr](s)
+\;=\;
+\sum_{a \,\in\,\mathcal{A}}
+\pi(a \mid s)
+\sum_{s' \,\in\,\mathcal{S}}
+P(s' \mid s,a)
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v(s')
+\Bigr],
+\]
+
+and notes that \(\mathcal{T}_{\pi}\) maps bounded value functions to bounded value functions. The policy’s value function \(v_{\pi}\) is precisely the fixed point of \(\mathcal{T}_{\pi}\). This operator is a fundamental tool in Reinforcement Learning, where it is used for computing (or approximating) \(v_{\pi}\) for any given policy \(\pi\).
+
+
+
+## Value Interation Algorithm
+
+For the setting of a finite MDP, the Bellman optimality operator $\mathcal{T}$ has been shown to be a $\gamma$-contraction in the supremum norm. This suggests that we can use this fact to find the optimal state value $v_*(\cdot)$ by iteration. Let $k$ be the "time step" index. Let$v_0$ be the initial condition and suppose the data for the MDP - $\mathcal{S}, \mathcal{A}, P, \pi, \gamma$ are all provided. Write a step by step algorithm to find $v_*$.
+
+**Answer**
+
+Below is a step‐by‐step algorithm, commonly known as “Value Iteration,” that uses the fact that the Bellman Optimality operator $\mathcal{T}$ is a $\gamma$-contraction  in the supremum norm to find the optimal state‐value function $v_*$.
+
+All mathematical symbols and expressions are presented in standard LaTeX, and we assume a finite MDP with:  
+• A finite state space \(\mathcal{S} = \{s_{1},\dots,s_{|\mathcal{S}|}\}\).  
+• A finite action space \(\mathcal{A} = \{a_{1},\dots,a_{|\mathcal{A}|}\}\).  
+• Transition kernel \(P(s' \mid s,a)\) for each \((s,a)\).  
+• Reward function \(R(s,a,s')\).  
+• Discount factor \(0 \le \gamma < 1\).  
+
+1) **Notation: The Bellman Optimality Operator**
+
+Recall that the Bellman Optimality operator \(\mathcal{T}\) acts on a value function \(v:\mathcal{S}\to \mathbb{R}\) as follows:
+
+\[
+[\mathcal{T}v](s)
+\;=\;
+\max_{a \in \mathcal{A}}
+\;\sum_{s' \in \mathcal{S}}
+P\bigl(s' \mid s,a\bigr)\,
+\Bigl[
+  R(s,a,s')
+  \;+\;
+  \gamma\,v(s')
+\Bigr].
+\]
+
+Since \(\mathcal{T}\) is a \(\gamma\)‐contraction in the \(\|\cdot\|_{\infty}\) norm (the supremum norm), repeated application of \(\mathcal{T}\) to any initial function \(v_{0}\) will converge to the unique fixed point \(v_{*}\). This fixed point is the optimal value function for the MDP.
+
+2) **Value Iteration Algorithm**
+
+◾ ***Input:***
+(1) The set of states \(\mathcal{S}\) (finite).  
+(2) The set of actions \(\mathcal{A}\) (finite).  
+(3) Transition probabilities \(P(s' \mid s,a)\).  
+(4) Reward function \(R(s,a,s')\).  
+(5) Discount factor \(\gamma \in [0,1]\).  
+(6) An initial value function \(v_{0}:\mathcal{S}\to\mathbb{R}\). Frequently \(v_{0}\) is just the zero function or arbitrary values.
+
+◾ ***Procedure:***
+
+(1) Initialize \(k=0\).  
+(2) For each state \(s \in \mathcal{S}\), set \(v_{k}(s)\) to some initial value (e.g., 0).  
+(3) Repeat (Value Iteration Step):  
+   (a) For each state \(s\in \mathcal{S}\), compute
+
+\[
+   v_{k+1}(s)    \;=\;
+   [\mathcal{T}v_{k}](s)    \;=\;    \max_{a\in \mathcal{A}}
+   \sum_{s'\in \mathcal{S}}
+   P(s'\mid s,a)    \Bigl[  R(s,a,s') + \gamma\,v_{k}(s')    \Bigr].
+\]
+
+   (b) Check for convergence in the supremum norm or any other criterion. For instance, one common stopping rule is:
+
+\[
+   \|\,v_{k+1} - v_{k}\,\|_{\infty} \;=\;    \sup_{s\in \mathcal{S}}
+   \bigl|\,v_{k+1}(s) - v_{k}(s)\bigr|
+   \;\le\;\varepsilon(1 - \gamma)/\gamma,
+\]
+
+   or use an iteration limit, or other threshold to decide when to stop.
+
+(4) If not converged, increment \(k \leftarrow k+1\) and go back to step (3).  
+(5) Once convergence is detected (or after sufficient iterations), the current \(v_{k}\) is (approximately) the optimal value function \(v_{*}\).  
+
+3) **Output and Convergence**
+
+• Output: \(v_{*}\approx v_{k}\), the converged state‐value function.  
+• By the \(\gamma\)‐contraction property of \(\mathcal{T}\), we are guaranteed that \(v_{k}\) converges to the unique fixed point \(v_{*}\), satisfying
+
+\[
+v_{*}(s) =
+[\mathcal{T}v_{*}](s) =
+\max_{a}
+\sum_{s'}
+P(s'\mid s,a)\,\bigl[R(s,a,s') + \gamma\,v_{*}(s')\bigr].
+\]
+
+This \(v_{*}\) is the optimal state‐value function for the MDP.
+
+4) **Final Algorithm Summary**
+
+Algorithm: Value Iteration
+
+1) Initialize \(v_{0}\) (e.g., to zeros).  
+2) For \(k=0,1,2,\dots\):  
+   • For each \(s\in\mathcal{S}\):
+
+\[
+   v_{k+1}(s)
+   = \max_{a \in\mathcal{A}}
+     \sum_{s'\in \mathcal{S}}
+     P(s'\mid s,a)\,\Bigl[
+       R(s,a,s')
+       + \gamma\,v_{k}(s')
+     \Bigr].
+\]
+
+3) If \(\|v_{k+1} - v_{k}\|_{\infty}\le\delta\) or \(k\) is sufficiently large, terminate.  
+4) Return \(v_{k+1}\) as the approximate (or exact) optimal value function \(v_{*}\).
+
+This completes the step‐by‐step algorithm for finding \(v_{*}\) by iterating the Bellman Optimality operator.
+
+## From optimal value to optimal policy
+
+Once the optimal $v_*$ is known, how to recover the optimal policy or policies recognizing the non-uniqueness of the optimal policy?
+
+**Answer**
+
+Below is a step-by-step explanation of how to recover at least one optimal policy (or multiple) after having computed the optimal value function $v_*(\cdot)$. All mathematical symbols and expressions are written in LaTeX.
+
+1) **Setting: Known Optimal Value Function $v_*(\cdot)$**
+
+Assume we have a finite MDP with:
+• Finite state space \(\mathcal{S} = \{s_1, \dots, s_{|\mathcal{S}|}\}\).  
+• Finite action space \(\mathcal{A}\).  
+• Transition probabilities \(P(s' \mid s, a)\).  
+• Reward function \(R(s, a, s')\).  
+• Discount factor \(0 \le \gamma < 1\).  
+
+We assume the optimal state-value function \(v_{*}(s)\) is known (e.g., from Value Iteration, Policy Iteration, or another method). Recall that \(v_{*}\) satisfies:
+
+\[
+v_{*}(s)
+\;=\;
+\max_{a \,\in\, \mathcal{A}}
+\sum_{s' \,\in\, \mathcal{S}}
+P(s' \,\vert\, s,a)
+\Bigl[
+  R(s,a,s') + \gamma\,v_{*}(s')
+\Bigr].
+\]
+
+2) **Recovering an Optimal Policy: Basic Idea**
+
+The Bellman Optimality equation indicates that for each state \(s\), an optimal action \(a^{*}\) achieves that maximum:
+
+\[
+a^{*}
+\;\in\;
+\arg\max_{a \in \mathcal{A}}
+\sum_{s'}
+P(s' \mid s,a)\,\Bigl[R(s,a,s') + \gamma\,v_{*}(s')\Bigr].
+\]
+
+Hence, once \(v_{*}\) is known, the “optimal” action(s) at each state \(s\) can be found by evaluating the right-hand side for every action \(a\in\mathcal{A}\) and picking an action that achieves the maximum.  
+
+3) **Non-Uniqueness: Potential Ties**
+
+If there is more than one action \(a\) that attains the same maximal value in state \(s\), then all such actions are equally good. That is,
+
+\[
+\sum_{s'}
+P(s' \,\vert\, s,a_{1})
+\Bigl[
+  R(s,a_{1},s') + \gamma\,v_{*}(s')
+\Bigr]
+\;=\;
+\sum_{s'}
+P(s' \,\vert\, s,a_{2})
+\Bigl[
+  R(s,a_{2},s') + \gamma\,v_{*}(s')
+\Bigr],
+\]
+
+and both equal \(\max_{a}\sum_{s'}[\dots]\). Consequently, there may be multiple different actions that are all optimal in state \(s\).  
+
+4) **Constructing a Deterministic Policy**
+
+A standard procedure:
+
+• For each state \(s \in \mathcal{S}\), compute
+
+\[
+Q_{*}(s,a) =
+\sum_{s'}
+P(s' \mid s,a)\,
+\Bigl[
+  R(s,a,s') + \gamma\,v_{*}(s')
+\Bigr]
+\]
+
+(This is the state-action “optimal” Q-value if we view \(v_{*}\) as the correct continuation. Technically $Q_*(s,a)  = R(s,a,s') + \gamma v_*(s')$, but once $v_*$ is known, we can plug it in to get $Q_*(\cdot)$.)
+
+• Pick any action \(a^{*}(s)\) that satisfies
+
+\[
+a^{*}(s) \in \arg\max_{a\in\mathcal{A}}\;Q_{*}(s,a).
+\]
+
+• Define the deterministic policy \(\pi_{*}\) by
+
+\[
+\pi_{*}(s) = a^{*}(s).
+\]
+
+5) **Constructing a Stochastic (Mixed) Policy**
+
+In states where multiple actions tie for the maximum, one could choose a stochastic policy that randomizes among all such tying actions. Formally:
+
+• Let \(\mathcal{A}_{\text{opt}}(s)\) = { all a ∈ 𝓐 that achieve the maximum at s }.  
+• Define
+
+\[
+\pi_{*}(a \mid s) =
+\begin{cases}
+\frac{1}{|\mathcal{A}_{\text{opt}}(s)|}, & a \in \mathcal{A}_{\text{opt}}(s),\\
+0, & \text{otherwise}.
+\end{cases}
+\]
+
+All such policies are also optimal because each action in \(\mathcal{A}_{\text{opt}}(s)\) yields the same value.  
+
+6) **Summary: Recovering an Optimal Policy (or Policies)**
+
+1. Once \(v_{*}\) is known, compute for each state-action pair \((s,a)\) the quantity
+
+\[
+Q_{*}(s,a) =
+\sum_{s'}
+P(s' \mid s,a)\,
+\bigl[
+  R(s,a,s') + \gamma\,v_{*}(s')
+\bigr].
+\]
+
+2. For each state \(s\), find the set of actions that maximize $Q_{*}(s,a)$. This set may contain one action or multiple.  
+
+3. To get a deterministic policy, pick any single maximizing action in each state. If multiple actions are ties, choose an arbitrary one among them.  
+
+4. To get a stochastic policy, assign positive probabilities among all of the tying actions in \(\mathcal{A}_{\text{opt}}(s)\).  
+
+All such resulting policies are optimal and yield the optimal value $v_*(\cdot)$ for the MDP — reflecting the potential non‐uniqueness of optimal policies in a finite MDP.
