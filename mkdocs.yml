@@ -30,7 +30,7 @@ markdown_extensions:
   # For Table of Contents within a page
   - toc:
       permalink: true # Adds anchor links to headings
-      toc_depth: "1-4"  # Show H2, H3, H4 in the page's TOC
+      toc_depth: "1-2"  # Show H2, H3, H4 in the page's TOC
 
   # For LaTeX math (inline and display)
   - pymdownx.arithmatex:
