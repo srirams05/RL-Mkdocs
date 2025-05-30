@@ -659,6 +659,60 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#model-free-estimate-of-v_pi" class="md-nav__link">
+    <span class="md-ellipsis">
+      Model Free - estimate of \(v_{\pi}\)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variance-of-hatv_m-estimated-state-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variance of \(\hat{v_m}\) - estimated state value
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#first-visit-monte-carlo" class="md-nav__link">
+    <span class="md-ellipsis">
+      "First Visit" Monte Carlo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mc-policy-iteration" class="md-nav__link">
+    <span class="md-ellipsis">
+      MC Policy Iteration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fully-model-free" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fully model free
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exploration-vs-exploitation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exploration vs Exploitation
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2608,7 +2662,7 @@ P\bigl(s' \,\vert\, s,a\bigr)\,
 <p>• This essentially says: from state <span class="arithmatex">\(s\)</span>, pick the action <span class="arithmatex">\(a\)</span> that maximizes the immediate expected reward plus the discounted future.  </p>
 <p>2) <strong>One-Step Lookahead + Max</strong></p>
 <p>• Observe that the right-hand side of the above equation is a function of <span class="arithmatex">\(v_{*}\)</span>.<br />
-• If we do not yet know <span class="arithmatex">\(v_{*}\)</span>, but have some candidate bounded value function <span class="arithmatex">\(v\)</span>, we can \emph{approximate} what it means to “pick the best action based on <span class="arithmatex">\(v\)</span>,” by replacing <span class="arithmatex">\(v_{*}(s')\)</span> with <span class="arithmatex">\(v(s')\)</span>.<br />
+• If we do not yet know <span class="arithmatex">\(v_{*}\)</span>, but have some candidate bounded value function <span class="arithmatex">\(v\)</span>, we can <span class="arithmatex">\(\textit{approximate}\)</span> what it means to “pick the best action based on <span class="arithmatex">\(v\)</span>,” by replacing <span class="arithmatex">\(v_{*}(s')\)</span> with <span class="arithmatex">\(v(s')\)</span>.<br />
 • Consequently, to get a new function <span class="arithmatex">\(\bigl[\mathcal{T}v\bigr]\)</span>(s), we do exactly</p>
 <div class="arithmatex">\[
 \max_{a \in \mathcal{A}}
@@ -2661,7 +2715,7 @@ v_{*}(s)
 \quad\text{for all }s.
 \]</div>
 <p>• In short, if you plug <span class="arithmatex">\(v_{*}\)</span> into <span class="arithmatex">\(\mathcal{T}\)</span>, you get the same function <span class="arithmatex">\(v_{*}\)</span> back.<br />
-• Under standard assumptions (finite <span class="arithmatex">\(\mathcal{S}, \mathcal{A}\)</span>, <span class="arithmatex">\(\gamma &lt; 1\)</span>, bounded rewards), this fixed point is unique, and repeated application of <span class="arithmatex">\(\mathcal{T}\)</span> (starting from \emph{any} bounded function <span class="arithmatex">\(v^{(0)}\)</span>) converges to <span class="arithmatex">\(v_{*}\)</span> in the supremum norm.</p>
+• Under standard assumptions (finite <span class="arithmatex">\(\mathcal{S}, \mathcal{A}\)</span>, <span class="arithmatex">\(\gamma &lt; 1\)</span>, bounded rewards), this fixed point is unique, and repeated application of <span class="arithmatex">\(\mathcal{T}\)</span> (starting from <span class="arithmatex">\(\textit{any}\)</span> bounded function <span class="arithmatex">\(v^{(0)}\)</span>) converges to <span class="arithmatex">\(v_{*}\)</span> in the supremum norm.</p>
 <p>6) <strong>Summary</strong></p>
 <p>Given a bounded function <span class="arithmatex">\(v\)</span>, <span class="arithmatex">\(\bigl[\mathcal{T}v\bigr](s)\)</span> is obtained by taking the one-step expected reward (averaging over next states <span class="arithmatex">\(s'\)</span> with probabilities <span class="arithmatex">\(P(s'\mid s,a)\)</span>), adding the discounted future value <span class="arithmatex">\(\gamma\,v(s')\)</span>, and finally choosing the action <span class="arithmatex">\(a\)</span> that maximizes this sum. Mathematically,</p>
 <div class="arithmatex">\[
@@ -3636,19 +3690,493 @@ P(s' \mid s,a)\,
 <p>3) <strong>Behavior of the Algorithm</strong></p>
 <p>• If at iteration <span class="arithmatex">\(k\)</span> we find <span class="arithmatex">\(\pi^{(k+1)} = \pi^{(k)}\)</span>, then <span class="arithmatex">\(\pi^{(k)}\)</span> is optimal; the algorithm terminates.<br />
 • If <span class="arithmatex">\(\pi^{(k+1)} \neq \pi^{(k)}\)</span>, we proceed to iteration <span class="arithmatex">\(k+1\)</span>. Because there is a finite upper bound on how many different deterministic policies exist, the sequence must eventually terminate (or possibly earlier if the same policy recurs).</p>
-<p>Hence the Policy Iteration algorithm produces a \emph{finite} sequence of policy-value pairs and terminates with an optimal policy <span class="arithmatex">\(\pi^{*}\)</span>.</p>
+<p>Hence the Policy Iteration algorithm produces a <span class="arithmatex">\(\textit{finite}\)</span> sequence of policy-value pairs and terminates with an optimal policy <span class="arithmatex">\(\pi^{*}\)</span>.</p>
 <p>4) <strong>Countably Infinite State Space</strong></p>
 <p>• If the MDP has a <span class="arithmatex">\(\textit{countably infinite}\)</span> state space, the same basic monotonic improvement argument holds (each new policy is at least as good as the old one). However, the set of all deterministic policies may be uncountably large (since a countably infinite set of states each can choose from a finite action set). Hence the simple “there are only finitely many policies” argument no longer applies.<br />
 • In practice, one can still run Policy Iteration. Under certain boundedness and contraction assumptions, one can show that the policy sequence converges to an optimal or near-optimal policy. But it need not do so in a strictly finite number of steps. Rather, it might require infinitely many improvements to converge fully (or converge “in the limit”).</p>
 <p>5) <strong>Conclusion</strong></p>
 <ol>
 <li>
-<p>In a finite MDP, Policy Iteration yields a finite (strictly or lexicographically improving) sequence of policy-value pairs <span class="arithmatex">\(\bigl(\pi^{(k)}, v_{\pi^{(k)}}\bigr)\)</span>. Eventually, a policy repeats, indicating we have reached an optimal policy. Thus the process terminates in \emph{finite time}.  </p>
+<p>In a finite MDP, Policy Iteration yields a finite (strictly or lexicographically improving) sequence of policy-value pairs <span class="arithmatex">\(\bigl(\pi^{(k)}, v_{\pi^{(k)}}\bigr)\)</span>. Eventually, a policy repeats, indicating we have reached an optimal policy. Thus the process terminates in <span class="arithmatex">\(\textit{finite time}\)</span>.  </p>
 </li>
 <li>
 <p>In a countably infinite MDP, the same monotonic improvement applies, but we cannot rely on “finitely many policies” to guarantee finite termination. The sequence may converge only in the limit, though under certain conditions we can still show convergence of the algorithm.</p>
 </li>
 </ol>
+<h2 id="model-free-estimate-of-v_pi">Model Free - estimate of <span class="arithmatex">\(v_{\pi}\)</span><a class="headerlink" href="#model-free-estimate-of-v_pi" title="Permanent link">&para;</a></h2>
+<p>The state value function <span class="arithmatex">\(v_{\pi}(s) \;=\; \mathbb{E}\bigl[G_t \,\big\vert\, S_t = s \bigr]\)</span> could be estimated as follows without needing to know the state transition and reward functions.</p>
+<ul>
+<li>For a given policy <span class="arithmatex">\(\pi\)</span>, starting in each state <span class="arithmatex">\(s_i \in S\)</span>, generate <span class="arithmatex">\(m\)</span> trajectories. Each trajectory has a return <span class="arithmatex">\(g_i\)</span>. Then we have:</li>
+</ul>
+<div class="arithmatex">\[
+v_{\pi}(s) \;=\; \mathbb{E}\bigl[G_t \,\big\vert\, S_t = s \bigr] = \frac{1}{m} \sum_1^m g_i
+\]</div>
+<p>Is this correct?</p>
+<p><strong>Answer</strong></p>
+<p>Yes—under the usual Monte-Carlo assumptions the formula you wrote is a legitimate, unbiased estimator of the state-value function <span class="arithmatex">\(v_{\pi}(s)\)</span>.  Below is a short justification and some caveats.</p>
+<ol>
+<li><strong>Definitions</strong>
+ • For a fixed policy <span class="arithmatex">\(\pi\)</span> and a fixed starting state <span class="arithmatex">\(s\)</span> we let  </li>
+</ol>
+<div class="arithmatex">\[
+G_t \;=\; \sum_{k=0}^{\infty} \gamma^{\,k}\,R_{t+k+1}
+\]</div>
+<p>denote the (discounted) return obtained by following <span class="arithmatex">\(\pi\)</span> from that state onward.<br />
+ •  The value function is the expectation of that random return:  </p>
+<div class="arithmatex">\[
+v_{\pi}(s)
+\;=\;
+\mathbb{E}[\,G_t \mid S_t = s,\pi\,].
+\]</div>
+<ol>
+<li><strong>Monte-Carlo estimate</strong>
+ •  Generate <span class="arithmatex">\(m\)</span> independent episodes (or trajectories) that all start in <span class="arithmatex">\(s\)</span> and thereafter follow <span class="arithmatex">\(\pi\)</span>.<br />
+ •  Let <span class="arithmatex">\(g_i\)</span> be the realised return of the <span class="arithmatex">\(i\)</span>-th trajectory.<br />
+ •  The sample mean  </li>
+</ol>
+<div class="arithmatex">\[
+\hat v_m(s)\;=\;\frac{1}{m}\sum_{i=1}^{m} g_i
+\]</div>
+<p>is an unbiased estimator:</p>
+<div class="arithmatex">\[
+\mathbb{E}[\hat v_m(s)]
+=\frac{1}{m}\sum_{i=1}^{m}\mathbb{E}[\,g_i\,]
+=v_{\pi}(s).
+\]</div>
+<ol>
+<li><strong>Convergence</strong>
+ By the (strong) law of large numbers,</li>
+</ol>
+<div class="arithmatex">\[
+\hat v_m(s)\;\xrightarrow[m\to\infty]{\text{a.s.}}\;v_{\pi}(s),
+\]</div>
+<p>provided the return has finite variance (guaranteed if rewards are bounded and <span class="arithmatex">\(0\le\gamma&lt;1\)</span>).</p>
+<ol>
+<li><strong>Caveats</strong>
+ •  The variance of <span class="arithmatex">\(\hat v_m(s)\)</span> can be large; in practice one often uses variance-reduction tricks (e.g., first-visit returns, every-visit returns, control variates, etc.).<br />
+ •  If episodes do not terminate, one must truncate or use discounting strictly less than 1 so that <span class="arithmatex">\(G_t\)</span> is finite.<br />
+ •  This is a “model-free” estimate: no knowledge of <span class="arithmatex">\(P\)</span> or <span class="arithmatex">\(R\)</span> is required—only the ability to sample trajectories under policy <span class="arithmatex">\(\pi\)</span>.</li>
+</ol>
+<p>Within those assumptions the formula is correct: averaging the observed returns from multiple roll-outs that start in state <span class="arithmatex">\(s\)</span> indeed yields a Monte-Carlo estimate of <span class="arithmatex">\(v_{\pi}(s)\)</span>.</p>
+<h2 id="variance-of-hatv_m-estimated-state-value">Variance of <span class="arithmatex">\(\hat{v_m}\)</span> - estimated state value<a class="headerlink" href="#variance-of-hatv_m-estimated-state-value" title="Permanent link">&para;</a></h2>
+<p>Provide more color on your comment that the variance of <span class="arithmatex">\(\hat{v}_m\)</span> can be large and that certain tricks are used to deal with this. What are these tricks and how do they reduce the variation?</p>
+<p><strong>Answer</strong></p>
+<p>Why the naïve Monte-Carlo estimate  </p>
+<div class="arithmatex">\[
+\hat v_{m}(s)\;=\;\frac1m\sum_{i=1}^{m}G^{(i)}
+\qquad
+\bigl(G^{(i)}=\text{return of the }i\text{-th roll–out from }s\bigr)
+\]</div>
+<p>often has high variance and what is done about it is a central topic in practical reinforcement–learning.<br />
+Below is a compact survey of the main causes of variance and the classical tricks for reducing it.</p>
+<p>1  <strong>Where does the variance come from?</strong></p>
+<ol>
+<li>Long horizons<br />
+ The random return  </li>
+</ol>
+<div class="arithmatex">\[
+G=\sum_{k=0}^{\infty}\gamma^{k}R_{k+1}
+\]</div>
+<p>contains many random rewards.  The longer the (effective) horizon <span class="arithmatex">\(1/(1-\gamma)\)</span>, the more additive noise contributes.</p>
+<ol>
+<li>
+<p><strong><em>Stochastic transitions and actions</em></strong>
+ Even with deterministic rewards, the stochastic path of states under <span class="arithmatex">\(\pi\)</span> makes <span class="arithmatex">\(G\)</span> a sum of many random terms.</p>
+</li>
+<li>
+<p><strong><em>Importance sampling (off–policy MC)</em></strong>
+ If one estimates <span class="arithmatex">\(v_{\pi}\)</span> from data generated by another policy <span class="arithmatex">\(\mu\)</span> one multiplies each return by an importance weight<br />
+<span class="arithmatex">\(\displaystyle \rho=\prod_{t}\frac{\pi(A_{t}\mid S_{t})}{\mu(A_{t}\mid S_{t})}\)</span>.<br />
+Weights can explode, inflating variance.</p>
+</li>
+</ol>
+<p>2  <strong>Variance–reduction “tricks”</strong></p>
+<p>Below <span class="arithmatex">\(G\)</span> denotes the raw return; <span class="arithmatex">\(b\)</span> is a suitably chosen <span class="arithmatex">\(\textit{baseline}\)</span>; <span class="arithmatex">\(V\)</span> or <span class="arithmatex">\(\hat v\)</span> stands for a bootstrapped value estimate.</p>
+<p>✦ $\textbf{(a) Bootstrapping / TD methods}  $
+ Replace the full return by a target that uses an estimate for the tail:</p>
+<div class="arithmatex">\[
+G_{\text{TD(0)}} 
+\;=\;
+R_{1}+\gamma\,\hat v(S_{1}),
+\]</div>
+<p>or more generally <span class="arithmatex">\(n\)</span>-step and <span class="arithmatex">\(\lambda\)</span>-return targets.<br />
+  • Lowers variance because only the first <span class="arithmatex">\(n\)</span> rewards are sampled, the rest is a (less noisy) estimate.<br />
+  • Introduces bias; TD(0) has lowest variance / highest bias, Monte-Carlo has zero bias / highest variance.<br />
+  • <span class="arithmatex">\(\lambda\)</span>-returns (TD(<span class="arithmatex">\(\lambda\)</span>)) give an adjustable bias–variance trade-off.</p>
+<p>✦ $\textbf{(b) Control variates / baselines} $ 
+ Subtract a baseline <span class="arithmatex">\(b(s)\)</span> that does <span class="arithmatex">\(\textit{not}\)</span> depend on the action choice that generated the return (thus keeping the estimator unbiased):</p>
+<div class="arithmatex">\[
+\tilde G \;=\; G - b(s) + b(s)
+\quad\Longrightarrow\quad
+\hat v_{m}(s)\;=\;\frac1m\sum_{i}(G^{(i)}-b(s))+b(s).
+\]</div>
+<p>Choosing <span class="arithmatex">\(b(s)=\mathbb{E}[G\mid S_{0}=s]\)</span> minimises variance (theoretical optimum; in practice one uses a running estimate).<br />
+Popular in policy-gradient methods where <span class="arithmatex">\(b\)</span> is called a <span class="arithmatex">\(\textit{baseline}\)</span> and the centered term <span class="arithmatex">\(G-b\)</span> is the <span class="arithmatex">\(\textit{advantage}\)</span>.</p>
+<p>✦ $\textbf{(c) First-visit versus every-visit MC}  $
+ Using only the first return observed from state <span class="arithmatex">\(s\)</span> in each episode avoids correlation among multiple visits, reducing variance at the cost of slower data usage.</p>
+<p>✦ $\textbf{(d) Reward discounting / truncation}  $
+ Smaller <span class="arithmatex">\(\gamma\)</span> or “cutting” the horizon after <span class="arithmatex">\(H\)</span> steps shrinks the contribution of distant, noisy rewards.</p>
+<p>✦ $\textbf{(e) Weighted / truncated importance sampling}  $
+ In off-policy MC one can use <span class="arithmatex">\(\textit{weighted}\)</span> or <span class="arithmatex">\(\textit{per-decision}\)</span> importance sampling and cap the weights:</p>
+<p>[
+\tilde\rho_t=\min{\rho_t,\;c},
+]
+to control weight explosion; reduces variance at the price of bias.</p>
+<p>✦ $\textbf{(f) Common random numbers / paired trajectories}  $
+ When comparing two policies, use the same random seeds so that path variability cancels out (classical variance-reduction trick from simulation).</p>
+<p>✦ $\textbf{(g) Reward shaping (potential-based)}  $
+ Add a potential-based shaping reward  </p>
+<div class="arithmatex">\[
+F(s,a,s') = \gamma\Phi(s')-\Phi(s)
+\]</div>
+<p>which leaves optimal policies unchanged but can drastically reduce variance of returns by making rewards less sparse.</p>
+<p>3  <strong>Bias–variance balance</strong></p>
+<p>Most tricks trade bias for variance (bootstrapping, weight clipping, horizon truncation).<br />
+The total mean-squared error</p>
+<div class="arithmatex">\[
+\operatorname{MSE}(\hat v)
+=
+\underbrace{\bigl(\mathbb{E}[\hat v]-v_{\pi}\bigr)^{2}}_{\text{bias}^{2}}
++
+\underbrace{\operatorname{Var}(\hat v)}_{\text{variance}}
+\]</div>
+<p>is what ultimately matters; many practical algorithms (TD(<span class="arithmatex">\(\lambda\)</span>), GAE, etc.) expose a bias knob so one can find a sweet spot of low MSE.</p>
+<p>4  <strong>Take-away</strong></p>
+<p>• The naïve “average of full returns” estimator is unbiased but can be very noisy, especially with large <span class="arithmatex">\(\gamma\)</span> or long episodes.<br />
+• Bootstrapping (TD), baselines/advantages, importance-sampling tweaks, and other control-variate ideas are common remedies that reduce variance—often at the cost of introducing some bias—but usually achieve a far lower MSE in practice.</p>
+<h2 id="first-visit-monte-carlo">"First Visit" Monte Carlo<a class="headerlink" href="#first-visit-monte-carlo" title="Permanent link">&para;</a></h2>
+<p>Explain the first visit MC trick more carefully.</p>
+<p><strong>Answer</strong></p>
+<p>Below is a self–contained explanation of the “first–visit Monte-Carlo (MC)’’ trick for estimating the state–value function <span class="arithmatex">\(v_{\pi}\)</span> of a given policy <span class="arithmatex">\(\pi\)</span>.  All mathematical symbols and expressions are written in standard <span class="arithmatex">\(\LaTeX\)</span>.</p>
+<p>1  <strong>Recap:  Monte-Carlo estimation of <span class="arithmatex">\(v_{\pi}\)</span></strong></p>
+<p>For a fixed policy <span class="arithmatex">\(\pi\)</span> and a fixed start state <span class="arithmatex">\(s\)</span> we define the (discounted) return  </p>
+<div class="arithmatex">\[
+G_{t} \;=\; \sum_{k=0}^{\infty} \gamma^{k}\,R_{t+k+1},
+\qquad 0\le\gamma&lt;1 .
+\]</div>
+<p>The state–value function is  </p>
+<div class="arithmatex">\[
+v_{\pi}(s) \;=\; \mathbb{E}_{\pi}[\,G_{t}\,\vert\,S_{t}=s\,].
+\]</div>
+<p>A naïve Monte-Carlo estimator draws <span class="arithmatex">\(m\)</span> complete episodes that all <span class="arithmatex">\(\textit{start}\)</span> in <span class="arithmatex">\(s\)</span> and follows <span class="arithmatex">\(\pi\)</span> thereafter.<br />
+If <span class="arithmatex">\(g_{1},\dots,g_{m}\)</span> denote the returns of those episodes, the sample mean  </p>
+<div class="arithmatex">\[
+\hat v_{m}^{\text{naive}}(s) \;=\; \frac1m\sum_{i=1}^{m} g_{i}
+\]</div>
+<p>is unbiased for <span class="arithmatex">\(v_{\pi}(s)\)</span> but may suffer high variance—especially when the state <span class="arithmatex">\(s\)</span> is visited many times in a single episode, creating strongly correlated samples.</p>
+<p>2  <strong>First–visit versus every–visit</strong></p>
+<p>Consider one complete episode generated under <span class="arithmatex">\(\pi\)</span>:</p>
+<div class="arithmatex">\[
+S_{0},A_{0},R_{1},\;S_{1},A_{1},R_{2},\;\dots,S_{T},
+\]</div>
+<p>and let <span class="arithmatex">\(G_{t}\)</span> be the return observed from time step <span class="arithmatex">\(t\)</span>.<br />
+The state <span class="arithmatex">\(s\)</span> may appear multiple times inside that episode (e.g. at time steps <span class="arithmatex">\( t_{1}&lt; t_{2} \dots\)</span>).</p>
+<p>• $\textbf{Every-visit Monte-Carlo:}  $
+  use <span class="arithmatex">\(\textit{all}\)</span> returns <span class="arithmatex">\(G_{t_{1}},G_{t_{2}},\dots\)</span> that correspond to state <span class="arithmatex">\(s\)</span> in this episode.<br />
+  These returns are highly correlated because they share suffixes of rewards.</p>
+<p>• $\textbf{First-visit Monte-Carlo:}  $
+  use <span class="arithmatex">\(\textit{only}\)</span> the return of the <span class="arithmatex">\(\underline{first}\)</span> occurrence of <span class="arithmatex">\(s\)</span> in the episode.<br />
+  I.e. if <span class="arithmatex">\(t_{\text{first}}=\min\{\,t : S_{t}=s\,\}\)</span>, record the single value <span class="arithmatex">\(G_{t_{\text{first}}}\)</span> and ignore later occurrences of <span class="arithmatex">\(s\)</span> in the same episode.</p>
+<p>Over many independent episodes the set of first-visit returns gives an i.i.d. sample of <span class="arithmatex">\(G_{t}\)</span> conditional on <span class="arithmatex">\(\{S_{t}=s\}\)</span>, whereas every-visit returns are neither independent nor identically distributed across a single episode.</p>
+<p>3  <strong>Unbiasedness of the first-visit estimator</strong></p>
+<p>Let <span class="arithmatex">\(G^{(i)}_{\text{FV}}\)</span> be the first-visit return for state <span class="arithmatex">\(s\)</span> observed in episode <span class="arithmatex">\(i\)</span>.<br />
+Because each episode is generated independently and starts from the MDP’s initial-state distribution (or from a resetting simulator) we have  </p>
+<div class="arithmatex">\[
+\mathbb{E}[\,G^{(i)}_{\text{FV}}\,] \;=\; v_{\pi}(s),
+\]</div>
+<p>so the estimator  </p>
+<div class="arithmatex">\[
+\hat v_{m}^{\text{FV}}(s) \;=\; \frac{1}{m}\sum_{i=1}^{m} G^{(i)}_{\text{FV}}
+\]</div>
+<p>is unbiased.  The strong law of large numbers then gives  </p>
+<div class="arithmatex">\[
+\hat v_{m}^{\text{FV}}(s)\xrightarrow[m\to\infty]{\text{a.s.}} v_{\pi}(s).
+\]</div>
+<p>4  <strong>Why first-visit can reduce variance</strong></p>
+<ol>
+<li>
+<p><strong>Elimination of intra-episode correlation</strong><br />
+    In every-visit MC, two returns from the same episode share many of the same reward terms, which inflates covariance and hence the variance of the sample mean.<br />
+    First-visit uses at most one return per episode, so different summands in the average are independent across episodes.</p>
+</li>
+<li>
+<p><strong>Smaller effective horizon</strong><br />
+    First-visit evaluates <span class="arithmatex">\(G_{t_{\text{first}}}\)</span>.<br />
+    Later time steps within the same episode push the start time forward, thereby increasing the variance of the remaining discounted rewards.<br />
+    By always taking the first occurrence, the algorithm implicitly uses returns that on expectation start closer to the true episode start and often have smaller stochastic tails.</p>
+</li>
+<li>
+<p><strong>Bias–variance trade-off</strong><br />
+    First-visit introduces <span class="arithmatex">\(\textit{no bias}\)</span> relative to every-visit; it merely discards extra (correlated) samples.<br />
+    Because variance, not bias, was the main problem, discarding those samples lowers the estimator’s variance.</p>
+</li>
+</ol>
+<p>The exact quantitative reduction depends on the MDP and policy: in environments where states re-appear frequently within an episode, first-visit gives a substantial variance drop; in episodic tasks where each state is usually encountered at most once, first-visit and every-visit become equivalent.</p>
+<p>5  <strong>Algorithm sketch (single state <span class="arithmatex">\(s\)</span>)</strong></p>
+<div class="arithmatex">\[
+\textbf{Input: }\pi,\;m \text{ episodes}.
+\]</div>
+<div class="arithmatex">\[
+\textbf{For } i = 1 \text{ to } m
+\begin{cases}
+\text{Generate one episode under }\pi.\\
+\text{Find the first time }t_i\text{ with }S_{t_i}=s.\\
+\text{Compute } G^{(i)}_{\text{FV}} = \sum_{k=0}^{\infty}\gamma^{k} R_{t_i+k+1}.\\
+\end{cases}
+\]</div>
+<div class="arithmatex">\[
+\hat v_{m}^{\text{FV}}(s) \;=\; \dfrac{1}{m}\sum_{i=1}^{m} G^{(i)}_{\text{FV}}.
+\]</div>
+<p>6  <strong>Extensions and practical notes</strong></p>
+<p>• The same idea extends to <span class="arithmatex">\(\textit{first-visit action–value}\)</span> estimation <span class="arithmatex">\(q_{\pi}(s,a)\)</span> by recording the first time both state <span class="arithmatex">\(s\)</span> and action <span class="arithmatex">\(a\)</span> occur.<br />
+• In modern deep-RL practice, first-visit ideas appear in “episode return” targets or so-called advantage-based baselines, again to reduce variance.<br />
+• For continuing (non-episodic) tasks, one can force episodes by time-limiting roll-outs or by using discounting that makes <span class="arithmatex">\(G_{t}\)</span> finite.</p>
+<p>7  <strong>Take-away</strong></p>
+<p>First-visit Monte-Carlo uses just one (the first) return per episode for each state, yielding an unbiased but often <span class="arithmatex">\(\textit{lower variance}\)</span> estimate of <span class="arithmatex">\(v_{\pi}\)</span> compared with every-visit MC, where multiple highly correlated returns from the same episode inflate variance.</p>
+<h2 id="mc-policy-iteration">MC Policy Iteration<a class="headerlink" href="#mc-policy-iteration" title="Permanent link">&para;</a></h2>
+<p>Using the estimated <span class="arithmatex">\(\hat{v}_m\)</span> as the proxy for the true state value <span class="arithmatex">\(v_{\pi}\)</span>, can this be used in the Policy iteration algorithm discussed before?</p>
+<p><strong>Answer</strong></p>
+<p>Yes.  Replacing the exact value function <span class="arithmatex">\(v_{\pi}\)</span> by a Monte-Carlo approximation <span class="arithmatex">\(\hat v_{m}\)</span> in the evaluation phase gives rise to the class of algorithms usually called  </p>
+<div class="arithmatex">\[
+\text{Monte-Carlo Policy Iteration} (MCPI)
+\quad
+\text{or more generally}
+\quad
+\text{Approximate Policy Iteration}.
+\]</div>
+<p>Below we explain how the algorithm is organised, why it is still a valid policy-improvement procedure, and what can be said about convergence and performance when finite-sample estimates are used.</p>
+<p>1  <strong>Algorithmic skeleton</strong></p>
+<p>Fix a (finite) MDP <span class="arithmatex">\((\mathcal{S},\mathcal{A},P,R,\gamma)\)</span> with <span class="arithmatex">\(0\le\gamma&lt;1\)</span>.</p>
+<div class="arithmatex">\[
+\textbf{Input: }\;
+m\ (\text{episodes per evaluation step}),\quad
+\text{exploration scheme (e.g.\ $\varepsilon$–greedy)}.
+\]</div>
+<div class="arithmatex">\[
+\textbf{Initialise } \pi^{(0)}\text{ arbitrarily},\;k\gets0.
+\]</div>
+<div class="arithmatex">\[
+\textbf{Repeat}
+\]</div>
+<div class="arithmatex">\[
+\begin{array}{ll}
+\textbf{(A)  Monte-Carlo policy evaluation} &amp; \\
+\qquad\bullet\ \text{for each state }s\in\mathcal{S} &amp;\\
+\qquad\quad\text{generate $m$ episodes that $\textit{start}$ in $s$ and follow }\pi^{(k)};\\
+\qquad\quad\text{let }g_{1},\dots,g_{m}\text{ be the corresponding returns};\\
+\qquad\quad\hat v_{m}^{(k)}(s)\;=\;\dfrac1m\sum_{i=1}^{m}g_{i}. &amp;\\[6pt]
+\textbf{(B)  Policy improvement} &amp; \\
+\qquad\bullet\ \text{for each state }s\in\mathcal{S}: &amp;\\
+\qquad\quad Q^{(k)}(s,a)\;=\;\displaystyle
+     \sum_{s'}P(s'\!\mid\!s,a)\,
+     \bigl[R(s,a,s')+\gamma\,\hat v_{m}^{(k)}(s')\bigr];\\
+\qquad\quad\pi^{(k+1)}(s)\in\arg\max_{a\in\mathcal{A}} Q^{(k)}(s,a)
+                     \quad\text{(or $\varepsilon$–greedy variant)}.\\[6pt]
+\textbf{(C)  Termination check} &amp; \\
+\qquad\text{if }\pi^{(k+1)}=\pi^{(k)}\text{ (or change below tolerance) stop;}\\
+\qquad k\leftarrow k+1\text{ and repeat.}
+\end{array}
+\]</div>
+<p>Points to note:</p>
+<ul>
+<li>
+<p>Step (A) uses the <span class="arithmatex">\(\textit{first-visit}\)</span> (or every-visit) Monte-Carlo estimator<br />
+<span class="arithmatex">\(\hat v_{m}^{(k)}\)</span> and therefore does not need the model <span class="arithmatex">\((P,R)\)</span> while the formula for <span class="arithmatex">\(Q^{(k)}\)</span> in (B) does.<br />
+  – If the model is <span class="arithmatex">\(\textit{unknown}\)</span>, one can instead estimate <span class="arithmatex">\(Q^{(k)}\)</span> directly from the same episodes; the algorithm then becomes completely model-free (Monte-Carlo control).</p>
+</li>
+<li>
+<p>An <span class="arithmatex">\(\varepsilon\)</span>–greedy or “exploring–starts’’ choice in step (B) guarantees that every state–action pair is sampled infinitely often, a standard requirement for convergence in the model-free setting.</p>
+</li>
+</ul>
+<p>2  <strong>Why policy improvement still works</strong></p>
+<p>Denote the true value of the current policy by <span class="arithmatex">\(v_{\pi^{(k)}}\)</span>.<br />
+Because <span class="arithmatex">\(\hat v_{m}^{(k)}\)</span> is an unbiased estimator of <span class="arithmatex">\(v_{\pi^{(k)}}\)</span> we have</p>
+<div class="arithmatex">\[
+\mathbb{E}\bigl[\hat v_{m}^{(k)}(s)\bigr] \;=\; v_{\pi^{(k)}}(s),
+\quad
+\forall s.
+\]</div>
+<p>If the MC sample size <span class="arithmatex">\(m\)</span> is large, the estimation error  </p>
+<div class="arithmatex">\[
+e^{(k)}(s)\;=\;\hat v_{m}^{(k)}(s)-v_{\pi^{(k)}}(s)
+\]</div>
+<p>is small with high probability (LLN).<br />
+The new policy <span class="arithmatex">\(\pi^{(k+1)}\)</span> is chosen to be greedy w.r.t.\ <span class="arithmatex">\(\hat v_{m}^{(k)}\)</span>; if the estimation error is bounded by <span class="arithmatex">\(\lvert e^{(k)}(s)\rvert\le\varepsilon\)</span> for all <span class="arithmatex">\(s\)</span>, one can prove the <span class="arithmatex">\(\textit{Approximate Policy Improvement Inequality}\)</span> (see, e.g., Bertsekas &amp; Tsitsiklis, 1996):</p>
+<div class="arithmatex">\[
+v_{\pi^{(k+1)}}(s)
+\;\ge\;
+v_{\pi^{(k)}}(s)\;-\;\frac{2\gamma\,\varepsilon}{1-\gamma},
+\quad
+\forall\,s.
+\]</div>
+<p>Thus each improvement step is “<span class="arithmatex">\(\varepsilon\)</span>-monotone’’: the new policy is guaranteed to be no worse than the current one up to a bounded loss term that vanishes as <span class="arithmatex">\(m\to\infty\)</span>.</p>
+<p>3  <strong>Convergence and performance bounds</strong></p>
+<p>•  If <span class="arithmatex">\(m\to\infty\)</span> at every evaluation step, the errors <span class="arithmatex">\(e^{(k)}\)</span> vanish almost surely, and MCPI reduces to exact Policy Iteration, which converges in a finite number of iterations to an optimal policy <span class="arithmatex">\(\pi^{*}\)</span>.</p>
+<p>•  If <span class="arithmatex">\(m\)</span> is finite but the error at iteration <span class="arithmatex">\(k\)</span> is uniformly bounded by <span class="arithmatex">\(\varepsilon_{k}\)</span>, one can show (Bertsekas &amp; Tsitsiklis, Prop. 6.3) that the limiting policy <span class="arithmatex">\(\tilde\pi\)</span> obtained after infinitely many iterations satisfies</p>
+<div class="arithmatex">\[
+v_{*}(s)
+\;-\;
+v_{\tilde\pi}(s)
+\;\le\;
+\frac{2\gamma}{(1-\gamma)^{2}}\,
+\sup_{k}\,\varepsilon_{k},
+\quad
+\forall\,s.
+\]</div>
+<p>Hence choosing <span class="arithmatex">\(m\)</span> large enough (or letting it grow) yields arbitrarily tight approximations to <span class="arithmatex">\(v_{*}\)</span> and <span class="arithmatex">\(\pi^{*}\)</span>.</p>
+<p>4  Practical remarks</p>
+<ul>
+<li>
+<p>Using first-visit MC, baselines, or TD(<span class="arithmatex">\(\lambda\)</span>) during evaluation can greatly reduce variance and speed convergence (§ previous answer).  </p>
+</li>
+<li>
+<p>In modern deep-RL, “Monte-Carlo policy iteration’’ re-appears under names such as <span class="arithmatex">\(\textit{Generalised Policy Iteration}\)</span>, actor–critic methods with critic-iterations, or “policy evaluation via Monte-Carlo returns.”</p>
+</li>
+</ul>
+<p>5  Summary</p>
+<p>Yes: replacing <span class="arithmatex">\(v_{\pi}\)</span> by its Monte-Carlo estimate <span class="arithmatex">\(\hat v_{m}\)</span> in Policy Iteration is perfectly legitimate.<br />
+• With <span class="arithmatex">\(m\to\infty\)</span> each evaluation step is exact, so convergence to an optimal policy occurs in finitely many iterations (as in classical PI).<br />
+• With finite <span class="arithmatex">\(m\)</span> one obtains Approximate Policy Iteration; the policy sequence improves up to bounded errors, and the final policy is <span class="arithmatex">\(\varepsilon\)</span>-optimal, where <span class="arithmatex">\(\varepsilon\)</span> shrinks as <span class="arithmatex">\(m\)</span> grows or as variance-reduction techniques are applied.</p>
+<h2 id="fully-model-free">Fully model free<a class="headerlink" href="#fully-model-free" title="Permanent link">&para;</a></h2>
+<p>If you are model free in Step A, then you should be model free as well as in Step B. If you had the model in the first place, why be model free in Step A.</p>
+<p><strong>Answer</strong></p>
+<p>You are absolutely right that, conceptually, we should either</p>
+<p>• work in a fully model–based setting (we have <span class="arithmatex">\(P\)</span> and <span class="arithmatex">\(R\)</span> and are willing to use them everywhere), or<br />
+• work in a fully model–free setting (we do <strong>not</strong> have <span class="arithmatex">\(P\)</span> or <span class="arithmatex">\(R\)</span> explicitly and therefore never rely on them).</p>
+<p>In practice one often sees the two extremes and, in between, many hybrids motivated by convenience or computational cost.  Below we sort out the possibilities and show how a completely model–free <span class="arithmatex">\(\textit{policy–iteration style}\)</span> algorithm is obtained.</p>
+<p>1 Two consistent extremes</p>
+<p><span class="arithmatex">\(\blacktriangleright\)</span>  <strong>Model–based Policy Iteration</strong></p>
+<p><em>Step A</em> (evaluation) Solve </p>
+<div class="arithmatex">\[
+v_{\pi} \;=\; r_{\pi} +\gamma P_{\pi}v_{\pi}
+\quad\Longrightarrow\quad
+v_{\pi}=(I-\gamma P_{\pi})^{-1}r_{\pi}
+\]</div>
+<p>exactly (or by iterative linear‐algebra) using the known matrices</p>
+<div class="arithmatex">\[
+[P_{\pi}]_{ij}=\textstyle\sum_{a}\pi(a\!\mid\!s_{i})P(s_{j}\!\mid\!s_{i},a),
+\;\;
+[r_{\pi}]_{i}= \sum_{a,s'}\pi(a\!\mid\!s_{i})P(s'\!\mid\!s_{i},a)R(s_{i},a,s').
+\]</div>
+<p><em>Step B</em> (improvement) Compute  </p>
+<div class="arithmatex">\[
+Q_{\pi}(s,a)=\sum_{s'}P(s'\mid s,a)\,[\,R(s,a,s')+\gamma v_{\pi}(s')\,],
+\]</div>
+<p>again using the model, and choose
+<span class="arithmatex">\(
+\pi'(s)=\arg\max_{a}Q_{\pi}(s,a).
+\)</span></p>
+<p><span class="arithmatex">\(\blacktriangleright\)</span>  <strong>Fully Model–free Monte-Carlo Control</strong></p>
+<p><em>Step A</em> (evaluation) Estimate<br />
+<span class="arithmatex">\(v_{\pi}(s)\)</span> (or <span class="arithmatex">\(q_{\pi}(s,a)\)</span>) by Monte-Carlo / TD from sampled episodes; no <span class="arithmatex">\(P,\;R\)</span>.</p>
+<p><em>Step B</em> (improvement) Because <span class="arithmatex">\(P\)</span> and <span class="arithmatex">\(R\)</span> are unavailable, one <span class="arithmatex">\(\textit{must}\)</span> also
+estimate action values <span class="arithmatex">\(q_{\pi}(s,a)\)</span> from data and pick </p>
+<div class="arithmatex">\[
+\pi'(s)=
+\arg\max_{a\in\mathcal{A}}\,\hat q_{\pi}(s,a),
+\]</div>
+<p>or an <span class="arithmatex">\(\varepsilon\)</span>-greedy/tied random choice among the empirical maxima.
+This yields the classical MC-control algorithm “every–visit (or first–visit) Monte-Carlo with <span class="arithmatex">\(\varepsilon\)</span>-greedy improvement.’’</p>
+<p>2 <strong>Why hybrids sometimes appear</strong></p>
+<p>In simulation studies we may:</p>
+<p>• possess an exact simulator of <span class="arithmatex">\(P\)</span> and <span class="arithmatex">\(R\)</span> (so we <span class="arithmatex">\(\textit{could}\)</span> be model-based),<br />
+• but still prefer Monte-Carlo evaluation because solving <span class="arithmatex">\((I-\gamma P_{\pi})^{-1}r_{\pi}\)</span> for large <span class="arithmatex">\(|\mathcal{S}|\)</span> is numerically expensive, whereas running roll-outs is cheap and trivially parallelisable.</p>
+<p>In that case one often keeps Step B model-based (because multiplying by <span class="arithmatex">\(P\)</span> is cheap once we have <span class="arithmatex">\(v_{\pi}\)</span>) and does Step A by Monte-Carlo.  This “semi-model-based’’ variant is logically consistent although not strictly model-free.</p>
+<p>3 <strong>A fully model–free PI–style algorithm</strong></p>
+<p>For completeness, here is the purely model–free version.</p>
+<pre><code>Initial policy  π⁽⁰⁾   (e.g. ε–greedy random)
+for k = 0,1,2, …:
+    Monte-Carlo (or TD) evaluation:
+        • gather data under π⁽ᵏ⁾  (with exploration)
+        • estimate q̂ₖ(s,a)   for all (s,a) visited
+    Greedy improvement:
+        • π⁽ᵏ⁺¹)(s) = argmax_a  q̂ₖ(s,a)          (break ties arbitrarily)
+    If π⁽ᵏ⁺¹) == π⁽ᵏ)  (within tolerance) stop
+</code></pre>
+<p>Convergence now becomes <span class="arithmatex">\(\textit{approximate}\)</span>:<br />
+if each estimate <span class="arithmatex">\(q̂ₖ\)</span> is sufficiently accurate (large sample, variance-reduction tricks), repeated improvement still drives the policy toward optimality; this is the classical “Monte-Carlo control” convergence theorem.</p>
+<p>4 <strong>Variance-reduction again</strong></p>
+<p>Because Step A now produces <span class="arithmatex">\(\hat{q}_{\pi}\)</span> from samples, all the variance-reduction
+devices mentioned earlier (first-visit returns, baselines/advantages, TD(<span class="arithmatex">\(\lambda\)</span>), importance-weight truncation) are essential for making the estimates accurate enough that each improvement really is beneficial.</p>
+<p>5 Summary</p>
+<p>• If Step A is model-free (roll-out based), Step B must also avoid explicit <span class="arithmatex">\(P\)</span> and <span class="arithmatex">\(R\)</span>; hence it must rely on empirical <span class="arithmatex">\(q\)</span>-estimates.<br />
+• Using the model in Step B while ignoring it in Step A is a pragmatic but hybrid approach adopted only for computational convenience.<br />
+• A fully consistent model-free Policy-Iteration style algorithm corresponds exactly to classical Monte-Carlo (or TD) control, where both evaluation and improvement rely solely on sampled experience.</p>
+<h2 id="exploration-vs-exploitation">Exploration vs Exploitation<a class="headerlink" href="#exploration-vs-exploitation" title="Permanent link">&para;</a></h2>
+<p>What is the concept of exploration vs exploitation mean for the current MDP setting that we are analyzing?</p>
+<p><strong>Answer</strong></p>
+<p>Below is a concise but rigorous description of what “exploration versus exploitation’’ means in the finite-MDP setting we have been analysing (policy-evaluation, value-iteration, policy-iteration, Monte-Carlo control, etc.).  All mathematical symbols and expressions are in standard LaTeX.</p>
+<p>1 <strong>The canonical decision in a finite MDP</strong></p>
+<p>At every time step <span class="arithmatex">\(t\)</span> the agent is in some state <span class="arithmatex">\(S_{t}=s\in\mathcal{S}\)</span> and must choose an action <span class="arithmatex">\(A_{t}=a\in\mathcal{A}\)</span>.</p>
+<p>•  <span class="arithmatex">\(\textit{Exploitation}\)</span> means choosing the action that appears, given the agent’s current information, to maximise expected (discounted) reward, e.g.</p>
+<div class="arithmatex">\[
+a
+\;=\;
+\arg\max_{a'\in\mathcal{A}}
+\hat q(s,a'),
+\]</div>
+<p>where <span class="arithmatex">\(\hat q(s,a')\)</span> is the agent’s current estimate of the action value <span class="arithmatex">\(q_{\pi}(s,a')\)</span> or of the optimal value <span class="arithmatex">\(q_{*}(s,a')\)</span>.</p>
+<p>•  <span class="arithmatex">\(\textit{Exploration}\)</span> means deliberately selecting an action that is <span class="arithmatex">\(\textit{not}\)</span> (necessarily) the current maximiser in order to obtain new experience, i.e.\ better information about unknown transition probabilities, rewards or value estimates.  This may lower short-term return but can improve long-run performance.</p>
+<p>In pure planning (model-based, full knowledge of <span class="arithmatex">\(P\)</span> and <span class="arithmatex">\(R\)</span>) there is nothing to “explore’’—the model already tells us everything.  Exploration becomes crucial exactly when the agent must <span class="arithmatex">\(\textit{learn from data}\)</span> (model-free value estimation, Monte-Carlo control, TD learning, actor–critic, etc.).</p>
+<p>2  <strong>Why exploration is mathematically required</strong></p>
+<p>For many convergence theorems in model-free reinforcement learning we need the following property:</p>
+<div class="arithmatex">\[
+\boxed{\text{Every state–action pair }(s,a)\text{ is visited infinitely often}}.
+\]</div>
+<p>Intuitively, without visiting an action <span class="arithmatex">\(a\)</span> in a state <span class="arithmatex">\(s\)</span> we cannot estimate <span class="arithmatex">\(q(s,a)\)</span> (or the underlying <span class="arithmatex">\(P,R\)</span>).  Formally:</p>
+<p>•  In Monte-Carlo control the law–of–large-numbers guarantee that the sample mean of returns converges to the true expectation requires infinitely many i.i.d. samples from each <span class="arithmatex">\((s,a)\)</span>.<br />
+•  In TD-learning (or Q-learning) convergence proofs assume that the learning rates satisfy <span class="arithmatex">\(\sum_{t}\alpha_{t}= \infty,\; \sum_{t}\alpha_{t}^{2}&lt;\infty\)</span> <span class="arithmatex">\(\textit{and}\)</span> each <span class="arithmatex">\((s,a)\)</span> is updated infinitely often.<br />
+•  The same “visit-infinitely-often’’ assumption underlies stochastic-approximation theorems for actor–critic and policy-gradient methods.</p>
+<p>Thus an exploration mechanism must prevent the agent from <span class="arithmatex">\(\textit{always}\)</span> exploiting early, possibly incorrect, value estimates and thereby “starving’’ some state–action pairs of data.</p>
+<p>3  <strong>Standard exploration mechanisms</strong></p>
+<p>Below <span class="arithmatex">\(q_{t}(s,a)\)</span> denotes the agent’s current estimate at time <span class="arithmatex">\(t\)</span>.</p>
+<div class="arithmatex">\[
+\textbf{(a) } \varepsilon\text{–greedy}
+\quad
+\begin{cases}
+\text{with prob. }1-\varepsilon_t &amp;: \displaystyle a=\arg\max_{a'} q_{t}(s,a'),\\[6pt]
+\text{with prob. }\varepsilon_t &amp;: \text{pick a uniformly random action.}
+\end{cases}
+\]</div>
+<p>If <span class="arithmatex">\(\varepsilon_t\downarrow 0\)</span> slowly enough (e.g.\ GLIE: <span class="arithmatex">\(\varepsilon_t\to0\)</span> and <span class="arithmatex">\(\sum_t\varepsilon_t=\infty\)</span>), the algorithm still explores infinitely often but eventually exploits.</p>
+<div class="arithmatex">\[
+\textbf{(b)  Soft–max (Boltzmann)}
+\quad
+\pi_{t}(a\mid s)
+=\frac{\exp\!\bigl(q_{t}(s,a)/\tau_t\bigr)}
+        {\sum_{a'}\exp\!\bigl(q_{t}(s,a')/\tau_t\bigr)}.
+\]</div>
+<p>Temperature <span class="arithmatex">\(\tau_t\!\downarrow 0\)</span> trades exploration for exploitation.</p>
+<div class="arithmatex">\[
+\textbf{(c)  Optimistic initialisation}
+\quad
+q_{0}(s,a)\text{ is set to a large value (e.g.\ $R_{\max}/(1-\gamma)$); }
+\]</div>
+<p>the agent is initially “attracted’’ to poorly known actions until data corrects the optimism.</p>
+<div class="arithmatex">\[
+\textbf{(d)  Upper–confidence bound (UCB)}
+\quad
+a_t=\arg\max_{a}\Bigl(
+  q_{t}(s,a)\;+\;c\sqrt{\tfrac{\ln N_{t}(s)}{N_{t}(s,a)}}\Bigr),
+\]</div>
+<p>where <span class="arithmatex">\(N_{t}(s)\)</span> is the number of visits to <span class="arithmatex">\(s\)</span> so far, <span class="arithmatex">\(N_{t}(s,a)\)</span> visits to <span class="arithmatex">\((s,a)\)</span>.  The bonus term shrinks as an action is sampled more.</p>
+<div class="arithmatex">\[
+\textbf{(e)  Thompson sampling / posterior sampling}
+\quad
+\text{sample a model or value estimate from its posterior
+and act greedily w.r.t.\ the sample.}
+\]</div>
+<p>4  <strong>Exploration inside Policy Iteration–style schemes</strong></p>
+<p>•  In <span class="arithmatex">\(\textit{exact}\)</span> (model-based) Policy Iteration there is no exploration phase because <span class="arithmatex">\(P\)</span> and <span class="arithmatex">\(R\)</span> are known—policy improvement uses exact <span class="arithmatex">\(Q_{\pi}\)</span>.  </p>
+<p>•  In <span class="arithmatex">\(\textit{Monte-Carlo Policy Iteration}\)</span> or <span class="arithmatex">\(\textit{Approximate Policy Iteration}\)</span> we need exploration during the data-collection phase (policy evaluation).  Typical choices:</p>
+<p>– <span class="arithmatex">\(\varepsilon\)</span>–greedy evaluation policy: act according to <span class="arithmatex">\(\pi\)</span> most of the time, but with small probability <span class="arithmatex">\(\varepsilon\)</span> take a random action.<br />
+  – “Exploring starts’’ assumption in classical Monte-Carlo control, i.e.\ each episode starts from a random state–action pair with non-zero probability.  </p>
+<p>After estimating <span class="arithmatex">\(q_{\pi}\)</span> (or <span class="arithmatex">\(v_{\pi}\)</span>), the next greedy policy exploits those estimates—but we continue to evaluate it with some exploration noise to keep the guarantees.</p>
+<p>5  <strong>Summary</strong></p>
+<p>•  <span class="arithmatex">\(\textit{Exploitation}\)</span>: in state <span class="arithmatex">\(s\)</span> choose <span class="arithmatex">\(a=\arg\max_{a'} q(s,a')\)</span>.<br />
+•  <span class="arithmatex">\(\textit{Exploration}\)</span>: sometimes choose non-greedy actions so that every <span class="arithmatex">\((s,a)\)</span> is sampled infinitely often; necessary for unbiased estimation and convergence in model-free RL.<br />
+•  Mechanisms: <span class="arithmatex">\(\varepsilon\)</span>–greedy, soft-max, UCB, optimistic starts, posterior sampling, etc.<br />
+•  In model-based dynamic programming (full knowledge of <span class="arithmatex">\(P,R\)</span>), exploration is unnecessary; in model-free learning it is essential.</p>
 
 
 
