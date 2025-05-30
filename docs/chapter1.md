@@ -2618,7 +2618,7 @@ and how it acts from the space of bounded value functions \(\mathcal{B}(\mathcal
 2) **One-Step Lookahead + Max**
 
 • Observe that the right-hand side of the above equation is a function of \(v_{*}\).  
-• If we do not yet know \(v_{*}\), but have some candidate bounded value function \(v\), we can \emph{approximate} what it means to “pick the best action based on \(v\),” by replacing \(v_{*}(s')\) with \(v(s')\).  
+• If we do not yet know \(v_{*}\), but have some candidate bounded value function \(v\), we can $\textit{approximate}$ what it means to “pick the best action based on \(v\),” by replacing \(v_{*}(s')\) with \(v(s')\).  
 • Consequently, to get a new function \(\bigl[\mathcal{T}v\bigr]\)(s), we do exactly
 
 \[
@@ -2685,7 +2685,7 @@ v_{*}(s)
 \]
 
 • In short, if you plug \(v_{*}\) into \(\mathcal{T}\), you get the same function \(v_{*}\) back.  
-• Under standard assumptions (finite \(\mathcal{S}, \mathcal{A}\), \(\gamma < 1\), bounded rewards), this fixed point is unique, and repeated application of \(\mathcal{T}\) (starting from \emph{any} bounded function \(v^{(0)}\)) converges to \(v_{*}\) in the supremum norm.
+• Under standard assumptions (finite \(\mathcal{S}, \mathcal{A}\), \(\gamma < 1\), bounded rewards), this fixed point is unique, and repeated application of \(\mathcal{T}\) (starting from $\textit{any}$ bounded function \(v^{(0)}\)) converges to \(v_{*}\) in the supremum norm.
 
 6) **Summary**
 
@@ -3971,7 +3971,7 @@ remains finite because policy iteration cannot continue producing new and strict
 • If at iteration \(k\) we find \(\pi^{(k+1)} = \pi^{(k)}\), then \(\pi^{(k)}\) is optimal; the algorithm terminates.  
 • If \(\pi^{(k+1)} \neq \pi^{(k)}\), we proceed to iteration \(k+1\). Because there is a finite upper bound on how many different deterministic policies exist, the sequence must eventually terminate (or possibly earlier if the same policy recurs).
 
-Hence the Policy Iteration algorithm produces a \emph{finite} sequence of policy-value pairs and terminates with an optimal policy \(\pi^{*}\).
+Hence the Policy Iteration algorithm produces a $\textit{finite}$ sequence of policy-value pairs and terminates with an optimal policy \(\pi^{*}\).
 
 4) **Countably Infinite State Space**
 
@@ -3980,104 +3980,640 @@ Hence the Policy Iteration algorithm produces a \emph{finite} sequence of policy
 
 5) **Conclusion**
 
-1. In a finite MDP, Policy Iteration yields a finite (strictly or lexicographically improving) sequence of policy-value pairs \(\bigl(\pi^{(k)}, v_{\pi^{(k)}}\bigr)\). Eventually, a policy repeats, indicating we have reached an optimal policy. Thus the process terminates in \emph{finite time}.  
+1. In a finite MDP, Policy Iteration yields a finite (strictly or lexicographically improving) sequence of policy-value pairs \(\bigl(\pi^{(k)}, v_{\pi^{(k)}}\bigr)\). Eventually, a policy repeats, indicating we have reached an optimal policy. Thus the process terminates in $\textit{finite time}$.  
 
 2. In a countably infinite MDP, the same monotonic improvement applies, but we cannot rely on “finitely many policies” to guarantee finite termination. The sequence may converge only in the limit, though under certain conditions we can still show convergence of the algorithm.
 
 
-## Monte Carlo basic
+## Model Free - estimate of $v_{\pi}$
 
-Thus far, in we have been working with MDP models meaning that we have the state transition model specified. Now, we want to move to the model-free case where the data from the interactions between the agent and environment serves to replace the model.
- 
-For the policy iteration algorithm, would like to move from a model based to model-free approach by replacing the policy evaluation step from a model based to a Monte Carlo based approach.
+The state value function $v_{\pi}(s) \;=\; \mathbb{E}\bigl[G_t \,\big\vert\, S_t = s \bigr]$ could be estimated as follows without needing to know the state transition and reward functions.
 
-Explain how to do this.
+* For a given policy $\pi$, starting in each state $s_i \in S$, generate $m$ trajectories. Each trajectory has a return $g_i$. Then we have:
+
+\[
+v_{\pi}(s) \;=\; \mathbb{E}\bigl[G_t \,\big\vert\, S_t = s \bigr] = \frac{1}{m} \sum_1^m g_i
+\]
+
+Is this correct?
 
 **Answer**
 
-Below is a concise description of how to turn model–based Policy Iteration into a **Monte-Carlo (MC) Policy Iteration** algorithm, i.e.\ a fully model-free procedure.  
+Yes—under the usual Monte-Carlo assumptions the formula you wrote is a legitimate, unbiased estimator of the state-value function \(v_{\pi}(s)\).  Below is a short justification and some caveats.
 
----
-
-### 0.  Why Monte-Carlo policy evaluation works  
-
-For a fixed policy $\pi$ the state-value function is  
+1.  **Definitions**
+ • For a fixed policy \(\pi\) and a fixed starting state \(s\) we let  
 
 \[
-v_{\pi}(s)\;=\;\mathbb{E}_{\pi}\!\bigl[G_t \,\big|\, S_t=s\bigr],
+G_t \;=\; \sum_{k=0}^{\infty} \gamma^{\,k}\,R_{t+k+1}
+\]
+
+denote the (discounted) return obtained by following \(\pi\) from that state onward.  
+ •  The value function is the expectation of that random return:  
+
+\[
+v_{\pi}(s)
+\;=\;
+\mathbb{E}[\,G_t \mid S_t = s,\pi\,].
+\]
+
+2.  **Monte-Carlo estimate**
+ •  Generate \(m\) independent episodes (or trajectories) that all start in \(s\) and thereafter follow \(\pi\).  
+ •  Let \(g_i\) be the realised return of the \(i\)-th trajectory.  
+ •  The sample mean  
+
+\[
+\hat v_m(s)\;=\;\frac{1}{m}\sum_{i=1}^{m} g_i
+\]
+
+
+is an unbiased estimator:
+
+\[
+\mathbb{E}[\hat v_m(s)]
+=\frac{1}{m}\sum_{i=1}^{m}\mathbb{E}[\,g_i\,]
+=v_{\pi}(s).
+\]
+
+3.  **Convergence**
+ By the (strong) law of large numbers,
+
+\[
+\hat v_m(s)\;\xrightarrow[m\to\infty]{\text{a.s.}}\;v_{\pi}(s),
+\]
+
+provided the return has finite variance (guaranteed if rewards are bounded and \(0\le\gamma<1\)).
+
+4.  **Caveats**
+ •  The variance of \(\hat v_m(s)\) can be large; in practice one often uses variance-reduction tricks (e.g., first-visit returns, every-visit returns, control variates, etc.).  
+ •  If episodes do not terminate, one must truncate or use discounting strictly less than 1 so that \(G_t\) is finite.  
+ •  This is a “model-free” estimate: no knowledge of \(P\) or \(R\) is required—only the ability to sample trajectories under policy \(\pi\).
+
+Within those assumptions the formula is correct: averaging the observed returns from multiple roll-outs that start in state \(s\) indeed yields a Monte-Carlo estimate of \(v_{\pi}(s)\).
+
+
+## Variance of $\hat{v_m}$ - estimated state value
+
+Provide more color on your comment that the variance of $\hat{v}_m$ can be large and that certain tricks are used to deal with this. What are these tricks and how do they reduce the variation?
+
+**Answer**
+
+Why the naïve Monte-Carlo estimate  
+
+\[
+\hat v_{m}(s)\;=\;\frac1m\sum_{i=1}^{m}G^{(i)}
 \qquad
-G_t=\sum_{k=0}^{\infty}\gamma^{k}R_{t+k+1}.
-\]  
-
-Because the expectation is over trajectories generated by $\pi$ and the (unknown) environment, we can estimate $v_{\pi}(s)$ (or $q_{\pi}(s,a)$) by averaging observed returns from sample episodes, with no need for the model $P$ or $R$.
-
----
-
-### 1.  First-visit Monte-Carlo policy evaluation  
-
-* Generate $M$ episodes by starting in random states and following the current policy $\pi$.
-
-* For each state $s$ and each episode $m$ let $G^{(m)}(s)$ be the return following the **first** visit of $s$ in that episode.
-
-* Denote $N_M(s)=\sum_{m=1}^{M}\mathbf{1}\!\{s\text{ visited in episode }m\}$.  
-  The Monte-Carlo estimate  
-
-\[
-\hat v_{\pi,M}(s)=\frac{1}{N_M(s)}\sum_{m=1}^{M}G^{(m)}(s)
+\bigl(G^{(i)}=\text{return of the }i\text{-th roll–out from }s\bigr)
 \]
 
-converges almost surely to $v_{\pi}(s)$ as $M\!\to\!\infty$.
+often has high variance and what is done about it is a central topic in practical reinforcement–learning.  
+Below is a compact survey of the main causes of variance and the classical tricks for reducing it.
 
-* An incremental update form for action values:
+1  **Where does the variance come from?**
+
+1. Long horizons  
+ The random return  
 
 \[
-Q_{t+1}(s,a)\;\leftarrow\;
-Q_t(s,a)+\alpha_t\bigl[G_t-Q_t(s,a)\bigr].
+G=\sum_{k=0}^{\infty}\gamma^{k}R_{k+1}
 \]
 
----
+contains many random rewards.  The longer the (effective) horizon \(1/(1-\gamma)\), the more additive noise contributes.
 
-### 2.  Monte-Carlo Policy Iteration (exploring-starts version)  
+2. ***Stochastic transitions and actions***
+ Even with deterministic rewards, the stochastic path of states under \(\pi\) makes \(G\) a sum of many random terms.
 
-**Input**
+3. ***Importance sampling (off–policy MC)***
+ If one estimates \(v_{\pi}\) from data generated by another policy \(\mu\) one multiplies each return by an importance weight  
+\(\displaystyle \rho=\prod_{t}\frac{\pi(A_{t}\mid S_{t})}{\mu(A_{t}\mid S_{t})}\).  
+Weights can explode, inflating variance.
 
-* finite $\mathcal{S},\mathcal{A}$, discount $\gamma\in[0,1)$  
-* simulator that provides *exploring starts* (each episode starts in a random state–action pair)
+2  **Variance–reduction “tricks”**
 
-**Algorithm**
+Below \(G\) denotes the raw return; \(b\) is a suitably chosen $\textit{baseline}$; \(V\) or \(\hat v\) stands for a bootstrapped value estimate.
 
-1. Initialise an $\varepsilon$-soft policy $\pi^{(0)}$.  
-2. Initialise $Q(s,a)$ arbitrarily and $N(s,a)=0$, set $k=0$.  
-3. **Repeat**
-
-   * **Policy Evaluation (Monte-Carlo)**  
-     Generate many episodes using $\pi^{(k)}$.  
-     For each first visit of $(s,a)$ with return $G$:  
-     * $N(s,a)\leftarrow N(s,a)+1$  
-     * $Q(s,a)\leftarrow Q(s,a)+\dfrac{G-Q(s,a)}{N(s,a)}$
-
-   * **Policy Improvement**  
-     For each state $s$  
-     * $\mathcal{A}_{\text{opt}}(s)=\arg\max_{a}Q(s,a)$  
-     * Create the next policy $\pi^{(k+1)}$ as $\varepsilon$-greedy w.r.t.\ $Q$:
+✦ $\textbf{(a) Bootstrapping / TD methods}  $
+ Replace the full return by a target that uses an estimate for the tail:
 
 \[
-\pi^{(k+1)}(a\mid s)=
+G_{\text{TD(0)}} 
+\;=\;
+R_{1}+\gamma\,\hat v(S_{1}),
+\]
+
+or more generally \(n\)-step and \(\lambda\)-return targets.  
+  • Lowers variance because only the first \(n\) rewards are sampled, the rest is a (less noisy) estimate.  
+  • Introduces bias; TD(0) has lowest variance / highest bias, Monte-Carlo has zero bias / highest variance.  
+  • \(\lambda\)-returns (TD(\(\lambda\))) give an adjustable bias–variance trade-off.
+
+✦ $\textbf{(b) Control variates / baselines} $ 
+ Subtract a baseline \(b(s)\) that does $\textit{not}$ depend on the action choice that generated the return (thus keeping the estimator unbiased):
+
+\[
+\tilde G \;=\; G - b(s) + b(s)
+\quad\Longrightarrow\quad
+\hat v_{m}(s)\;=\;\frac1m\sum_{i}(G^{(i)}-b(s))+b(s).
+\]
+
+Choosing \(b(s)=\mathbb{E}[G\mid S_{0}=s]\) minimises variance (theoretical optimum; in practice one uses a running estimate).  
+Popular in policy-gradient methods where \(b\) is called a $\textit{baseline}$ and the centered term \(G-b\) is the $\textit{advantage}$.
+
+✦ $\textbf{(c) First-visit versus every-visit MC}  $
+ Using only the first return observed from state \(s\) in each episode avoids correlation among multiple visits, reducing variance at the cost of slower data usage.
+
+✦ $\textbf{(d) Reward discounting / truncation}  $
+ Smaller \(\gamma\) or “cutting” the horizon after \(H\) steps shrinks the contribution of distant, noisy rewards.
+
+✦ $\textbf{(e) Weighted / truncated importance sampling}  $
+ In off-policy MC one can use $\textit{weighted}$ or $\textit{per-decision}$ importance sampling and cap the weights:
+
+\[
+\tilde\rho_t=\min\{\rho_t,\;c\},
+\]
+to control weight explosion; reduces variance at the price of bias.
+
+✦ $\textbf{(f) Common random numbers / paired trajectories}  $
+ When comparing two policies, use the same random seeds so that path variability cancels out (classical variance-reduction trick from simulation).
+
+✦ $\textbf{(g) Reward shaping (potential-based)}  $
+ Add a potential-based shaping reward  
+
+\[
+F(s,a,s') = \gamma\Phi(s')-\Phi(s)
+\]
+
+which leaves optimal policies unchanged but can drastically reduce variance of returns by making rewards less sparse.
+
+3  **Bias–variance balance**
+
+Most tricks trade bias for variance (bootstrapping, weight clipping, horizon truncation).  
+The total mean-squared error
+
+\[
+\operatorname{MSE}(\hat v)
+=
+\underbrace{\bigl(\mathbb{E}[\hat v]-v_{\pi}\bigr)^{2}}_{\text{bias}^{2}}
++
+\underbrace{\operatorname{Var}(\hat v)}_{\text{variance}}
+\]
+
+is what ultimately matters; many practical algorithms (TD(\(\lambda\)), GAE, etc.) expose a bias knob so one can find a sweet spot of low MSE.
+
+4  **Take-away**
+
+• The naïve “average of full returns” estimator is unbiased but can be very noisy, especially with large \(\gamma\) or long episodes.  
+• Bootstrapping (TD), baselines/advantages, importance-sampling tweaks, and other control-variate ideas are common remedies that reduce variance—often at the cost of introducing some bias—but usually achieve a far lower MSE in practice.
+
+
+## "First Visit" Monte Carlo
+
+Explain the first visit MC trick more carefully.
+
+**Answer**
+
+Below is a self–contained explanation of the “first–visit Monte-Carlo (MC)’’ trick for estimating the state–value function \(v_{\pi}\) of a given policy \(\pi\).  All mathematical symbols and expressions are written in standard \(\LaTeX\).
+
+1  **Recap:  Monte-Carlo estimation of \(v_{\pi}\)**
+
+For a fixed policy \(\pi\) and a fixed start state \(s\) we define the (discounted) return  
+
+\[
+G_{t} \;=\; \sum_{k=0}^{\infty} \gamma^{k}\,R_{t+k+1},
+\qquad 0\le\gamma<1 .
+\]
+
+The state–value function is  
+
+\[
+v_{\pi}(s) \;=\; \mathbb{E}_{\pi}[\,G_{t}\,\vert\,S_{t}=s\,].
+\]
+
+A naïve Monte-Carlo estimator draws \(m\) complete episodes that all $\textit{start}$ in \(s\) and follows \(\pi\) thereafter.  
+If \(g_{1},\dots,g_{m}\) denote the returns of those episodes, the sample mean  
+
+\[
+\hat v_{m}^{\text{naive}}(s) \;=\; \frac1m\sum_{i=1}^{m} g_{i}
+\]
+
+is unbiased for \(v_{\pi}(s)\) but may suffer high variance—especially when the state \(s\) is visited many times in a single episode, creating strongly correlated samples.
+
+2  **First–visit versus every–visit**
+
+Consider one complete episode generated under \(\pi\):
+
+\[
+S_{0},A_{0},R_{1},\;S_{1},A_{1},R_{2},\;\dots,S_{T},
+\]
+
+and let \(G_{t}\) be the return observed from time step \(t\).  
+The state \(s\) may appear multiple times inside that episode (e.g. at time steps \( t_{1}< t_{2} \dots\)).
+
+• $\textbf{Every-visit Monte-Carlo:}  $
+  use $\textit{all}$ returns \(G_{t_{1}},G_{t_{2}},\dots\) that correspond to state \(s\) in this episode.  
+  These returns are highly correlated because they share suffixes of rewards.
+
+• $\textbf{First-visit Monte-Carlo:}  $
+  use $\textit{only}$ the return of the $\underline{first}$ occurrence of \(s\) in the episode.  
+  I.e. if \(t_{\text{first}}=\min\{\,t : S_{t}=s\,\}\), record the single value \(G_{t_{\text{first}}}\) and ignore later occurrences of \(s\) in the same episode.
+
+Over many independent episodes the set of first-visit returns gives an i.i.d. sample of \(G_{t}\) conditional on \(\{S_{t}=s\}\), whereas every-visit returns are neither independent nor identically distributed across a single episode.
+
+3  **Unbiasedness of the first-visit estimator**
+
+Let \(G^{(i)}_{\text{FV}}\) be the first-visit return for state \(s\) observed in episode \(i\).  
+Because each episode is generated independently and starts from the MDP’s initial-state distribution (or from a resetting simulator) we have  
+
+\[
+\mathbb{E}[\,G^{(i)}_{\text{FV}}\,] \;=\; v_{\pi}(s),
+\]
+
+so the estimator  
+
+\[
+\hat v_{m}^{\text{FV}}(s) \;=\; \frac{1}{m}\sum_{i=1}^{m} G^{(i)}_{\text{FV}}
+\]
+
+is unbiased.  The strong law of large numbers then gives  
+
+\[
+\hat v_{m}^{\text{FV}}(s)\xrightarrow[m\to\infty]{\text{a.s.}} v_{\pi}(s).
+\]
+
+4  **Why first-visit can reduce variance**
+
+  1.  **Elimination of intra-episode correlation**  
+    In every-visit MC, two returns from the same episode share many of the same reward terms, which inflates covariance and hence the variance of the sample mean.  
+    First-visit uses at most one return per episode, so different summands in the average are independent across episodes.
+
+  2.  **Smaller effective horizon**  
+    First-visit evaluates \(G_{t_{\text{first}}}\).  
+    Later time steps within the same episode push the start time forward, thereby increasing the variance of the remaining discounted rewards.  
+    By always taking the first occurrence, the algorithm implicitly uses returns that on expectation start closer to the true episode start and often have smaller stochastic tails.
+
+  3.  **Bias–variance trade-off**  
+    First-visit introduces $\textit{no bias}$ relative to every-visit; it merely discards extra (correlated) samples.  
+    Because variance, not bias, was the main problem, discarding those samples lowers the estimator’s variance.
+
+The exact quantitative reduction depends on the MDP and policy: in environments where states re-appear frequently within an episode, first-visit gives a substantial variance drop; in episodic tasks where each state is usually encountered at most once, first-visit and every-visit become equivalent.
+
+5  **Algorithm sketch (single state \(s\))**
+
+\[
+\textbf{Input: }\pi,\;m \text{ episodes}.
+\]
+
+\[
+\textbf{For } i = 1 \text{ to } m
 \begin{cases}
-1-\varepsilon+\dfrac{\varepsilon}{|\mathcal{A}_{\text{opt}}(s)|},
-& a\in\mathcal{A}_{\text{opt}}(s),\\[6pt]
-\dfrac{\varepsilon}{|\mathcal{A}|},
-& a\notin\mathcal{A}_{\text{opt}}(s).
+\text{Generate one episode under }\pi.\\
+\text{Find the first time }t_i\text{ with }S_{t_i}=s.\\
+\text{Compute } G^{(i)}_{\text{FV}} = \sum_{k=0}^{\infty}\gamma^{k} R_{t_i+k+1}.\\
 \end{cases}
 \]
 
-   * **Stop** if $\pi^{(k+1)}=\pi^{(k)}$; else set $k\leftarrow k+1$.
+\[
+\hat v_{m}^{\text{FV}}(s) \;=\; \dfrac{1}{m}\sum_{i=1}^{m} G^{(i)}_{\text{FV}}.
+\]
 
----
+6  **Extensions and practical notes**
 
-### 3.  Key points  
+• The same idea extends to $\textit{first-visit action–value}$ estimation \(q_{\pi}(s,a)\) by recording the first time both state \(s\) and action \(a\) occur.  
+• In modern deep-RL practice, first-visit ideas appear in “episode return” targets or so-called advantage-based baselines, again to reduce variance.  
+• For continuing (non-episodic) tasks, one can force episodes by time-limiting roll-outs or by using discounting that makes \(G_{t}\) finite.
 
-* The transition model $P$ and reward model $R$ are **never** used explicitly; only sample tuples $(s,a,r,s')$ are required.  
-* MC evaluation replaces the linear-system solve of model-based evaluation.  
-* The greedy (or $\varepsilon$-greedy) improvement step is unchanged; it simply uses empirical estimates $Q$ (or $v$).  
-* Exploring starts (or other exploration mechanisms) ensure each $(s,a)$ is visited infinitely often, guaranteeing convergence (in the limit) to an optimal policy.
+7  **Take-away**
+
+First-visit Monte-Carlo uses just one (the first) return per episode for each state, yielding an unbiased but often $\textit{lower variance}$ estimate of \(v_{\pi}\) compared with every-visit MC, where multiple highly correlated returns from the same episode inflate variance.
+
+## MC Policy Iteration
+
+Using the estimated $\hat{v}_m$ as the proxy for the true state value $v_{\pi}$, can this be used in the Policy iteration algorithm discussed before?
+
+**Answer**
+
+Yes.  Replacing the exact value function \(v_{\pi}\) by a Monte-Carlo approximation \(\hat v_{m}\) in the evaluation phase gives rise to the class of algorithms usually called  
+
+\[
+\text{Monte-Carlo Policy Iteration} (MCPI)
+\quad
+\text{or more generally}
+\quad
+\text{Approximate Policy Iteration}.
+\]
+
+Below we explain how the algorithm is organised, why it is still a valid policy-improvement procedure, and what can be said about convergence and performance when finite-sample estimates are used.
+
+1  **Algorithmic skeleton**
+
+Fix a (finite) MDP \((\mathcal{S},\mathcal{A},P,R,\gamma)\) with \(0\le\gamma<1\).
+
+\[
+\textbf{Input: }\;
+m\ (\text{episodes per evaluation step}),\quad
+\text{exploration scheme (e.g.\ $\varepsilon$–greedy)}.
+\]
+
+\[
+\textbf{Initialise } \pi^{(0)}\text{ arbitrarily},\;k\gets0.
+\]
+
+\[
+\textbf{Repeat}
+\]
+
+\[
+\begin{array}{ll}
+\textbf{(A)  Monte-Carlo policy evaluation} & \\
+\qquad\bullet\ \text{for each state }s\in\mathcal{S} &\\
+\qquad\quad\text{generate $m$ episodes that $\textit{start}$ in $s$ and follow }\pi^{(k)};\\
+\qquad\quad\text{let }g_{1},\dots,g_{m}\text{ be the corresponding returns};\\
+\qquad\quad\hat v_{m}^{(k)}(s)\;=\;\dfrac1m\sum_{i=1}^{m}g_{i}. &\\[6pt]
+\textbf{(B)  Policy improvement} & \\
+\qquad\bullet\ \text{for each state }s\in\mathcal{S}: &\\
+\qquad\quad Q^{(k)}(s,a)\;=\;\displaystyle
+     \sum_{s'}P(s'\!\mid\!s,a)\,
+     \bigl[R(s,a,s')+\gamma\,\hat v_{m}^{(k)}(s')\bigr];\\
+\qquad\quad\pi^{(k+1)}(s)\in\arg\max_{a\in\mathcal{A}} Q^{(k)}(s,a)
+                     \quad\text{(or $\varepsilon$–greedy variant)}.\\[6pt]
+\textbf{(C)  Termination check} & \\
+\qquad\text{if }\pi^{(k+1)}=\pi^{(k)}\text{ (or change below tolerance) stop;}\\
+\qquad k\leftarrow k+1\text{ and repeat.}
+\end{array}
+\]
+
+Points to note:
+
+* Step (A) uses the $\textit{first-visit}$ (or every-visit) Monte-Carlo estimator  
+  \(\hat v_{m}^{(k)}\) and therefore does not need the model \((P,R)\) while the formula for \(Q^{(k)}\) in (B) does.  
+  – If the model is $\textit{unknown}$, one can instead estimate \(Q^{(k)}\) directly from the same episodes; the algorithm then becomes completely model-free (Monte-Carlo control).
+
+* An $\varepsilon$–greedy or “exploring–starts’’ choice in step (B) guarantees that every state–action pair is sampled infinitely often, a standard requirement for convergence in the model-free setting.
+
+2  **Why policy improvement still works**
+
+Denote the true value of the current policy by \(v_{\pi^{(k)}}\).  
+Because \(\hat v_{m}^{(k)}\) is an unbiased estimator of \(v_{\pi^{(k)}}\) we have
+
+\[
+\mathbb{E}\bigl[\hat v_{m}^{(k)}(s)\bigr] \;=\; v_{\pi^{(k)}}(s),
+\quad
+\forall s.
+\]
+
+If the MC sample size \(m\) is large, the estimation error  
+
+\[
+e^{(k)}(s)\;=\;\hat v_{m}^{(k)}(s)-v_{\pi^{(k)}}(s)
+\]
+
+is small with high probability (LLN).  
+The new policy \(\pi^{(k+1)}\) is chosen to be greedy w.r.t.\ \(\hat v_{m}^{(k)}\); if the estimation error is bounded by \(\lvert e^{(k)}(s)\rvert\le\varepsilon\) for all \(s\), one can prove the $\textit{Approximate Policy Improvement Inequality}$ (see, e.g., Bertsekas & Tsitsiklis, 1996):
+
+\[
+v_{\pi^{(k+1)}}(s)
+\;\ge\;
+v_{\pi^{(k)}}(s)\;-\;\frac{2\gamma\,\varepsilon}{1-\gamma},
+\quad
+\forall\,s.
+\]
+
+Thus each improvement step is “\(\varepsilon\)-monotone’’: the new policy is guaranteed to be no worse than the current one up to a bounded loss term that vanishes as \(m\to\infty\).
+
+3  **Convergence and performance bounds**
+
+•  If \(m\to\infty\) at every evaluation step, the errors \(e^{(k)}\) vanish almost surely, and MCPI reduces to exact Policy Iteration, which converges in a finite number of iterations to an optimal policy \(\pi^{*}\).
+
+•  If \(m\) is finite but the error at iteration \(k\) is uniformly bounded by \(\varepsilon_{k}\), one can show (Bertsekas & Tsitsiklis, Prop. 6.3) that the limiting policy \(\tilde\pi\) obtained after infinitely many iterations satisfies
+
+\[
+v_{*}(s)
+\;-\;
+v_{\tilde\pi}(s)
+\;\le\;
+\frac{2\gamma}{(1-\gamma)^{2}}\,
+\sup_{k}\,\varepsilon_{k},
+\quad
+\forall\,s.
+\]
+
+Hence choosing \(m\) large enough (or letting it grow) yields arbitrarily tight approximations to \(v_{*}\) and \(\pi^{*}\).
+
+4  Practical remarks
+
+*  Using first-visit MC, baselines, or TD(\(\lambda\)) during evaluation can greatly reduce variance and speed convergence (§ previous answer).  
+
+*  In modern deep-RL, “Monte-Carlo policy iteration’’ re-appears under names such as $\textit{Generalised Policy Iteration}$, actor–critic methods with critic-iterations, or “policy evaluation via Monte-Carlo returns.”
+
+5  Summary
+
+Yes: replacing \(v_{\pi}\) by its Monte-Carlo estimate \(\hat v_{m}\) in Policy Iteration is perfectly legitimate.  
+• With \(m\to\infty\) each evaluation step is exact, so convergence to an optimal policy occurs in finitely many iterations (as in classical PI).  
+• With finite \(m\) one obtains Approximate Policy Iteration; the policy sequence improves up to bounded errors, and the final policy is \(\varepsilon\)-optimal, where \(\varepsilon\) shrinks as \(m\) grows or as variance-reduction techniques are applied.
+
+## Fully model free
+
+If you are model free in Step A, then you should be model free as well as in Step B. If you had the model in the first place, why be model free in Step A.
+
+**Answer**
+
+You are absolutely right that, conceptually, we should either
+
+• work in a fully model–based setting (we have \(P\) and \(R\) and are willing to use them everywhere), or  
+• work in a fully model–free setting (we do **not** have \(P\) or \(R\) explicitly and therefore never rely on them).
+
+In practice one often sees the two extremes and, in between, many hybrids motivated by convenience or computational cost.  Below we sort out the possibilities and show how a completely model–free $\textit{policy–iteration style}$ algorithm is obtained.
+
+1 Two consistent extremes
+
+\(\blacktriangleright\)  **Model–based Policy Iteration**
+
+*Step A* (evaluation) Solve 
+
+\[
+v_{\pi} \;=\; r_{\pi} +\gamma P_{\pi}v_{\pi}
+\quad\Longrightarrow\quad
+v_{\pi}=(I-\gamma P_{\pi})^{-1}r_{\pi}
+\]
+
+exactly (or by iterative linear‐algebra) using the known matrices
+
+\[
+[P_{\pi}]_{ij}=\textstyle\sum_{a}\pi(a\!\mid\!s_{i})P(s_{j}\!\mid\!s_{i},a),
+\;\;
+[r_{\pi}]_{i}= \sum_{a,s'}\pi(a\!\mid\!s_{i})P(s'\!\mid\!s_{i},a)R(s_{i},a,s').
+\]
+
+*Step B* (improvement) Compute  
+
+\[
+Q_{\pi}(s,a)=\sum_{s'}P(s'\mid s,a)\,[\,R(s,a,s')+\gamma v_{\pi}(s')\,],
+\]
+
+again using the model, and choose
+\(
+\pi'(s)=\arg\max_{a}Q_{\pi}(s,a).
+\)
+
+\(\blacktriangleright\)  **Fully Model–free Monte-Carlo Control**
+
+*Step A* (evaluation) Estimate  
+\(v_{\pi}(s)\) (or \(q_{\pi}(s,a)\)) by Monte-Carlo / TD from sampled episodes; no \(P,\;R\).
+
+*Step B* (improvement) Because \(P\) and \(R\) are unavailable, one $\textit{must}$ also
+estimate action values \(q_{\pi}(s,a)\) from data and pick 
+
+\[
+\pi'(s)=
+\arg\max_{a\in\mathcal{A}}\,\hat q_{\pi}(s,a),
+\]
+
+or an \(\varepsilon\)-greedy/tied random choice among the empirical maxima.
+This yields the classical MC-control algorithm “every–visit (or first–visit) Monte-Carlo with \(\varepsilon\)-greedy improvement.’’
+
+2 **Why hybrids sometimes appear**
+
+In simulation studies we may:
+
+• possess an exact simulator of \(P\) and \(R\) (so we $\textit{could}$ be model-based),  
+• but still prefer Monte-Carlo evaluation because solving \((I-\gamma P_{\pi})^{-1}r_{\pi}\) for large \(|\mathcal{S}|\) is numerically expensive, whereas running roll-outs is cheap and trivially parallelisable.
+
+In that case one often keeps Step B model-based (because multiplying by \(P\) is cheap once we have \(v_{\pi}\)) and does Step A by Monte-Carlo.  This “semi-model-based’’ variant is logically consistent although not strictly model-free.
+
+3 **A fully model–free PI–style algorithm**
+
+For completeness, here is the purely model–free version.
+
+```
+Initial policy  π⁽⁰⁾   (e.g. ε–greedy random)
+for k = 0,1,2, …:
+    Monte-Carlo (or TD) evaluation:
+        • gather data under π⁽ᵏ⁾  (with exploration)
+        • estimate q̂ₖ(s,a)   for all (s,a) visited
+    Greedy improvement:
+        • π⁽ᵏ⁺¹)(s) = argmax_a  q̂ₖ(s,a)          (break ties arbitrarily)
+    If π⁽ᵏ⁺¹) == π⁽ᵏ)  (within tolerance) stop
+```
+
+Convergence now becomes $\textit{approximate}$:  
+if each estimate \(q̂ₖ\) is sufficiently accurate (large sample, variance-reduction tricks), repeated improvement still drives the policy toward optimality; this is the classical “Monte-Carlo control” convergence theorem.
+
+4 **Variance-reduction again**
+
+Because Step A now produces \(\hat{q}_{\pi}\) from samples, all the variance-reduction
+devices mentioned earlier (first-visit returns, baselines/advantages, TD(\(\lambda\)), importance-weight truncation) are essential for making the estimates accurate enough that each improvement really is beneficial.
+
+5 Summary
+
+• If Step A is model-free (roll-out based), Step B must also avoid explicit \(P\) and \(R\); hence it must rely on empirical \(q\)-estimates.  
+• Using the model in Step B while ignoring it in Step A is a pragmatic but hybrid approach adopted only for computational convenience.  
+• A fully consistent model-free Policy-Iteration style algorithm corresponds exactly to classical Monte-Carlo (or TD) control, where both evaluation and improvement rely solely on sampled experience.
+
+## Exploration vs Exploitation
+
+What is the concept of exploration vs exploitation mean for the current MDP setting that we are analyzing?
+
+**Answer**
+
+Below is a concise but rigorous description of what “exploration versus exploitation’’ means in the finite-MDP setting we have been analysing (policy-evaluation, value-iteration, policy-iteration, Monte-Carlo control, etc.).  All mathematical symbols and expressions are in standard LaTeX.
+
+1 **The canonical decision in a finite MDP**
+
+At every time step \(t\) the agent is in some state \(S_{t}=s\in\mathcal{S}\) and must choose an action \(A_{t}=a\in\mathcal{A}\).
+
+•  $\textit{Exploitation}$ means choosing the action that appears, given the agent’s current information, to maximise expected (discounted) reward, e.g.
+
+\[
+a
+\;=\;
+\arg\max_{a'\in\mathcal{A}}
+\hat q(s,a'),
+\]
+
+where \(\hat q(s,a')\) is the agent’s current estimate of the action value \(q_{\pi}(s,a')\) or of the optimal value \(q_{*}(s,a')\).
+
+•  $\textit{Exploration}$ means deliberately selecting an action that is $\textit{not}$ (necessarily) the current maximiser in order to obtain new experience, i.e.\ better information about unknown transition probabilities, rewards or value estimates.  This may lower short-term return but can improve long-run performance.
+
+In pure planning (model-based, full knowledge of \(P\) and \(R\)) there is nothing to “explore’’—the model already tells us everything.  Exploration becomes crucial exactly when the agent must $\textit{learn from data}$ (model-free value estimation, Monte-Carlo control, TD learning, actor–critic, etc.).
+
+2  **Why exploration is mathematically required**
+
+For many convergence theorems in model-free reinforcement learning we need the following property:
+
+\[
+\boxed{\text{Every state–action pair }(s,a)\text{ is visited infinitely often}}.
+\]
+
+Intuitively, without visiting an action \(a\) in a state \(s\) we cannot estimate \(q(s,a)\) (or the underlying \(P,R\)).  Formally:
+
+•  In Monte-Carlo control the law–of–large-numbers guarantee that the sample mean of returns converges to the true expectation requires infinitely many i.i.d. samples from each \((s,a)\).  
+•  In TD-learning (or Q-learning) convergence proofs assume that the learning rates satisfy \(\sum_{t}\alpha_{t}= \infty,\; \sum_{t}\alpha_{t}^{2}<\infty\) $\textit{and}$ each \((s,a)\) is updated infinitely often.  
+•  The same “visit-infinitely-often’’ assumption underlies stochastic-approximation theorems for actor–critic and policy-gradient methods.
+
+Thus an exploration mechanism must prevent the agent from $\textit{always}$ exploiting early, possibly incorrect, value estimates and thereby “starving’’ some state–action pairs of data.
+
+3  **Standard exploration mechanisms**
+
+Below \(q_{t}(s,a)\) denotes the agent’s current estimate at time \(t\).
+
+\[
+\textbf{(a) } \varepsilon\text{–greedy}
+\quad
+\begin{cases}
+\text{with prob. }1-\varepsilon_t &: \displaystyle a=\arg\max_{a'} q_{t}(s,a'),\\[6pt]
+\text{with prob. }\varepsilon_t &: \text{pick a uniformly random action.}
+\end{cases}
+\]
+
+If \(\varepsilon_t\downarrow 0\) slowly enough (e.g.\ GLIE: \(\varepsilon_t\to0\) and \(\sum_t\varepsilon_t=\infty\)), the algorithm still explores infinitely often but eventually exploits.
+
+\[
+\textbf{(b)  Soft–max (Boltzmann)}
+\quad
+\pi_{t}(a\mid s)
+=\frac{\exp\!\bigl(q_{t}(s,a)/\tau_t\bigr)}
+        {\sum_{a'}\exp\!\bigl(q_{t}(s,a')/\tau_t\bigr)}.
+\]
+
+Temperature \(\tau_t\!\downarrow 0\) trades exploration for exploitation.
+
+\[
+\textbf{(c)  Optimistic initialisation}
+\quad
+q_{0}(s,a)\text{ is set to a large value (e.g.\ $R_{\max}/(1-\gamma)$); }
+\]
+
+the agent is initially “attracted’’ to poorly known actions until data corrects the optimism.
+
+\[
+\textbf{(d)  Upper–confidence bound (UCB)}
+\quad
+a_t=\arg\max_{a}\Bigl(
+  q_{t}(s,a)\;+\;c\sqrt{\tfrac{\ln N_{t}(s)}{N_{t}(s,a)}}\Bigr),
+\]
+
+where \(N_{t}(s)\) is the number of visits to \(s\) so far, \(N_{t}(s,a)\) visits to \((s,a)\).  The bonus term shrinks as an action is sampled more.
+
+\[
+\textbf{(e)  Thompson sampling / posterior sampling}
+\quad
+\text{sample a model or value estimate from its posterior
+and act greedily w.r.t.\ the sample.}
+\]
+
+4  **Exploration inside Policy Iteration–style schemes**
+
+•  In $\textit{exact}$ (model-based) Policy Iteration there is no exploration phase because \(P\) and \(R\) are known—policy improvement uses exact \(Q_{\pi}\).  
+
+•  In $\textit{Monte-Carlo Policy Iteration}$ or $\textit{Approximate Policy Iteration}$ we need exploration during the data-collection phase (policy evaluation).  Typical choices:
+
+  – \(\varepsilon\)–greedy evaluation policy: act according to \(\pi\) most of the time, but with small probability \(\varepsilon\) take a random action.  
+  – “Exploring starts’’ assumption in classical Monte-Carlo control, i.e.\ each episode starts from a random state–action pair with non-zero probability.  
+
+  After estimating \(q_{\pi}\) (or \(v_{\pi}\)), the next greedy policy exploits those estimates—but we continue to evaluate it with some exploration noise to keep the guarantees.
+
+5  **Summary**
+
+•  $\textit{Exploitation}$: in state \(s\) choose \(a=\arg\max_{a'} q(s,a')\).  
+•  $\textit{Exploration}$: sometimes choose non-greedy actions so that every \((s,a)\) is sampled infinitely often; necessary for unbiased estimation and convergence in model-free RL.  
+•  Mechanisms: \(\varepsilon\)–greedy, soft-max, UCB, optimistic starts, posterior sampling, etc.  
+•  In model-based dynamic programming (full knowledge of \(P,R\)), exploration is unnecessary; in model-free learning it is essential.
